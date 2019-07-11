@@ -4,10 +4,21 @@
     <Filter Include="src">
       <UniqueIdentifier>{8f114b60-f8e4-4a6f-86ee-02c05c81b1c6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\hg2d">
+      <UniqueIdentifier>{6c49e5ba-90cd-43c7-855b-83e787e3fd06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\hg2d\Core">
+      <UniqueIdentifier>{d6009f95-d820-438a-ae7c-69d516e851fc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\tmp.cpp">
-      <Filter>src</Filter>
+    <ClInclude Include="src\hg2d\Core\Engine.hpp">
+      <Filter>src\hg2d\Core</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\hg2d\Core\Engine.cpp">
+      <Filter>src\hg2d\Core</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
