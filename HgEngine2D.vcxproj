@@ -20,9 +20,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\hg2d\Core\Engine.hpp" />
+    <ClInclude Include="src\hg2d\GameState\AGameState.hpp" />
+    <ClInclude Include="src\hg2d\GameState\GameStateSystem.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\hg2d\Core\Engine.cpp" />
+    <ClCompile Include="src\hg2d\GameState\AGameState.cpp" />
+    <ClCompile Include="src\hg2d\GameState\GameStateSystem.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

@@ -10,15 +10,30 @@
     <Filter Include="src\hg2d\Core">
       <UniqueIdentifier>{d6009f95-d820-438a-ae7c-69d516e851fc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\hg2d\GameState">
+      <UniqueIdentifier>{f8eea857-c32a-44d8-82cc-3bff9921a993}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\hg2d\Core\Engine.hpp">
       <Filter>src\hg2d\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\hg2d\GameState\AGameState.hpp">
+      <Filter>src\hg2d\GameState</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hg2d\GameState\GameStateSystem.hpp">
+      <Filter>src\hg2d\GameState</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\hg2d\Core\Engine.cpp">
       <Filter>src\hg2d\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hg2d\GameState\AGameState.cpp">
+      <Filter>src\hg2d\GameState</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hg2d\GameState\GameStateSystem.cpp">
+      <Filter>src\hg2d\GameState</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,8 +1,9 @@
 #include "Engine.hpp"
+#include "hd/Core/hdClock.hpp"
 
 namespace hg2d {
 
-Engine::Engine(const EngineCreateInfo &createInfo) {
+Engine::Engine(const EngineCreateInfo &createInfo) : mGameStateSystem(*this) {
     hd::WindowFlags flags = hd::WindowFlags::Resizable;
     if (createInfo.window.fullscreen) {
         flags |= hd::WindowFlags::Fullscreen;
@@ -15,6 +16,10 @@ Engine::~Engine() {
 }
 
 void Engine::run() {
+    const float UPDATES_COUNT_PER_SEC = 30.0f;
+    const hd::Time UPDATE_TIME = hd::Time::fromMilliseconds(1000.0f / UPDATES_COUNT_PER_SEC);
+
+    hd::Time updateTimer;
     bool isExit = false;
     while (!isExit) {
         hd::WindowEvent event;
@@ -22,7 +27,15 @@ void Engine::run() {
             if (event.type == hd::WindowEventType::Close) {
                 isExit = true;
             }
+            mGameStateSystem.onEvent(event);
         }
+
+        if (hd::Clock::getElapsedTime(updateTimer) > UPDATE_TIME) {
+            mGameStateSystem.onFixedUpdate();
+            updateTimer = hd::Clock::getTime();
+        }
+        mGameStateSystem.onUpdate();
+        mGameStateSystem.onDraw();
 
         mWindow.swapBuffers();
 
@@ -52,6 +65,10 @@ uint32_t Engine::getFps() const {
 
 float Engine::getFrameTime() const {
     return mFPSCounter.getFrameTime();
+}
+
+GameStateSystem &Engine::getGameStateSystem() {
+    return mGameStateSystem;
 }
 
 }

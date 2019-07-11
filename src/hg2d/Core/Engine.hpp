@@ -1,4 +1,5 @@
 #pragma once
+#include "../GameState/GameStateSystem.hpp"
 #include "hd/Core/hdFPSCounter.hpp"
 #include "hd/System/hdWindow.hpp"
 
@@ -28,11 +29,13 @@ public:
     const EngineCreateInfo &getCreateInfo() const;
     uint32_t getFps() const;
     float getFrameTime() const;
+    GameStateSystem &getGameStateSystem();
 
 private:
     EngineCreateInfo mCreateInfo;
     hd::Window mWindow;
     hd::FPSCounter mFPSCounter;
+    GameStateSystem mGameStateSystem;
 };
 
 }
