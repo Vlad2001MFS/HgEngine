@@ -10,7 +10,7 @@ WindowCreateInfo::WindowCreateInfo() : title("HgEngine2D Application") {
     this->fullscreen = false;
 }
 
-Engine::Engine(const EngineCreateInfo &createInfo) : mCreateInfo(createInfo), mGameStateSystem(*this), mRenderSystem(*this) {
+Engine::Engine(const EngineCreateInfo &createInfo) : mCreateInfo(createInfo), mGameStateSystem(*this), mRenderSystem(*this), mSoundSystem(*this) {
     hd::WindowFlags flags = hd::WindowFlags::Resizable;
     if (createInfo.window.fullscreen) {
         flags |= hd::WindowFlags::Fullscreen;
@@ -22,9 +22,11 @@ Engine::Engine(const EngineCreateInfo &createInfo) : mCreateInfo(createInfo), mG
 #endif
 
     mRenderSystem.onInitialize();
+    mSoundSystem.onInitialize();
 }
 
 Engine::~Engine() {
+    mSoundSystem.onShutdown();
     mRenderSystem.onShutdown();
     mWindow.destroy();
 }
@@ -91,6 +93,10 @@ GameStateSystem &Engine::getGameStateSystem() {
 
 RenderSystem &Engine::getRenderSystem() {
     return mRenderSystem;
+}
+
+SoundSystem &Engine::getSoundSystem() {
+    return mSoundSystem;
 }
 
 }

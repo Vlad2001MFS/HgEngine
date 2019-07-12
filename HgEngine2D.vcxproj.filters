@@ -16,6 +16,9 @@
     <Filter Include="src\hg2d\Renderer">
       <UniqueIdentifier>{5e94efcb-42fa-4d73-a014-7b8c033740a8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\hg2d\Sound">
+      <UniqueIdentifier>{baa528dc-9d66-4432-b73b-d501bb7b3277}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\hg2d\Core\Engine.hpp">
@@ -33,6 +36,9 @@
     <ClInclude Include="src\hg2d\BuildConfig.hpp">
       <Filter>src\hg2d</Filter>
     </ClInclude>
+    <ClInclude Include="src\hg2d\Sound\SoundSystem.hpp">
+      <Filter>src\hg2d\Sound</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\hg2d\Core\Engine.cpp">
@@ -46,6 +52,9 @@
     </ClCompile>
     <ClCompile Include="src\hg2d\Renderer\D3D11RenderSystem.cpp">
       <Filter>src\hg2d\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hg2d\Sound\SoundSystem.cpp">
+      <Filter>src\hg2d\Sound</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
