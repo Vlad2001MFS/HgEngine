@@ -65,6 +65,10 @@ const EngineCreateInfo &Engine::getCreateInfo() const {
     return mCreateInfo;
 }
 
+const hd::Window &Engine::getWindow() const {
+    return mWindow;
+}
+
 uint32_t Engine::getFps() const {
     return mFPSCounter.getFps();
 }

@@ -29,6 +29,7 @@ public:
     bool isKeyDown(hd::KeyCode key) const;
     bool isKeyDown(hd::MouseButton button) const;
     const EngineCreateInfo &getCreateInfo() const;
+    const hd::Window &getWindow() const;
     uint32_t getFps() const;
     float getFrameTime() const;
     GameStateSystem &getGameStateSystem();
