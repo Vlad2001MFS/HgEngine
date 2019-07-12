@@ -29,16 +29,16 @@ public:
     explicit RenderSystem(Engine &engine);
     ~RenderSystem();
 
+    void onInitialize();
+    void onShutdown();
+    void onEvent(const hd::WindowEvent &event);
+    void onDraw();
+
     Texture *createTexture(const void *data, uint32_t w, uint32_t h);
     Texture *createTextureFromFile(const std::string &path);
     void destroyTexture(Texture *&texture);
 
     void addRenderOp(const RenderOp &rop);
-
-    void onInitialize();
-    void onShutdown();
-    void onEvent(const hd::WindowEvent &event);
-    void onDraw();
 
 private:
     Engine &mEngine;

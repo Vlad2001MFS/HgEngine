@@ -72,6 +72,198 @@ RenderSystem::RenderSystem(Engine &engine) : mEngine(engine), impl(std::make_uni
 RenderSystem::~RenderSystem() {
 }
 
+void RenderSystem::onInitialize() {
+    if (mEngine.getWindow().hasOpenGLContext()) {
+        HD_LOG_ERROR("Failed to initialize D3D11RenderSystem. Engine window was created with OpenGL context");
+    }
+
+    DXGI_SWAP_CHAIN_DESC sd;
+    sd.BufferCount = 1;
+    sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+    sd.BufferDesc.Width = mEngine.getWindow().getSizeX();
+    sd.BufferDesc.Height = mEngine.getWindow().getSizeY();
+    sd.BufferDesc.RefreshRate.Numerator = 60;
+    sd.BufferDesc.RefreshRate.Denominator = 1;
+    sd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
+    sd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
+    sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+    sd.Flags = 0;
+    sd.OutputWindow = static_cast<HWND>(mEngine.getWindow().getOSWindowHandle());
+    sd.SampleDesc.Count = 1;
+    sd.SampleDesc.Quality = 0;
+    sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
+    sd.Windowed = !HD_FLAG_EXIST(mEngine.getWindow().getFlags(), hd::WindowFlags::Fullscreen);
+
+#ifdef HD_BUILDMODE_DEBUG
+    D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, D3D11_CREATE_DEVICE_DEBUG, nullptr, 0, D3D11_SDK_VERSION, &sd, &impl->swapChain, &impl->device, nullptr, &impl->context);
+#else
+    D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, 0, nullptr, 0, D3D11_SDK_VERSION, &sd, &impl->swapChain, &impl->device, nullptr, &impl->context);
+#endif
+
+    ID3D11Texture2D *backBuffer = nullptr;
+    impl->swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&backBuffer));
+    impl->device->CreateRenderTargetView(backBuffer, nullptr, &impl->defaultRTV);
+    backBuffer->Release();
+
+    impl->context->OMSetRenderTargets(1, &impl->defaultRTV, nullptr);
+
+    D3D11_VIEWPORT vp;
+    vp.TopLeftX = 0;
+    vp.TopLeftY = 0;
+    vp.MaxDepth = 1.0f;
+    vp.MinDepth = 0.0f;
+    vp.Width = mEngine.getWindow().getSizeX();
+    vp.Height = mEngine.getWindow().getSizeY();
+    impl->context->RSSetViewports(1, &vp);
+
+    uint32_t flags = D3DCOMPILE_ENABLE_STRICTNESS;
+#ifdef HD_BUILDMODE_DEBUG
+    flags |= D3DCOMPILE_DEBUG;
+#endif
+    ID3DBlob *vsBlob = nullptr;
+    D3DCompileFromFile(L"data/shaders/simpleVS.hlsl", nullptr, nullptr, "main", "vs_5_0", flags, 0, &vsBlob, nullptr);
+    impl->device->CreateVertexShader(vsBlob->GetBufferPointer(), vsBlob->GetBufferSize(), nullptr, &impl->vertexShader);
+
+    D3D11_INPUT_ELEMENT_DESC vertexFormat[] = {
+        { "ATTRIB", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+    { "ATTRIB", 1, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+    };
+    impl->device->CreateInputLayout(vertexFormat, HD_ARRAYSIZE(vertexFormat), vsBlob->GetBufferPointer(), vsBlob->GetBufferSize(), &impl->vertexFormat);
+    vsBlob->Release();
+
+    ID3DBlob *psBlob = nullptr;
+    D3DCompileFromFile(L"data/shaders/simplePS.hlsl", nullptr, nullptr, "main", "ps_5_0", flags, 0, &psBlob, nullptr);
+    impl->device->CreatePixelShader(psBlob->GetBufferPointer(), psBlob->GetBufferSize(), nullptr, &impl->pixelShader);
+    psBlob->Release();
+
+    const Vertex verts[] = {
+        { -0.5f,  0.5f, 0.0f, 0.0f, 0.0f },
+    {  0.5f, -0.5f, 0.0f, 1.0f, 1.0f },
+    { -0.5f, -0.5f, 0.0f, 0.0f, 1.0f },
+
+    { -0.5f,  0.5f, 0.0f, 0.0f, 0.0f },
+    {  0.5f,  0.5f, 0.0f, 1.0f, 0.0f },
+    {  0.5f, -0.5f, 0.0f, 1.0f, 1.0f },
+    };
+    D3D11_BUFFER_DESC vbDesc;
+    vbDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+    vbDesc.ByteWidth = sizeof(verts);
+    vbDesc.CPUAccessFlags = 0;
+    vbDesc.MiscFlags = 0;
+    vbDesc.StructureByteStride = 0;
+    vbDesc.Usage = D3D11_USAGE_DEFAULT;
+    D3D11_SUBRESOURCE_DATA vbData;
+    vbData.pSysMem = verts;
+    vbData.SysMemPitch = 0;
+    vbData.SysMemSlicePitch = 0;
+    impl->device->CreateBuffer(&vbDesc, &vbData, &impl->vertexBuffer);
+
+    const Vertex vertsGUI[] = {
+        { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f },
+    { 1.0f, 1.0f, 0.0f, 1.0f, 1.0f },
+    { 0.0f, 1.0f, 0.0f, 0.0f, 1.0f },
+
+    { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f },
+    { 1.0f, 0.0f, 0.0f, 1.0f, 0.0f },
+    { 1.0f, 1.0f, 0.0f, 1.0f, 1.0f },
+    };
+    D3D11_BUFFER_DESC vbDescGUI;
+    vbDescGUI.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+    vbDescGUI.ByteWidth = sizeof(vertsGUI);
+    vbDescGUI.CPUAccessFlags = 0;
+    vbDescGUI.MiscFlags = 0;
+    vbDescGUI.StructureByteStride = 0;
+    vbDescGUI.Usage = D3D11_USAGE_DEFAULT;
+    D3D11_SUBRESOURCE_DATA vbDataGUI;
+    vbDataGUI.pSysMem = vertsGUI;
+    vbDataGUI.SysMemPitch = 0;
+    vbDataGUI.SysMemSlicePitch = 0;
+    impl->device->CreateBuffer(&vbDescGUI, &vbDataGUI, &impl->vertexBufferGUI);
+
+    D3D11_BUFFER_DESC cbDesc;
+    cbDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+    cbDesc.ByteWidth = sizeof(ConstantBuffer);
+    cbDesc.CPUAccessFlags = 0;
+    cbDesc.MiscFlags = 0;
+    cbDesc.StructureByteStride = 0;
+    cbDesc.Usage = D3D11_USAGE_DEFAULT;
+    impl->device->CreateBuffer(&cbDesc, nullptr, &impl->constantBuffer);
+}
+
+void RenderSystem::onShutdown() {
+    for (auto &it : impl->createdTextures) {
+        impl->destroyTexture(it);
+    }
+
+    SAFE_RELEASE(impl->constantBuffer);
+    SAFE_RELEASE(impl->vertexBufferGUI);
+    SAFE_RELEASE(impl->vertexBuffer);
+    SAFE_RELEASE(impl->pixelShader);
+    SAFE_RELEASE(impl->vertexFormat);
+    SAFE_RELEASE(impl->vertexShader);
+
+    SAFE_RELEASE(impl->defaultRTV);
+    SAFE_RELEASE(impl->context);
+    SAFE_RELEASE(impl->swapChain);
+    SAFE_RELEASE(impl->device);
+}
+
+void RenderSystem::onEvent(const hd::WindowEvent &event) {
+    if (event.type == hd::WindowEventType::Resize) {
+        D3D11_VIEWPORT vp;
+        vp.TopLeftX = 0;
+        vp.TopLeftY = 0;
+        vp.MaxDepth = 1.0f;
+        vp.MinDepth = 0.0f;
+        vp.Width = event.resize.width;
+        vp.Height = event.resize.height;
+        impl->context->RSSetViewports(1, &vp);
+
+        impl->proj = glm::perspectiveLH(glm::pi<float>() / 4.0f, static_cast<float>(event.resize.width) / event.resize.height, 0.1f, 1000.0f);
+        impl->projGUI = hd::MathUtils::ortho2D(0, event.resize.width, event.resize.height, 0);
+    }
+}
+
+void RenderSystem::onDraw() {
+    const float clearColor[] = { 0.5f, 0.5f, 1.0f, 1.0f };
+    impl->context->ClearRenderTargetView(impl->defaultRTV, clearColor);
+
+    uint32_t stride = sizeof(Vertex);
+    uint32_t offset = 0;
+    impl->context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    impl->context->IASetInputLayout(impl->vertexFormat);
+    impl->context->VSSetShader(impl->vertexShader, nullptr, 0);
+    impl->context->PSSetShader(impl->pixelShader, nullptr, 0);
+    impl->context->VSSetConstantBuffers(0, 1, &impl->constantBuffer);
+    impl->cbData.proj = glm::transpose(impl->proj);
+    impl->cbData.view = glm::transpose(glm::lookAtLH(glm::vec3(0, 0, -10), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0)));
+    impl->context->IASetVertexBuffers(0, 1, &impl->vertexBuffer, &stride, &offset);
+    for (const auto &rop : mRenderOps) {
+        impl->cbData.world = glm::transpose(glm::translate(glm::vec3(rop.pos, 0))*glm::rotate(rop.angle, glm::vec3(0, 0, 1))*glm::scale(glm::vec3(rop.size, 1.0f)));
+        impl->cbData.uvOffset = rop.uvOffset;
+        impl->cbData.uvSize = rop.uvSize;
+        impl->context->UpdateSubresource(impl->constantBuffer, 0, nullptr, &impl->cbData, 0, 0);
+        impl->context->PSSetShaderResources(0, 1, &rop.texture->srv);
+        impl->context->Draw(6, 0);
+    }
+    mRenderOps.clear();
+
+    impl->cbData.proj = glm::transpose(impl->projGUI);
+    impl->cbData.view = glm::transpose(glm::mat4(1.0f));
+    impl->context->IASetVertexBuffers(0, 1, &impl->vertexBufferGUI, &stride, &offset);
+    for (const auto &rop : mGUIRenderOps) {
+        impl->cbData.world = glm::transpose(glm::translate(glm::vec3(rop.pos, 0))*glm::rotate(rop.angle, glm::vec3(0, 0, 1))*glm::scale(glm::vec3(rop.size, 1.0f)));
+        impl->cbData.uvOffset = rop.uvOffset;
+        impl->cbData.uvSize = rop.uvSize;
+        impl->context->UpdateSubresource(impl->constantBuffer, 0, nullptr, &impl->cbData, 0, 0);
+        impl->context->PSSetShaderResources(0, 1, &rop.texture->srv);
+        impl->context->Draw(6, 0);
+    }
+    mGUIRenderOps.clear();
+
+    impl->swapChain->Present(0, 0);
+}
+
 Texture *RenderSystem::createTexture(const void *data, uint32_t w, uint32_t h) {
     Texture *obj = new Texture();
 
@@ -137,198 +329,6 @@ void RenderSystem::addRenderOp(const RenderOp &rop) {
     else {
         mRenderOps.push_back(rop);
     }
-}
-
-void RenderSystem::onInitialize() {
-    if (mEngine.getWindow().hasOpenGLContext()) {
-        HD_LOG_ERROR("Failed to initialize D3D11RenderSystem. Engine window was created with OpenGL context");
-    }
-
-    DXGI_SWAP_CHAIN_DESC sd;
-    sd.BufferCount = 1;
-    sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-    sd.BufferDesc.Width = mEngine.getWindow().getSizeX();
-    sd.BufferDesc.Height = mEngine.getWindow().getSizeY();
-    sd.BufferDesc.RefreshRate.Numerator = 60;
-    sd.BufferDesc.RefreshRate.Denominator = 1;
-    sd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
-    sd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
-    sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-    sd.Flags = 0;
-    sd.OutputWindow = static_cast<HWND>(mEngine.getWindow().getOSWindowHandle());
-    sd.SampleDesc.Count = 1;
-    sd.SampleDesc.Quality = 0;
-    sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
-    sd.Windowed = !HD_FLAG_EXIST(mEngine.getWindow().getFlags(), hd::WindowFlags::Fullscreen);
-
-#ifdef HD_BUILDMODE_DEBUG
-    D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, D3D11_CREATE_DEVICE_DEBUG, nullptr, 0, D3D11_SDK_VERSION, &sd, &impl->swapChain, &impl->device, nullptr, &impl->context);
-#else
-    D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, 0, nullptr, 0, D3D11_SDK_VERSION, &sd, &impl->swapChain, &impl->device, nullptr, &impl->context);
-#endif
-
-    ID3D11Texture2D *backBuffer = nullptr;
-    impl->swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&backBuffer));
-    impl->device->CreateRenderTargetView(backBuffer, nullptr, &impl->defaultRTV);
-    backBuffer->Release();
-
-    impl->context->OMSetRenderTargets(1, &impl->defaultRTV, nullptr);
-    
-    D3D11_VIEWPORT vp;
-    vp.TopLeftX = 0;
-    vp.TopLeftY = 0;
-    vp.MaxDepth = 1.0f;
-    vp.MinDepth = 0.0f;
-    vp.Width = mEngine.getWindow().getSizeX();
-    vp.Height = mEngine.getWindow().getSizeY();
-    impl->context->RSSetViewports(1, &vp);
-
-    uint32_t flags = D3DCOMPILE_ENABLE_STRICTNESS;
-#ifdef HD_BUILDMODE_DEBUG
-    flags |= D3DCOMPILE_DEBUG;
-#endif
-    ID3DBlob *vsBlob = nullptr;
-    D3DCompileFromFile(L"data/shaders/simpleVS.hlsl", nullptr, nullptr, "main", "vs_5_0", flags, 0, &vsBlob, nullptr);
-    impl->device->CreateVertexShader(vsBlob->GetBufferPointer(), vsBlob->GetBufferSize(), nullptr, &impl->vertexShader);
-
-    D3D11_INPUT_ELEMENT_DESC vertexFormat[] = {
-        { "ATTRIB", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-        { "ATTRIB", 1, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-    };
-    impl->device->CreateInputLayout(vertexFormat, HD_ARRAYSIZE(vertexFormat), vsBlob->GetBufferPointer(), vsBlob->GetBufferSize(), &impl->vertexFormat);
-    vsBlob->Release();
-
-    ID3DBlob *psBlob = nullptr;
-    D3DCompileFromFile(L"data/shaders/simplePS.hlsl", nullptr, nullptr, "main", "ps_5_0", flags, 0, &psBlob, nullptr);
-    impl->device->CreatePixelShader(psBlob->GetBufferPointer(), psBlob->GetBufferSize(), nullptr, &impl->pixelShader);
-    psBlob->Release();
-
-    const Vertex verts[] = {
-        { -0.5f,  0.5f, 0.0f, 0.0f, 0.0f },
-        {  0.5f, -0.5f, 0.0f, 1.0f, 1.0f },
-        { -0.5f, -0.5f, 0.0f, 0.0f, 1.0f },
-
-        { -0.5f,  0.5f, 0.0f, 0.0f, 0.0f },
-        {  0.5f,  0.5f, 0.0f, 1.0f, 0.0f },
-        {  0.5f, -0.5f, 0.0f, 1.0f, 1.0f },
-    };
-    D3D11_BUFFER_DESC vbDesc;
-    vbDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-    vbDesc.ByteWidth = sizeof(verts);
-    vbDesc.CPUAccessFlags = 0;
-    vbDesc.MiscFlags = 0;
-    vbDesc.StructureByteStride = 0;
-    vbDesc.Usage = D3D11_USAGE_DEFAULT;
-    D3D11_SUBRESOURCE_DATA vbData;
-    vbData.pSysMem = verts;
-    vbData.SysMemPitch = 0;
-    vbData.SysMemSlicePitch = 0;
-    impl->device->CreateBuffer(&vbDesc, &vbData, &impl->vertexBuffer);
-
-    const Vertex vertsGUI[] = {
-        { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f },
-        { 1.0f, 1.0f, 0.0f, 1.0f, 1.0f },
-        { 0.0f, 1.0f, 0.0f, 0.0f, 1.0f },
-
-        { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f },
-        { 1.0f, 0.0f, 0.0f, 1.0f, 0.0f },
-        { 1.0f, 1.0f, 0.0f, 1.0f, 1.0f },
-    };
-    D3D11_BUFFER_DESC vbDescGUI;
-    vbDescGUI.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-    vbDescGUI.ByteWidth = sizeof(vertsGUI);
-    vbDescGUI.CPUAccessFlags = 0;
-    vbDescGUI.MiscFlags = 0;
-    vbDescGUI.StructureByteStride = 0;
-    vbDescGUI.Usage = D3D11_USAGE_DEFAULT;
-    D3D11_SUBRESOURCE_DATA vbDataGUI;
-    vbDataGUI.pSysMem = vertsGUI;
-    vbDataGUI.SysMemPitch = 0;
-    vbDataGUI.SysMemSlicePitch = 0;
-    impl->device->CreateBuffer(&vbDescGUI, &vbDataGUI, &impl->vertexBufferGUI);
-
-    D3D11_BUFFER_DESC cbDesc;
-    cbDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-    cbDesc.ByteWidth = sizeof(ConstantBuffer);
-    cbDesc.CPUAccessFlags = 0;
-    cbDesc.MiscFlags = 0;
-    cbDesc.StructureByteStride = 0;
-    cbDesc.Usage = D3D11_USAGE_DEFAULT;
-    impl->device->CreateBuffer(&cbDesc, nullptr, &impl->constantBuffer);
-}
-
-void RenderSystem::onShutdown() {
-    for (auto &it : impl->createdTextures) {
-        impl->destroyTexture(it);
-    }
-
-    SAFE_RELEASE(impl->constantBuffer);
-    SAFE_RELEASE(impl->vertexBufferGUI);
-    SAFE_RELEASE(impl->vertexBuffer);
-    SAFE_RELEASE(impl->pixelShader);
-    SAFE_RELEASE(impl->vertexFormat);
-    SAFE_RELEASE(impl->vertexShader);
-
-    SAFE_RELEASE(impl->defaultRTV);
-    SAFE_RELEASE(impl->context);
-    SAFE_RELEASE(impl->swapChain);
-    SAFE_RELEASE(impl->device);
-}
-
-void RenderSystem::onEvent(const hd::WindowEvent &event) {
-    if (event.type == hd::WindowEventType::Resize) {
-        D3D11_VIEWPORT vp;
-        vp.TopLeftX = 0;
-        vp.TopLeftY = 0;
-        vp.MaxDepth = 1.0f;
-        vp.MinDepth = 0.0f;
-        vp.Width = event.resize.width;
-        vp.Height = event.resize.height;
-        impl->context->RSSetViewports(1, &vp);
-        
-        impl->proj = glm::perspectiveLH(glm::pi<float>() / 4.0f, static_cast<float>(event.resize.width) / event.resize.height, 0.1f, 1000.0f);
-        impl->projGUI = hd::MathUtils::ortho2D(0, event.resize.width, event.resize.height, 0);
-    }
-}
-
-void RenderSystem::onDraw() {
-    const float clearColor[] = { 0.5f, 0.5f, 1.0f, 1.0f };
-    impl->context->ClearRenderTargetView(impl->defaultRTV, clearColor);
-
-    uint32_t stride = sizeof(Vertex);
-    uint32_t offset = 0;
-    impl->context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-    impl->context->IASetInputLayout(impl->vertexFormat);
-    impl->context->VSSetShader(impl->vertexShader, nullptr, 0);
-    impl->context->PSSetShader(impl->pixelShader, nullptr, 0);
-    impl->context->VSSetConstantBuffers(0, 1, &impl->constantBuffer);
-    impl->cbData.proj = glm::transpose(impl->proj);
-    impl->cbData.view = glm::transpose(glm::lookAtLH(glm::vec3(0, 0, -10), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0)));
-    impl->context->IASetVertexBuffers(0, 1, &impl->vertexBuffer, &stride, &offset);
-    for (const auto &rop : mRenderOps) {
-        impl->cbData.world = glm::transpose(glm::translate(glm::vec3(rop.pos, 0))*glm::rotate(rop.angle, glm::vec3(0, 0, 1))*glm::scale(glm::vec3(rop.size, 1.0f)));
-        impl->cbData.uvOffset = rop.uvOffset;
-        impl->cbData.uvSize = rop.uvSize;
-        impl->context->UpdateSubresource(impl->constantBuffer, 0, nullptr, &impl->cbData, 0, 0);
-        impl->context->PSSetShaderResources(0, 1, &rop.texture->srv);
-        impl->context->Draw(6, 0);
-    }
-    mRenderOps.clear();
-    
-    impl->cbData.proj = glm::transpose(impl->projGUI);
-    impl->cbData.view = glm::transpose(glm::mat4(1.0f));
-    impl->context->IASetVertexBuffers(0, 1, &impl->vertexBufferGUI, &stride, &offset);
-    for (const auto &rop : mGUIRenderOps) {
-        impl->cbData.world = glm::transpose(glm::translate(glm::vec3(rop.pos, 0))*glm::rotate(rop.angle, glm::vec3(0, 0, 1))*glm::scale(glm::vec3(rop.size, 1.0f)));
-        impl->cbData.uvOffset = rop.uvOffset;
-        impl->cbData.uvSize = rop.uvSize;
-        impl->context->UpdateSubresource(impl->constantBuffer, 0, nullptr, &impl->cbData, 0, 0);
-        impl->context->PSSetShaderResources(0, 1, &rop.texture->srv);
-        impl->context->Draw(6, 0);
-    }
-    mGUIRenderOps.clear();
-
-    impl->swapChain->Present(0, 0);
 }
 
 }
