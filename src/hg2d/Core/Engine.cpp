@@ -9,7 +9,7 @@ WindowCreateInfo::WindowCreateInfo() : title("HgEngine2D Application") {
     this->fullscreen = false;
 }
 
-Engine::Engine(const EngineCreateInfo &createInfo) : mGameStateSystem(*this) {
+Engine::Engine(const EngineCreateInfo &createInfo) : mCreateInfo(createInfo), mGameStateSystem(*this) {
     hd::WindowFlags flags = hd::WindowFlags::Resizable;
     if (createInfo.window.fullscreen) {
         flags |= hd::WindowFlags::Fullscreen;
