@@ -1,4 +1,5 @@
 #include "Engine.hpp"
+#include "../BuildConfig.hpp"
 #include "hd/Core/hdClock.hpp"
 
 namespace hg2d {
@@ -9,15 +10,22 @@ WindowCreateInfo::WindowCreateInfo() : title("HgEngine2D Application") {
     this->fullscreen = false;
 }
 
-Engine::Engine(const EngineCreateInfo &createInfo) : mCreateInfo(createInfo), mGameStateSystem(*this) {
+Engine::Engine(const EngineCreateInfo &createInfo) : mCreateInfo(createInfo), mGameStateSystem(*this), mRenderSystem(*this) {
     hd::WindowFlags flags = hd::WindowFlags::Resizable;
     if (createInfo.window.fullscreen) {
         flags |= hd::WindowFlags::Fullscreen;
     }
+#ifdef HG2D_RENDERER_D3D11
     mWindow.create(createInfo.window.title, createInfo.window.width, createInfo.window.height, flags);
+#else
+#   pragma error("Cannot determine RenderSystem to use")
+#endif
+
+    mRenderSystem.onInitialize();
 }
 
 Engine::~Engine() {
+    mRenderSystem.onShutdown();
     mWindow.destroy();
 }
 
@@ -34,6 +42,7 @@ void Engine::run() {
                 isExit = true;
             }
             mGameStateSystem.onEvent(event);
+            mRenderSystem.onEvent(event);
         }
 
         if (hd::Clock::getElapsedTime(updateTimer) > UPDATE_TIME) {
@@ -42,8 +51,7 @@ void Engine::run() {
         }
         mGameStateSystem.onUpdate();
         mGameStateSystem.onDraw();
-
-        mWindow.swapBuffers();
+        mRenderSystem.onDraw();
 
         mFPSCounter.update();
     }
@@ -79,6 +87,10 @@ float Engine::getFrameTime() const {
 
 GameStateSystem &Engine::getGameStateSystem() {
     return mGameStateSystem;
+}
+
+RenderSystem &Engine::getRenderSystem() {
+    return mRenderSystem;
 }
 
 }

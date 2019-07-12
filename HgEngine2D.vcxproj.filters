@@ -13,6 +13,9 @@
     <Filter Include="src\hg2d\GameState">
       <UniqueIdentifier>{f8eea857-c32a-44d8-82cc-3bff9921a993}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\hg2d\Renderer">
+      <UniqueIdentifier>{5e94efcb-42fa-4d73-a014-7b8c033740a8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\hg2d\Core\Engine.hpp">
@@ -24,6 +27,12 @@
     <ClInclude Include="src\hg2d\GameState\GameStateSystem.hpp">
       <Filter>src\hg2d\GameState</Filter>
     </ClInclude>
+    <ClInclude Include="src\hg2d\Renderer\RenderSystem.hpp">
+      <Filter>src\hg2d\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hg2d\BuildConfig.hpp">
+      <Filter>src\hg2d</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\hg2d\Core\Engine.cpp">
@@ -34,6 +43,9 @@
     </ClCompile>
     <ClCompile Include="src\hg2d\GameState\GameStateSystem.cpp">
       <Filter>src\hg2d\GameState</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hg2d\Renderer\D3D11RenderSystem.cpp">
+      <Filter>src\hg2d\Renderer</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

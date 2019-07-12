@@ -19,14 +19,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\hg2d\BuildConfig.hpp" />
     <ClInclude Include="src\hg2d\Core\Engine.hpp" />
     <ClInclude Include="src\hg2d\GameState\AGameState.hpp" />
     <ClInclude Include="src\hg2d\GameState\GameStateSystem.hpp" />
+    <ClInclude Include="src\hg2d\Renderer\RenderSystem.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\hg2d\Core\Engine.cpp" />
     <ClCompile Include="src\hg2d\GameState\AGameState.cpp" />
     <ClCompile Include="src\hg2d\GameState\GameStateSystem.cpp" />
+    <ClCompile Include="src\hg2d\Renderer\D3D11RenderSystem.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
