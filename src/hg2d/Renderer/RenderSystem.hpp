@@ -26,7 +26,7 @@ struct RenderOp {
 
 class RenderSystem {
 public:
-    RenderSystem(Engine &engine);
+    explicit RenderSystem(Engine &engine);
     ~RenderSystem();
 
     Texture *createTexture(const void *data, uint32_t w, uint32_t h);
