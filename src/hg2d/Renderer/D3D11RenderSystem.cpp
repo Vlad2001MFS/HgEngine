@@ -20,6 +20,7 @@ namespace hg2d {
 struct Texture {
     ID3D11Texture2D *tex;
     ID3D11ShaderResourceView *srv;
+    glm::ivec2 size;
 };
 
 struct Vertex {
@@ -283,6 +284,7 @@ void RenderSystem::onDraw() {
 
 Texture *RenderSystem::createTexture(const void *data, uint32_t w, uint32_t h) {
     Texture *obj = new Texture();
+    obj->size = glm::ivec2(w, h);
 
     D3D11_TEXTURE2D_DESC texDesc;
     texDesc.ArraySize = 1;
@@ -337,6 +339,13 @@ void RenderSystem::destroyTexture(Texture *&texture) {
             HD_LOG_WARNING("Failed to destroy texture. The texture wasn't created by D3D11RenderSystem");
         }
     }
+}
+
+const glm::ivec2 &RenderSystem::getTextureSize(Texture *texture) const {
+    if (!texture) {
+        HD_LOG_ERROR("texture is nullptr");
+    }
+    return texture->size;
 }
 
 void RenderSystem::addRenderOp(const RenderOp &rop) {
