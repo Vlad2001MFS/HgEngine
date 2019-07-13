@@ -27,7 +27,7 @@ public:
     virtual ~AGUIWidget();
 
     template<typename T, typename ...Args>
-    T *createChild(Args &&...args) { T *widget = new T(mEngine, args...); _addChild(widget); return widget; }
+    T *createChild(Args &&...args) { T *widget = new T(mEngine, args...); mAddChild(widget); return widget; }
     void destroyChild(AGUIWidget *&widget);
     
     virtual void onInitialize() {}
