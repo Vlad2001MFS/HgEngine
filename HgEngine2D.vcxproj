@@ -43,6 +43,7 @@
     <ClCompile Include="src\hg2d\GUI\GUILabel.cpp" />
     <ClCompile Include="src\hg2d\GUI\GUISystem.cpp" />
     <ClCompile Include="src\hg2d\Renderer\D3D11RenderSystem.cpp" />
+    <ClCompile Include="src\hg2d\Renderer\GL4RenderSystem.cpp" />
     <ClCompile Include="src\hg2d\Sound\SoundSystem.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

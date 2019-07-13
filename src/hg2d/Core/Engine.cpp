@@ -17,6 +17,12 @@ Engine::Engine(const EngineCreateInfo &createInfo) : mCreateInfo(createInfo), mG
     }
 #ifdef HG2D_RENDERER_D3D11
     mWindow.create(createInfo.window.title, createInfo.window.width, createInfo.window.height, flags);
+#elif defined(HG2D_RENDERER_OPENGL4)
+  #ifdef HD_BUILDMODE_DEBUG
+    mWindow.create(createInfo.window.title, createInfo.window.width, createInfo.window.height, flags, hd::OpenGLContextSettings(4, 5, 0, 0, 0, true, true));
+  #else
+    mWindow.create(createInfo.window.title, createInfo.window.width, createInfo.window.height, flags, hd::OpenGLContextSettings(4, 5, 0, 0, 0, true, false));
+  #endif
 #else
 #   pragma error("Cannot determine RenderSystem to use")
 #endif
@@ -82,7 +88,7 @@ const EngineCreateInfo &Engine::getCreateInfo() const {
     return mCreateInfo;
 }
 
-const hd::Window &Engine::getWindow() const {
+hd::Window &Engine::getWindow() {
     return mWindow;
 }
 
