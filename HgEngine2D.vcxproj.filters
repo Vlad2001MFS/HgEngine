@@ -54,6 +54,9 @@
     <ClInclude Include="src\hg2d\GUI\GUIImage.hpp">
       <Filter>src\hg2d\GUI</Filter>
     </ClInclude>
+    <ClInclude Include="src\hg2d\GUI\GUILabel.hpp">
+      <Filter>src\hg2d\GUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\hg2d\Core\Engine.cpp">
@@ -81,6 +84,9 @@
       <Filter>src\hg2d\GUI</Filter>
     </ClCompile>
     <ClCompile Include="src\hg2d\GUI\GUIImage.cpp">
+      <Filter>src\hg2d\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hg2d\GUI\GUILabel.cpp">
       <Filter>src\hg2d\GUI</Filter>
     </ClCompile>
   </ItemGroup>
