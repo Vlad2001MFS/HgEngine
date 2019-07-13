@@ -60,6 +60,7 @@ struct RenderSystem::Impl {
     ID3D11Buffer *vertexBuffer;
     ID3D11Buffer *vertexBufferGUI;
     ID3D11Buffer *constantBuffer;
+    ID3D11BlendState *blendState;
 
     std::vector<Texture*> createdTextures;
     ConstantBuffer cbData;
@@ -188,6 +189,19 @@ void RenderSystem::onInitialize() {
     cbDesc.StructureByteStride = 0;
     cbDesc.Usage = D3D11_USAGE_DEFAULT;
     impl->device->CreateBuffer(&cbDesc, nullptr, &impl->constantBuffer);
+
+    D3D11_BLEND_DESC blendDesc;
+    blendDesc.AlphaToCoverageEnable = false;
+    blendDesc.IndependentBlendEnable = false;
+    blendDesc.RenderTarget[0].BlendEnable = true;
+    blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+    blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+    blendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+    blendDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_SRC_ALPHA;
+    blendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_INV_SRC_ALPHA;
+    blendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+    blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+    impl->device->CreateBlendState(&blendDesc, &impl->blendState);
 }
 
 void RenderSystem::onShutdown() {
@@ -195,6 +209,7 @@ void RenderSystem::onShutdown() {
         impl->destroyTexture(it);
     }
 
+    SAFE_RELEASE(impl->blendState);
     SAFE_RELEASE(impl->constantBuffer);
     SAFE_RELEASE(impl->vertexBufferGUI);
     SAFE_RELEASE(impl->vertexBuffer);
@@ -230,6 +245,8 @@ void RenderSystem::onDraw() {
 
     uint32_t stride = sizeof(Vertex);
     uint32_t offset = 0;
+    const float blendFactor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+    impl->context->OMSetBlendState(impl->blendState, blendFactor, 0xFFFFFFFF);
     impl->context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
     impl->context->IASetInputLayout(impl->vertexFormat);
     impl->context->VSSetShader(impl->vertexShader, nullptr, 0);
