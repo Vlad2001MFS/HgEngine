@@ -19,6 +19,9 @@
     <Filter Include="src\hg2d\Sound">
       <UniqueIdentifier>{baa528dc-9d66-4432-b73b-d501bb7b3277}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\hg2d\GUI">
+      <UniqueIdentifier>{41ef7eb9-accc-4440-a4fa-62cec645163c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\hg2d\Core\Engine.hpp">
@@ -39,6 +42,9 @@
     <ClInclude Include="src\hg2d\Sound\SoundSystem.hpp">
       <Filter>src\hg2d\Sound</Filter>
     </ClInclude>
+    <ClInclude Include="src\hg2d\GUI\Font.hpp">
+      <Filter>src\hg2d\GUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\hg2d\Core\Engine.cpp">
@@ -55,6 +61,9 @@
     </ClCompile>
     <ClCompile Include="src\hg2d\Sound\SoundSystem.cpp">
       <Filter>src\hg2d\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hg2d\GUI\Font.cpp">
+      <Filter>src\hg2d\GUI</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

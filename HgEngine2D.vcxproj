@@ -23,6 +23,7 @@
     <ClInclude Include="src\hg2d\Core\Engine.hpp" />
     <ClInclude Include="src\hg2d\GameState\AGameState.hpp" />
     <ClInclude Include="src\hg2d\GameState\GameStateSystem.hpp" />
+    <ClInclude Include="src\hg2d\GUI\Font.hpp" />
     <ClInclude Include="src\hg2d\Renderer\RenderSystem.hpp" />
     <ClInclude Include="src\hg2d\Sound\SoundSystem.hpp" />
   </ItemGroup>
@@ -30,6 +31,7 @@
     <ClCompile Include="src\hg2d\Core\Engine.cpp" />
     <ClCompile Include="src\hg2d\GameState\AGameState.cpp" />
     <ClCompile Include="src\hg2d\GameState\GameStateSystem.cpp" />
+    <ClCompile Include="src\hg2d\GUI\Font.cpp" />
     <ClCompile Include="src\hg2d\Renderer\D3D11RenderSystem.cpp" />
     <ClCompile Include="src\hg2d\Sound\SoundSystem.cpp" />
   </ItemGroup>
