@@ -210,6 +210,25 @@ void AGUIWidget::mAddChild(AGUIWidget *widget) {
     widget->_onInitialize();
 }
 
+void AGUIWidget::mApplyHAlign() {
+    const size_t childrenCount = getChildren().size();
+    for (size_t i = 0; i < childrenCount; i++) {
+        AGUIWidget *child = getChildren()[i];
+        AGUIWidget *invChild = getChildren()[childrenCount - i - 1];
+        if (child->getHAlign() == GUIHAlign::Left) {
+            child->setPosition(getEngine().getCreateInfo().gui.alignSpaceX, child->getPosition().y);
+        }
+        if (invChild->getHAlign() == GUIHAlign::Right) {
+            int x = getSize().x - invChild->getSize().x - getEngine().getCreateInfo().gui.alignSpaceX;
+            invChild->setPosition(x, invChild->getPosition().y);
+        }
+        if (child->getHAlign() == GUIHAlign::Center) {
+            int x = getEngine().getWindow().getCenterX() - child->getSize().x / 2;
+            child->setPosition(x, child->getPosition().y);
+        }
+    }
+}
+
 void AGUIWidget::mApplyVAlign() {
     int topY[4] = { // 0 - none, 1 - left, 2 - center, 3 - right
         getEngine().getCreateInfo().gui.alignSpaceY,
@@ -248,25 +267,6 @@ void AGUIWidget::mApplyVAlign() {
         if (child->getVAlign() == GUIVAlign::Center) {
             child->setPosition(child->getPosition().x, centerY);
             centerY += child->getSize().y + getEngine().getCreateInfo().gui.alignSpaceY;
-        }
-    }
-}
-
-void AGUIWidget::mApplyHAlign() {
-    const size_t childrenCount = getChildren().size();
-    for (size_t i = 0; i < childrenCount; i++) {
-        AGUIWidget *child = getChildren()[i];
-        AGUIWidget *invChild = getChildren()[childrenCount - i - 1];
-        if (child->getHAlign() == GUIHAlign::Left) {
-            child->setPosition(getEngine().getCreateInfo().gui.alignSpaceX, child->getPosition().y);
-        }
-        if (invChild->getHAlign() == GUIHAlign::Right) {
-            int x = getSize().x - invChild->getSize().x - getEngine().getCreateInfo().gui.alignSpaceX;
-            invChild->setPosition(x, invChild->getPosition().y);
-        }
-        if (child->getHAlign() == GUIHAlign::Center) {
-            int x = getEngine().getWindow().getCenterX() - child->getSize().x / 2;
-            child->setPosition(x, child->getPosition().y);
         }
     }
 }
