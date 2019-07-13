@@ -223,7 +223,7 @@ void AGUIWidget::mApplyHAlign() {
             invChild->setPosition(x, invChild->getPosition().y);
         }
         if (child->getHAlign() == GUIHAlign::Center) {
-            int x = getEngine().getWindow().getCenterX() - child->getSize().x / 2;
+            int x = getSize().x / 2 - child->getSize().x / 2;
             child->setPosition(x, child->getPosition().y);
         }
     }
@@ -261,7 +261,7 @@ void AGUIWidget::mApplyVAlign() {
     }
 
     centerHeight -= getEngine().getCreateInfo().gui.alignSpaceY;
-    int centerY = getEngine().getWindow().getCenterY() - centerHeight / 2;
+    int centerY = getSize().y / 2 - centerHeight / 2;
     for (size_t i = 0; i < childrenCount; i++) {
         AGUIWidget *child = getChildren()[i];
         if (child->getVAlign() == GUIVAlign::Center) {
