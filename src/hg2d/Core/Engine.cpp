@@ -10,7 +10,7 @@ WindowCreateInfo::WindowCreateInfo() : title("HgEngine2D Application") {
     this->fullscreen = false;
 }
 
-Engine::Engine(const EngineCreateInfo &createInfo) : mCreateInfo(createInfo), mGameStateSystem(*this), mRenderSystem(*this), mSoundSystem(*this) {
+Engine::Engine(const EngineCreateInfo &createInfo) : mCreateInfo(createInfo), mGameStateSystem(*this), mRenderSystem(*this), mSoundSystem(*this), mGUISystem(*this) {
     hd::WindowFlags flags = hd::WindowFlags::Resizable;
     if (createInfo.window.fullscreen) {
         flags |= hd::WindowFlags::Fullscreen;
@@ -23,9 +23,11 @@ Engine::Engine(const EngineCreateInfo &createInfo) : mCreateInfo(createInfo), mG
 
     mRenderSystem.onInitialize();
     mSoundSystem.onInitialize();
+    mGUISystem.onInitialize();
 }
 
 Engine::~Engine() {
+    mGUISystem.onShutdown();
     mSoundSystem.onShutdown();
     mRenderSystem.onShutdown();
     mWindow.destroy();
@@ -45,15 +47,20 @@ void Engine::run() {
             }
             mGameStateSystem.onEvent(event);
             mRenderSystem.onEvent(event);
+            mGUISystem.onEvent(event);
         }
 
         if (hd::Clock::getElapsedTime(updateTimer) > UPDATE_TIME) {
             mGameStateSystem.onFixedUpdate();
+            mGUISystem.onFixedUpdate();
             updateTimer = hd::Clock::getTime();
         }
         mGameStateSystem.onUpdate();
+        mGUISystem.onUpdate();
+
         mGameStateSystem.onDraw();
         mRenderSystem.onDraw();
+        mGUISystem.onDraw();
 
         mFPSCounter.update();
     }
@@ -97,6 +104,10 @@ RenderSystem &Engine::getRenderSystem() {
 
 SoundSystem &Engine::getSoundSystem() {
     return mSoundSystem;
+}
+
+GUISystem &Engine::getGUISystem() {
+    return mGUISystem;
 }
 
 }

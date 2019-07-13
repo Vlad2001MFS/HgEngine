@@ -2,6 +2,7 @@
 #include "../GameState/GameStateSystem.hpp"
 #include "../Renderer/RenderSystem.hpp"
 #include "../Sound/SoundSystem.hpp"
+#include "../GUI/GUISystem.hpp"
 #include "hd/Core/hdFPSCounter.hpp"
 #include "hd/System/hdWindow.hpp"
 
@@ -19,6 +20,7 @@ struct WindowCreateInfo {
 struct EngineCreateInfo {
     WindowCreateInfo window;
     SoundSystemCreateInfo sound;
+    GUISystemCreateInfo gui;
 };
 
 class Engine {
@@ -38,6 +40,7 @@ public:
     GameStateSystem &getGameStateSystem();
     RenderSystem &getRenderSystem();
     SoundSystem &getSoundSystem();
+    GUISystem &getGUISystem();
 
 private:
     EngineCreateInfo mCreateInfo;
@@ -46,6 +49,7 @@ private:
     GameStateSystem mGameStateSystem;
     RenderSystem mRenderSystem;
     SoundSystem mSoundSystem;
+    GUISystem mGUISystem;
 };
 
 }

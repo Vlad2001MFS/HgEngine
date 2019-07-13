@@ -45,6 +45,12 @@
     <ClInclude Include="src\hg2d\GUI\Font.hpp">
       <Filter>src\hg2d\GUI</Filter>
     </ClInclude>
+    <ClInclude Include="src\hg2d\GUI\AGUIWidget.hpp">
+      <Filter>src\hg2d\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hg2d\GUI\GUISystem.hpp">
+      <Filter>src\hg2d\GUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\hg2d\Core\Engine.cpp">
@@ -63,6 +69,12 @@
       <Filter>src\hg2d\Sound</Filter>
     </ClCompile>
     <ClCompile Include="src\hg2d\GUI\Font.cpp">
+      <Filter>src\hg2d\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hg2d\GUI\AGUIWidget.cpp">
+      <Filter>src\hg2d\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hg2d\GUI\GUISystem.cpp">
       <Filter>src\hg2d\GUI</Filter>
     </ClCompile>
   </ItemGroup>
