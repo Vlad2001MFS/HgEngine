@@ -344,7 +344,7 @@ void RenderSystem::destroyTexture(Texture *&texture) {
     }
 }
 
-const glm::ivec2 &RenderSystem::getTextureSize(Texture *texture) const {
+const glm::ivec2 &RenderSystem::getTextureSize(const Texture *texture) const {
     if (!texture) {
         HD_LOG_ERROR("texture is nullptr");
     }

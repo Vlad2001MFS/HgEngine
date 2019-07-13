@@ -39,7 +39,7 @@ public:
     Texture *createTexture(const hd::Image &img);
     Texture *createTextureFromFile(const std::string &path);
     void destroyTexture(Texture *&texture);
-    const glm::ivec2 &getTextureSize(Texture *texture) const;
+    const glm::ivec2 &getTextureSize(const Texture *texture) const;
 
     void addRenderOp(const RenderOp &rop);
 
