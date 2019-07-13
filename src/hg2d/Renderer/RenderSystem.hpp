@@ -1,4 +1,5 @@
 #pragma once
+#include "hd/IO/hdImage.hpp"
 #include "hd/System/hdWindowEvent.hpp"
 #include "3rd/include/glm/glm.hpp"
 #include <memory>
@@ -35,6 +36,7 @@ public:
     void onDraw();
 
     Texture *createTexture(const void *data, uint32_t w, uint32_t h);
+    Texture *createTexture(const hd::Image &img);
     Texture *createTextureFromFile(const std::string &path);
     void destroyTexture(Texture *&texture);
     const glm::ivec2 &getTextureSize(Texture *texture) const;

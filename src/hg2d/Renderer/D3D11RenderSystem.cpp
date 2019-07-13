@@ -320,9 +320,12 @@ Texture *RenderSystem::createTexture(const void *data, uint32_t w, uint32_t h) {
     return obj;
 }
 
-Texture *RenderSystem::createTextureFromFile(const std::string &path) {
-    hd::Image img("data/textures/" + path);
+Texture* RenderSystem::createTexture(const hd::Image& img) {
     return createTexture(img.getPixels(), img.getWidth(), img.getHeight());
+}
+
+Texture *RenderSystem::createTextureFromFile(const std::string &path) {
+    return createTexture(hd::Image("data/textures/" + path));
 }
 
 void RenderSystem::destroyTexture(Texture *&texture) {
