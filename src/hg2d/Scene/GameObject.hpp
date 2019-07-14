@@ -10,7 +10,7 @@ class Engine;
 
 class GameObject {
 public:
-    GameObject(Engine &engine);
+    explicit GameObject(Engine &engine);
     ~GameObject();
 
     template<typename T>

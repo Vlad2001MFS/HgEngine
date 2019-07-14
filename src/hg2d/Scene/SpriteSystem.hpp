@@ -26,7 +26,7 @@ struct AnimationComponent : public AECSComponent {
 
 class SpriteSystem : public AECSSystem {
 public:
-    SpriteSystem(Engine &engine);
+    explicit SpriteSystem(Engine &engine);
     ~SpriteSystem();
 
     void onInitialize();

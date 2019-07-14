@@ -12,7 +12,7 @@ struct MusicBuffer;
 
 class CacheSystem {
 public:
-    CacheSystem(Engine &engine);
+    explicit CacheSystem(Engine &engine);
     ~CacheSystem();
 
     void onInitialize();

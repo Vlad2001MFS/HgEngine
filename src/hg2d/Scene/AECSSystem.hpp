@@ -9,7 +9,7 @@ class GameObject;
 
 class AECSSystem {
 public:
-    AECSSystem(Engine &engine);
+    explicit AECSSystem(Engine &engine);
     virtual ~AECSSystem();
 
     virtual void onInitialize();
