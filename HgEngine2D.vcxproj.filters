@@ -22,6 +22,9 @@
     <Filter Include="src\hg2d\GUI">
       <UniqueIdentifier>{41ef7eb9-accc-4440-a4fa-62cec645163c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\hg2d\Cache">
+      <UniqueIdentifier>{6b2d8619-f2ac-405f-915c-42c5528be995}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\hg2d\Core\Engine.hpp">
@@ -60,6 +63,9 @@
     <ClInclude Include="src\hg2d\GUI\GUIButton.hpp">
       <Filter>src\hg2d\GUI</Filter>
     </ClInclude>
+    <ClInclude Include="src\hg2d\Cache\CacheSystem.hpp">
+      <Filter>src\hg2d\Cache</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\hg2d\Core\Engine.cpp">
@@ -97,6 +103,9 @@
     </ClCompile>
     <ClCompile Include="src\hg2d\Renderer\GL4RenderSystem.cpp">
       <Filter>src\hg2d\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hg2d\Cache\CacheSystem.cpp">
+      <Filter>src\hg2d\Cache</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

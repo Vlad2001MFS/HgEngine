@@ -3,6 +3,7 @@
 #include "../Renderer/RenderSystem.hpp"
 #include "../Sound/SoundSystem.hpp"
 #include "../GUI/GUISystem.hpp"
+#include "../Cache/CacheSystem.hpp"
 #include "hd/Core/hdFPSCounter.hpp"
 #include "hd/System/hdWindow.hpp"
 
@@ -41,6 +42,7 @@ public:
     RenderSystem &getRenderSystem();
     SoundSystem &getSoundSystem();
     GUISystem &getGUISystem();
+    CacheSystem &getCacheSystem();
 
 private:
     EngineCreateInfo mCreateInfo;
@@ -50,6 +52,7 @@ private:
     RenderSystem mRenderSystem;
     SoundSystem mSoundSystem;
     GUISystem mGUISystem;
+    CacheSystem mCacheSystem;
 };
 
 }

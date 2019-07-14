@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\hg2d\BuildConfig.hpp" />
+    <ClInclude Include="src\hg2d\Cache\CacheSystem.hpp" />
     <ClInclude Include="src\hg2d\Core\Engine.hpp" />
     <ClInclude Include="src\hg2d\GameState\AGameState.hpp" />
     <ClInclude Include="src\hg2d\GameState\GameStateSystem.hpp" />
@@ -33,6 +34,7 @@
     <ClInclude Include="src\hg2d\Sound\SoundSystem.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\hg2d\Cache\CacheSystem.cpp" />
     <ClCompile Include="src\hg2d\Core\Engine.cpp" />
     <ClCompile Include="src\hg2d\GameState\AGameState.cpp" />
     <ClCompile Include="src\hg2d\GameState\GameStateSystem.cpp" />
