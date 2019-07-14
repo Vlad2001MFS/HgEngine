@@ -10,7 +10,7 @@ WindowCreateInfo::WindowCreateInfo() : title("HgEngine2D Application") {
     this->fullscreen = false;
 }
 
-Engine::Engine(const EngineCreateInfo &createInfo) : mCreateInfo(createInfo), mGameStateSystem(*this), mRenderSystem(*this), mSoundSystem(*this), mGUISystem(*this), mCacheSystem(*this) {
+Engine::Engine(const EngineCreateInfo &createInfo) : mCreateInfo(createInfo), mGameStateSystem(*this), mRenderSystem(*this), mSoundSystem(*this), mGUISystem(*this), mCacheSystem(*this), mSceneSystem(*this) {
     hd::WindowFlags flags = hd::WindowFlags::Resizable;
     if (createInfo.window.fullscreen) {
         flags |= hd::WindowFlags::Fullscreen;
@@ -31,9 +31,11 @@ Engine::Engine(const EngineCreateInfo &createInfo) : mCreateInfo(createInfo), mG
     mSoundSystem.onInitialize();
     mGUISystem.onInitialize();
     mCacheSystem.onInitialize();
+    mSceneSystem.onInitialize();
 }
 
 Engine::~Engine() {
+    mSceneSystem.onShutdown();
     mCacheSystem.onShutdown();
     mGUISystem.onShutdown();
     mSoundSystem.onShutdown();
@@ -56,19 +58,23 @@ void Engine::run() {
             mGameStateSystem.onEvent(event);
             mRenderSystem.onEvent(event);
             mGUISystem.onEvent(event);
+            mSceneSystem.onEvent(event);
         }
 
         if (hd::Clock::getElapsedTime(updateTimer) > UPDATE_TIME) {
             mGameStateSystem.onFixedUpdate();
             mGUISystem.onFixedUpdate();
+            mSceneSystem.onFixedUpdate();
             updateTimer = hd::Clock::getTime();
         }
         mGameStateSystem.onUpdate();
         mGUISystem.onUpdate();
+        mSceneSystem.onUpdate();
 
         mGameStateSystem.onDraw();
         mRenderSystem.onDraw();
         mGUISystem.onDraw();
+        mSceneSystem.onDraw();
 
         mFPSCounter.update();
     }
@@ -120,6 +126,10 @@ GUISystem &Engine::getGUISystem() {
 
 CacheSystem &Engine::getCacheSystem() {
     return mCacheSystem;
+}
+
+SceneSystem &Engine::getSceneSystem() {
+    return mSceneSystem;
 }
 
 }
