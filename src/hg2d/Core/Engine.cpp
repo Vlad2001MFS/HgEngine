@@ -55,15 +55,15 @@ void Engine::run() {
             mSceneSystem.onEvent(event);
         }
 
+        mGameStateSystem.onUpdate();
+        mGUISystem.onUpdate();
+        mSceneSystem.onUpdate();
         if (hd::Clock::getElapsedTime(updateTimer) > UPDATE_TIME) {
             mGameStateSystem.onFixedUpdate();
             mGUISystem.onFixedUpdate();
             mSceneSystem.onFixedUpdate();
             updateTimer = hd::Clock::getTime();
         }
-        mGameStateSystem.onUpdate();
-        mGUISystem.onUpdate();
-        mSceneSystem.onUpdate();
 
         mGameStateSystem.onDraw();
         mRenderSystem.onDraw();
