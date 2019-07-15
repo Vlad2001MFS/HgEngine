@@ -20,9 +20,6 @@ public:
     virtual void onDraw(const std::vector<GameObject*> &objects);
 
 protected:
-    Engine &getEngine() { return mEngine; }
-
-private:
     Engine &mEngine;
 };
 

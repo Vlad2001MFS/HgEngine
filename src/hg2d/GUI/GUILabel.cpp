@@ -5,11 +5,11 @@ namespace hg2d {
 
 GUILabel::GUILabel(Engine &engine) : AGUIWidget(engine) {
     mTexture = nullptr;
-    mColor = getEngine().getGUISystem().getSkin().fontColor;
+    mColor = mEngine.getGUISystem().getSkin().fontColor;
 }
 
 GUILabel::~GUILabel() {
-    getEngine().getRenderSystem().destroyTexture(mTexture);
+    mEngine.getRenderSystem().destroyTexture(mTexture);
 }
 
 void GUILabel::setText(const std::string &text) {
@@ -41,19 +41,19 @@ void GUILabel::onDraw() {
         rop.pos = getAbsolutePosition();
         rop.size = getSize();
         rop.isGUI = true;
-        getEngine().getRenderSystem().addRenderOp(rop);
+        mEngine.getRenderSystem().addRenderOp(rop);
     }
 }
 
 void GUILabel::mUpdateTexture() {
     if (!mText.empty()) {
         if (mTexture) {
-            getEngine().getRenderSystem().destroyTexture(mTexture);
+            mEngine.getRenderSystem().destroyTexture(mTexture);
         }
 
-        mTexture = getEngine().getGUISystem().getSkin().font->renderText(mText, mColor);
+        mTexture = mEngine.getGUISystem().getSkin().font->renderText(mText, mColor);
         if (getSize().x == 0 && getSize().y == 0) {
-            setSize(getEngine().getRenderSystem().getTextureSize(mTexture));
+            setSize(mEngine.getRenderSystem().getTextureSize(mTexture));
         }
     }
 }

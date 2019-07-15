@@ -65,7 +65,7 @@ public:
     hd::Delegate<> onMouseEnter, onMouseLeave;
 
 protected:
-    Engine &getEngine() const;
+    Engine &mEngine;
 
 private:
     void mAddChild(AGUIWidget *widget);
@@ -73,7 +73,6 @@ private:
     void mApplyHAlign();
     void mApplyVAlign();
 
-    Engine &mEngine;
     AGUIWidget *mParent;
     std::vector<AGUIWidget*> mChildren;
     glm::ivec2 mPosition, mSize;

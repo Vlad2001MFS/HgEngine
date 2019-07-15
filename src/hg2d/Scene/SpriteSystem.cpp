@@ -20,8 +20,8 @@ SpriteSystem::~SpriteSystem() {
 }
 
 void SpriteSystem::onInitialize() {
-    getEngine().getSceneSystem().registerComponentType<SpriteComponent>();
-    getEngine().getSceneSystem().registerComponentType<AnimationComponent>();
+    mEngine.getSceneSystem().registerComponentType<SpriteComponent>();
+    mEngine.getSceneSystem().registerComponentType<AnimationComponent>();
 }
 
 void SpriteSystem::onUpdate(const std::vector<GameObject*> &objects) {
@@ -31,12 +31,12 @@ void SpriteSystem::onUpdate(const std::vector<GameObject*> &objects) {
             AnimationComponent *anim = obj->getComponent<AnimationComponent>();
             if (sprite) {
                 if (!sprite->_texture) {
-                    sprite->_texture = getEngine().getCacheSystem().loadTexture(sprite->texturePath);
+                    sprite->_texture = mEngine.getCacheSystem().loadTexture(sprite->texturePath);
                 }
                 if (anim) {
                     if (hd::Clock::getElapsedTime(anim->_timer) >= anim->frameTime) {
                         anim->_uv.x += anim->frameSize.x;
-                        if (anim->_uv.x >= getEngine().getRenderSystem().getTextureSize(sprite->_texture).x) {
+                        if (anim->_uv.x >= mEngine.getRenderSystem().getTextureSize(sprite->_texture).x) {
                             anim->_uv.x = 0;
                         }
                         anim->_timer = hd::Clock::getTime();
@@ -62,7 +62,7 @@ void SpriteSystem::onDraw(const std::vector<GameObject*> &objects) {
                     rop.uvOffset = anim->_uv;
                     rop.uvSize = anim->frameSize;
                 }
-                getEngine().getRenderSystem().addRenderOp(rop);
+                mEngine.getRenderSystem().addRenderOp(rop);
             }
         }
     }

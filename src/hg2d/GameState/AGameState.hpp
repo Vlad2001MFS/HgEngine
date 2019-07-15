@@ -18,9 +18,6 @@ public:
     virtual void onDraw() {}
 
 protected:
-    Engine &getEngine() const { return mEngine; }
-
-private:
     Engine &mEngine;
 };
 

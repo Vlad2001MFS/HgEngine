@@ -13,7 +13,7 @@ GUIImage::~GUIImage() {
 void GUIImage::setTexture(const Texture *texture) {
     mTexture = texture;
     if (getSize().x == 0 && getSize().y == 0) {
-        setSize(getEngine().getRenderSystem().getTextureSize(mTexture));
+        setSize(mEngine.getRenderSystem().getTextureSize(mTexture));
     }
 }
 
@@ -27,7 +27,7 @@ void GUIImage::onDraw() {
         rop.pos = getAbsolutePosition();
         rop.size = getSize();
         rop.isGUI = true;
-        getEngine().getRenderSystem().addRenderOp(rop);
+        mEngine.getRenderSystem().addRenderOp(rop);
     }
 }
     
