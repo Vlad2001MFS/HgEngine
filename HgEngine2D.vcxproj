@@ -31,11 +31,7 @@
     <ClInclude Include="src\hg2d\GUI\GUILabel.hpp" />
     <ClInclude Include="src\hg2d\GUI\GUISystem.hpp" />
     <ClInclude Include="src\hg2d\Renderer\RenderSystem.hpp" />
-    <ClInclude Include="src\hg2d\Scene\AECSComponent.hpp" />
-    <ClInclude Include="src\hg2d\Scene\AECSSystem.hpp" />
-    <ClInclude Include="src\hg2d\Scene\GameObject.hpp" />
     <ClInclude Include="src\hg2d\Scene\SceneSystem.hpp" />
-    <ClInclude Include="src\hg2d\Scene\SpriteSystem.hpp" />
     <ClInclude Include="src\hg2d\Sound\SoundSystem.hpp" />
   </ItemGroup>
   <ItemGroup>
@@ -51,11 +47,7 @@
     <ClCompile Include="src\hg2d\GUI\GUISystem.cpp" />
     <ClCompile Include="src\hg2d\Renderer\D3D11RenderSystem.cpp" />
     <ClCompile Include="src\hg2d\Renderer\GL4RenderSystem.cpp" />
-    <ClCompile Include="src\hg2d\Scene\AECSComponent.cpp" />
-    <ClCompile Include="src\hg2d\Scene\AECSSystem.cpp" />
-    <ClCompile Include="src\hg2d\Scene\GameObject.cpp" />
     <ClCompile Include="src\hg2d\Scene\SceneSystem.cpp" />
-    <ClCompile Include="src\hg2d\Scene\SpriteSystem.cpp" />
     <ClCompile Include="src\hg2d\Sound\SoundSystem.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -72,18 +72,6 @@
     <ClInclude Include="src\hg2d\Scene\SceneSystem.hpp">
       <Filter>src\hg2d\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="src\hg2d\Scene\AECSComponent.hpp">
-      <Filter>src\hg2d\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="src\hg2d\Scene\AECSSystem.hpp">
-      <Filter>src\hg2d\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="src\hg2d\Scene\GameObject.hpp">
-      <Filter>src\hg2d\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="src\hg2d\Scene\SpriteSystem.hpp">
-      <Filter>src\hg2d\Scene</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\hg2d\Core\Engine.cpp">
@@ -126,18 +114,6 @@
       <Filter>src\hg2d\Cache</Filter>
     </ClCompile>
     <ClCompile Include="src\hg2d\Scene\SceneSystem.cpp">
-      <Filter>src\hg2d\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="src\hg2d\Scene\AECSComponent.cpp">
-      <Filter>src\hg2d\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="src\hg2d\Scene\AECSSystem.cpp">
-      <Filter>src\hg2d\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="src\hg2d\Scene\GameObject.cpp">
-      <Filter>src\hg2d\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="src\hg2d\Scene\SpriteSystem.cpp">
       <Filter>src\hg2d\Scene</Filter>
     </ClCompile>
   </ItemGroup>

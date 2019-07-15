@@ -4,109 +4,104 @@
 
 namespace hg2d {
 
+AECSSystem::AECSSystem(Engine &engine) : mEngine(engine) {
+}
+
+AECSSystem::~AECSSystem() {
+}
+
+void AECSSystem::onInitialize() {
+}
+
+void AECSSystem::onShutdown() {
+}
+
+void AECSSystem::onEvent(const hd::WindowEvent &event) {
+}
+
+void AECSSystem::onFixedUpdate() {
+}
+
+void AECSSystem::onUpdate() {
+}
+
+void AECSSystem::onDraw() {
+}
+
 SceneSystem::SceneSystem(Engine &engine) : mEngine(engine) {
 }
 
-SceneSystem::~SceneSystem() {
-}
-
-void SceneSystem::onInitialize() {
-    mRootObject = new GameObject(mEngine);
+void SceneSystem::onInitialize() { 
 }
 
 void SceneSystem::onShutdown() {
-    HD_DELETE(mRootObject);
-    for (auto &system : mSystems) {
-        system.second->onShutdown();
-        HD_DELETE(system.second);
+    for (auto &it : mSystems) {
+        mDestroySystem(it.second);
+    }
+    for (auto &components : mComponentsMap) {
+        for (auto &component : components.second) {
+            HD_DELETE(component);
+        }
     }
 }
 
 void SceneSystem::onEvent(const hd::WindowEvent &event) {	
     for (auto &system : mSystems) {
-        system.second->onEvent(mObjects, event);
+        system.second->onEvent(event);
     }
 }
 
 void SceneSystem::onFixedUpdate() {
     for (auto &system : mSystems) {
-        system.second->onFixedUpdate(mObjects);
+        system.second->onFixedUpdate();
     }
 }
 
 void SceneSystem::onUpdate() {
     for (auto &system : mSystems) {
-        system.second->onUpdate(mObjects);
+        system.second->onUpdate();
     }
 }
 
 void SceneSystem::onDraw() {
     for (auto &system : mSystems) {
-        system.second->onDraw(mObjects);
+        system.second->onDraw();
     }
 }
 
-AECSComponent *SceneSystem::createComponent(uint64_t typeNameHash) {
-    auto it = mComponentTypes.find(typeNameHash);
-    if (it != mComponentTypes.end()) {
-        return it->second();
+HEntity SceneSystem::createEntity() {
+    HEntity handle(mEntities.size());
+    mEntities.push_back(handle);
+    for (auto &components : mComponentsMap) {
+        components.second.push_back(nullptr);
     }
-    else {
-        HD_LOG_ERROR("Failed to create component with typename hash '%s'. The component type not registered at SceneSystem", std::to_string(typeNameHash).data());
-        return nullptr;
-    }
+    return handle;
 }
 
-void SceneSystem::saveScene(const std::string &filename) {
-    hd::SerializerRW stream("data/levels/" + filename, true);
-    mRootObject->_saveLoad(stream);
+void SceneSystem::destroyEntity(HEntity &handle) {
+    mEntities.at(handle.value).invalidate();
+    for (auto &components : mComponentsMap) {
+        AECSComponent *&component = components.second.at(handle.value);
+        HD_DELETE(component);
+    }
+    handle.invalidate();
 }
 
-void SceneSystem::loadScene(const std::string &filename) {
-    HD_DELETE(mRootObject);
-    mRootObject = new GameObject(mEngine);
-    hd::SerializerRW stream("data/levels/" + filename, false);
-    mRootObject->_saveLoad(stream);
+const std::vector<HEntity> &SceneSystem::getEntities() const {
+    return mEntities;
 }
 
-GameObject *SceneSystem::createObject(GameObject *parent) {
-    GameObject *object = new GameObject(mEngine);
-    object->setParent(parent ? parent : mRootObject);
-    auto it = std::find(mObjects.begin(), mObjects.end(), nullptr);
-    if (it != mObjects.end()) {
-        *it = object;
-    }
-    else {
-        mObjects.push_back(object);
-    }
-    return object;
+const std::map<uint64_t, std::vector<AECSComponent*>> &SceneSystem::getComponentsMap() const {
+    return mComponentsMap;
 }
 
-const std::vector<GameObject*>& SceneSystem::getObjects() const {
-    return mObjects;
+const std::map<uint64_t, AECSSystem*> &SceneSystem::getSystem() const {
+   return mSystems;
 }
 
-GameObject* SceneSystem::getRootObject() {
-    return mRootObject;
-}
-
-void SceneSystem::destroyObject(GameObject *&object) {
-    if (!object) {
-        HD_LOG_WARNING("object is nullptr");
-    }
-    else if (object == mRootObject) {
-        HD_LOG_WARNING("The trying to destroy the root GameObject. The destroying the root GameObject is not impossible");
-    }
-    else {
-        auto it = std::find(mObjects.begin(), mObjects.end(), object);
-        if (it != mObjects.end()) {
-            HD_DELETE(object);
-            *it = nullptr;
-        }
-        else {
-            HD_LOG_WARNING("Failed to destroy object. The Object wasn't created by SceneSystem");
-        }
-    }
+void SceneSystem::mDestroySystem(AECSSystem *&system) {
+    system->onShutdown();
+    HD_DELETE(system);
 }
 
 }
