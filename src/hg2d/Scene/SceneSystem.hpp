@@ -12,7 +12,8 @@ class Engine;
 
 using HEntity = hd::Handle<uint64_t, struct TAG_HEntity, UINT64_MAX>;
 
-struct AECSComponent {
+class AECSComponent {
+public:
     AECSComponent() = default;
     virtual ~AECSComponent() = default;
 };
