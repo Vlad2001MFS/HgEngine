@@ -11,12 +11,10 @@
 namespace hg2d {
 
 struct WindowCreateInfo {
-    WindowCreateInfo();
-
-    std::string title;
-    uint32_t width;
-    uint32_t height;
-    bool fullscreen;
+    std::string title = "HgEngine2D Application";
+    uint32_t width = 640;
+    uint32_t height = 480;
+    bool fullscreen = false;
 };
 
 struct EngineCreateInfo {

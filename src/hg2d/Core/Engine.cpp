@@ -4,12 +4,6 @@
 
 namespace hg2d {
 
-WindowCreateInfo::WindowCreateInfo() : title("HgEngine2D Application") {
-    this->width = 640;
-    this->height = 480;
-    this->fullscreen = false;
-}
-
 Engine::Engine(const EngineCreateInfo &createInfo) : mCreateInfo(createInfo), mGameStateSystem(*this), mRenderSystem(*this), mSoundSystem(*this), mGUISystem(*this), mCacheSystem(*this), mSceneSystem(*this) {
     hd::WindowFlags flags = hd::WindowFlags::Resizable;
     if (createInfo.window.fullscreen) {

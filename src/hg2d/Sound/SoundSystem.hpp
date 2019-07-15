@@ -10,15 +10,9 @@ struct MusicBuffer;
 using SoundChannel = hd::HSoundChannel;
 
 struct SoundSystemCreateInfo {
-    SoundSystemCreateInfo() {
-        this->freq = 22050;
-        this->chunkSize = 4096;
-        this->isStereo = true;
-    }
-
-    uint32_t freq;
-    uint32_t chunkSize;
-    bool isStereo;
+    uint32_t freq = 22050;
+    uint32_t chunkSize = 4096;
+    bool isStereo = true;
 };
 
 class SoundSystem {
