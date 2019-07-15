@@ -1,7 +1,5 @@
-#include "SceneSystem.hpp"
-#include "../Core/Engine.hpp"
-#include "hd/IO/hdSerializerRW.hpp"
 #include "TransformSystem.hpp"
+#include "../Core/Engine.hpp"
 
 namespace hg2d {
 
