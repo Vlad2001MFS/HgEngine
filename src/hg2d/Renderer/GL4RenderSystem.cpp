@@ -17,6 +17,7 @@ namespace hg2d {
 struct Texture {
     uint32_t id;
     glm::ivec2 size;
+    std::string path;
 };
 
 struct Vertex {
@@ -313,7 +314,9 @@ Texture *RenderSystem::createTexture(const void *data, uint32_t w, uint32_t h) {
 }
 
 Texture* RenderSystem::createTexture(const hd::Image& img) {
-    return createTexture(img.getPixels(), img.getWidth(), img.getHeight());
+    Texture *texture = createTexture(img.getPixels(), img.getWidth(), img.getHeight());
+    texture->path = img.getPath();
+    return texture;
 }
 
 Texture *RenderSystem::createTextureFromFile(const std::string &path) {
@@ -341,6 +344,13 @@ const glm::ivec2 &RenderSystem::getTextureSize(const Texture *texture) const {
         HD_LOG_ERROR("texture is nullptr");
     }
     return texture->size;
+}
+
+const std::string &RenderSystem::getTexturePath(const Texture *texture) const {
+    if (!texture) {
+        HD_LOG_ERROR("texture is nullptr");
+    }
+    return texture->path;
 }
 
 void RenderSystem::addRenderOp(const RenderOp &rop) {

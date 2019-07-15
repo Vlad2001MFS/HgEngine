@@ -40,6 +40,7 @@ public:
     Texture *createTextureFromFile(const std::string &path);
     void destroyTexture(Texture *&texture);
     const glm::ivec2 &getTextureSize(const Texture *texture) const;
+    const std::string &getTexturePath(const Texture *texture) const;
 
     void addRenderOp(const RenderOp &rop);
 
