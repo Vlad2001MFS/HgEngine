@@ -1,11 +1,11 @@
 #include "Engine.hpp"
+#include "BuildConfig.hpp"
 #include "../GameState/GameStateSystem.hpp"
 #include "../Renderer/RenderSystem.hpp"
 #include "../Sound/SoundSystem.hpp"
 #include "../GUI/GUISystem.hpp"
 #include "../Cache/CacheSystem.hpp"
 #include "../Scene/SceneSystem.hpp"
-#include "../BuildConfig.hpp"
 #include "hd/Core/hdClock.hpp"
 
 namespace hg2d {

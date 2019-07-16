@@ -78,9 +78,6 @@
     <ClInclude Include="src\hg2d\Renderer\RenderSystem.hpp">
       <Filter>src\hg2d\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="src\hg2d\BuildConfig.hpp">
-      <Filter>src\hg2d</Filter>
-    </ClInclude>
     <ClInclude Include="src\hg2d\Sound\SoundSystem.hpp">
       <Filter>src\hg2d\Sound</Filter>
     </ClInclude>
@@ -274,6 +271,9 @@
       <Filter>src\3rd\include\b2dJson</Filter>
     </ClInclude>
     <ClInclude Include="src\hg2d\Core\AEngineObject.hpp">
+      <Filter>src\hg2d\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hg2d\Core\BuildConfig.hpp">
       <Filter>src\hg2d\Core</Filter>
     </ClInclude>
   </ItemGroup>

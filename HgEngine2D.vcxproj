@@ -71,9 +71,9 @@
     <ClInclude Include="src\3rd\include\Box2D\Dynamics\Joints\b2WeldJoint.h" />
     <ClInclude Include="src\3rd\include\Box2D\Dynamics\Joints\b2WheelJoint.h" />
     <ClInclude Include="src\3rd\include\Box2D\Rope\b2Rope.h" />
-    <ClInclude Include="src\hg2d\BuildConfig.hpp" />
     <ClInclude Include="src\hg2d\Cache\CacheSystem.hpp" />
     <ClInclude Include="src\hg2d\Core\AEngineObject.hpp" />
+    <ClInclude Include="src\hg2d\Core\BuildConfig.hpp" />
     <ClInclude Include="src\hg2d\Core\Engine.hpp" />
     <ClInclude Include="src\hg2d\GameState\AGameState.hpp" />
     <ClInclude Include="src\hg2d\GameState\GameStateSystem.hpp" />

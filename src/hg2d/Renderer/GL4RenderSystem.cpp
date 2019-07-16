@@ -1,5 +1,5 @@
 #include "RenderSystem.hpp"
-#include "../BuildConfig.hpp"
+#include "../Core/BuildConfig.hpp"
 
 #ifdef HG2D_RENDERER_OPENGL4
 
