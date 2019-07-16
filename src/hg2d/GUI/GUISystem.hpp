@@ -16,7 +16,7 @@ struct GUISkin {
     int alignSpaceY = 10;
 };
 
-class GUISystem : public AEngineObject {
+class GUISystem final : public AEngineObject {
 public:
     explicit GUISystem(Engine &engine);
 

@@ -7,7 +7,7 @@
 
 namespace hg2d {
 
-class GameStateSystem : public AEngineObject {
+class GameStateSystem final : public AEngineObject {
 public:
     explicit GameStateSystem(Engine &engine);
 

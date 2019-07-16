@@ -10,7 +10,7 @@ class Font;
 struct SoundBuffer;
 struct MusicBuffer;
 
-class CacheSystem : public AEngineObject {
+class CacheSystem final : public AEngineObject {
 public:
     explicit CacheSystem(Engine &engine);
 

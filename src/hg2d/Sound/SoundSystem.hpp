@@ -9,7 +9,7 @@ struct MusicBuffer;
 
 using SoundChannel = hd::HSoundChannel;
 
-class SoundSystem : public AEngineObject {
+class SoundSystem final : public AEngineObject {
 public:
     explicit SoundSystem(Engine &engine);
 

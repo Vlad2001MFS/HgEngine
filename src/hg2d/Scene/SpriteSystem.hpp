@@ -6,7 +6,7 @@ namespace hg2d {
 
 struct Texture;
 
-class SpriteComponent : public AECSComponent {
+class SpriteComponent final : public AECSComponent {
 public:
     SpriteComponent();
 
@@ -18,7 +18,7 @@ private:
     const Texture *mTexture;
 };
 
-class SpriteSystem : public AECSSystem {
+class SpriteSystem final : public AECSSystem {
 public:
     SpriteSystem(Engine &engine);
 

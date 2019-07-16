@@ -25,9 +25,10 @@ struct RenderOp {
     bool isGUI;
 };
 
-class RenderSystem : public AEngineObject {
+class RenderSystem final : public AEngineObject {
 public:
     explicit RenderSystem(Engine &engine);
+    ~RenderSystem();
 
     void onInitialize();
     void onShutdown();

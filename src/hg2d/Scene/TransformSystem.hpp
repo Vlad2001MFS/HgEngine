@@ -4,7 +4,7 @@
 
 namespace hg2d {
 
-class TransformComponent : public AECSComponent {
+class TransformComponent final : public AECSComponent {
 public:
     TransformComponent();
 
@@ -36,7 +36,7 @@ private:
     bool mIsDirty;
 };
 
-class TransformSystem : public AECSSystem {
+class TransformSystem final : public AECSSystem {
 public:
     TransformSystem(Engine &engine);
 

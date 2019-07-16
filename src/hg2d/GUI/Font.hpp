@@ -9,7 +9,7 @@ using hd::FontHinting;
 
 struct Texture;
 
-class Font : public AEngineObject {
+class Font final : public AEngineObject {
 public:
     Font(Engine &engine, const std::string &filename, uint32_t size);
     

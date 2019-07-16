@@ -32,7 +32,7 @@ public:
     virtual void onDraw();
 };
 
-class SceneSystem : public AEngineObject{
+class SceneSystem final : public AEngineObject{
 public:
     explicit SceneSystem(Engine &engine);
 

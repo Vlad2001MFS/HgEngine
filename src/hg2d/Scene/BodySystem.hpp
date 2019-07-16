@@ -12,7 +12,7 @@ enum class BodyType {
     Dynamic
 };
 
-class BodyComponent : public AECSComponent {
+class BodyComponent final : public AECSComponent {
     friend class BodySystem;
 public:
     BodyComponent();
@@ -64,7 +64,7 @@ private:
     glm::vec2 mBoxShapeSize;
 };
 
-class BodySystem : public AECSSystem {
+class BodySystem final : public AECSSystem {
 public:
     BodySystem(Engine &engine);
 
