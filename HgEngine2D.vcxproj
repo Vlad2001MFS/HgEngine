@@ -19,6 +19,58 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\3rd\include\b2dJson\b2dJson.h" />
+    <ClInclude Include="src\3rd\include\b2dJson\b2dJsonImage.h" />
+    <ClInclude Include="src\3rd\include\b2dJson\bitmap.h" />
+    <ClInclude Include="src\3rd\include\b2dJson\json\json-forwards.h" />
+    <ClInclude Include="src\3rd\include\b2dJson\json\json.h" />
+    <ClInclude Include="src\3rd\include\Box2D\Box2D.h" />
+    <ClInclude Include="src\3rd\include\Box2D\Collision\b2BroadPhase.h" />
+    <ClInclude Include="src\3rd\include\Box2D\Collision\b2Collision.h" />
+    <ClInclude Include="src\3rd\include\Box2D\Collision\b2Distance.h" />
+    <ClInclude Include="src\3rd\include\Box2D\Collision\b2DynamicTree.h" />
+    <ClInclude Include="src\3rd\include\Box2D\Collision\b2TimeOfImpact.h" />
+    <ClInclude Include="src\3rd\include\Box2D\Collision\Shapes\b2ChainShape.h" />
+    <ClInclude Include="src\3rd\include\Box2D\Collision\Shapes\b2CircleShape.h" />
+    <ClInclude Include="src\3rd\include\Box2D\Collision\Shapes\b2EdgeShape.h" />
+    <ClInclude Include="src\3rd\include\Box2D\Collision\Shapes\b2PolygonShape.h" />
+    <ClInclude Include="src\3rd\include\Box2D\Collision\Shapes\b2Shape.h" />
+    <ClInclude Include="src\3rd\include\Box2D\Common\b2BlockAllocator.h" />
+    <ClInclude Include="src\3rd\include\Box2D\Common\b2Draw.h" />
+    <ClInclude Include="src\3rd\include\Box2D\Common\b2GrowableStack.h" />
+    <ClInclude Include="src\3rd\include\Box2D\Common\b2Math.h" />
+    <ClInclude Include="src\3rd\include\Box2D\Common\b2Settings.h" />
+    <ClInclude Include="src\3rd\include\Box2D\Common\b2StackAllocator.h" />
+    <ClInclude Include="src\3rd\include\Box2D\Common\b2Timer.h" />
+    <ClInclude Include="src\3rd\include\Box2D\Dynamics\b2Body.h" />
+    <ClInclude Include="src\3rd\include\Box2D\Dynamics\b2ContactManager.h" />
+    <ClInclude Include="src\3rd\include\Box2D\Dynamics\b2Fixture.h" />
+    <ClInclude Include="src\3rd\include\Box2D\Dynamics\b2Island.h" />
+    <ClInclude Include="src\3rd\include\Box2D\Dynamics\b2TimeStep.h" />
+    <ClInclude Include="src\3rd\include\Box2D\Dynamics\b2World.h" />
+    <ClInclude Include="src\3rd\include\Box2D\Dynamics\b2WorldCallbacks.h" />
+    <ClInclude Include="src\3rd\include\Box2D\Dynamics\Contacts\b2ChainAndCircleContact.h" />
+    <ClInclude Include="src\3rd\include\Box2D\Dynamics\Contacts\b2ChainAndPolygonContact.h" />
+    <ClInclude Include="src\3rd\include\Box2D\Dynamics\Contacts\b2CircleContact.h" />
+    <ClInclude Include="src\3rd\include\Box2D\Dynamics\Contacts\b2Contact.h" />
+    <ClInclude Include="src\3rd\include\Box2D\Dynamics\Contacts\b2ContactSolver.h" />
+    <ClInclude Include="src\3rd\include\Box2D\Dynamics\Contacts\b2EdgeAndCircleContact.h" />
+    <ClInclude Include="src\3rd\include\Box2D\Dynamics\Contacts\b2EdgeAndPolygonContact.h" />
+    <ClInclude Include="src\3rd\include\Box2D\Dynamics\Contacts\b2PolygonAndCircleContact.h" />
+    <ClInclude Include="src\3rd\include\Box2D\Dynamics\Contacts\b2PolygonContact.h" />
+    <ClInclude Include="src\3rd\include\Box2D\Dynamics\Joints\b2DistanceJoint.h" />
+    <ClInclude Include="src\3rd\include\Box2D\Dynamics\Joints\b2FrictionJoint.h" />
+    <ClInclude Include="src\3rd\include\Box2D\Dynamics\Joints\b2GearJoint.h" />
+    <ClInclude Include="src\3rd\include\Box2D\Dynamics\Joints\b2Joint.h" />
+    <ClInclude Include="src\3rd\include\Box2D\Dynamics\Joints\b2MotorJoint.h" />
+    <ClInclude Include="src\3rd\include\Box2D\Dynamics\Joints\b2MouseJoint.h" />
+    <ClInclude Include="src\3rd\include\Box2D\Dynamics\Joints\b2PrismaticJoint.h" />
+    <ClInclude Include="src\3rd\include\Box2D\Dynamics\Joints\b2PulleyJoint.h" />
+    <ClInclude Include="src\3rd\include\Box2D\Dynamics\Joints\b2RevoluteJoint.h" />
+    <ClInclude Include="src\3rd\include\Box2D\Dynamics\Joints\b2RopeJoint.h" />
+    <ClInclude Include="src\3rd\include\Box2D\Dynamics\Joints\b2WeldJoint.h" />
+    <ClInclude Include="src\3rd\include\Box2D\Dynamics\Joints\b2WheelJoint.h" />
+    <ClInclude Include="src\3rd\include\Box2D\Rope\b2Rope.h" />
     <ClInclude Include="src\hg2d\BuildConfig.hpp" />
     <ClInclude Include="src\hg2d\Cache\CacheSystem.hpp" />
     <ClInclude Include="src\hg2d\Core\Engine.hpp" />
@@ -31,12 +83,16 @@
     <ClInclude Include="src\hg2d\GUI\GUILabel.hpp" />
     <ClInclude Include="src\hg2d\GUI\GUISystem.hpp" />
     <ClInclude Include="src\hg2d\Renderer\RenderSystem.hpp" />
+    <ClInclude Include="src\hg2d\Scene\BodySystem.hpp" />
     <ClInclude Include="src\hg2d\Scene\SceneSystem.hpp" />
     <ClInclude Include="src\hg2d\Scene\SpriteSystem.hpp" />
     <ClInclude Include="src\hg2d\Scene\TransformSystem.hpp" />
     <ClInclude Include="src\hg2d\Sound\SoundSystem.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\3rd\include\b2dJson\b2dJson.cpp" />
+    <ClCompile Include="src\3rd\include\b2dJson\b2dJsonImage.cpp" />
+    <ClCompile Include="src\3rd\include\b2dJson\jsoncpp.cpp" />
     <ClCompile Include="src\hg2d\Cache\CacheSystem.cpp" />
     <ClCompile Include="src\hg2d\Core\Engine.cpp" />
     <ClCompile Include="src\hg2d\GameState\AGameState.cpp" />
@@ -49,6 +105,7 @@
     <ClCompile Include="src\hg2d\GUI\GUISystem.cpp" />
     <ClCompile Include="src\hg2d\Renderer\D3D11RenderSystem.cpp" />
     <ClCompile Include="src\hg2d\Renderer\GL4RenderSystem.cpp" />
+    <ClCompile Include="src\hg2d\Scene\BodySystem.cpp" />
     <ClCompile Include="src\hg2d\Scene\SceneSystem.cpp" />
     <ClCompile Include="src\hg2d\Scene\SpriteSystem.cpp" />
     <ClCompile Include="src\hg2d\Scene\TransformSystem.cpp" />
@@ -130,7 +187,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -141,15 +198,15 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalLibraryDirectories>$(SolutionDir)HandyFramework\bin\$(Configuration)$(PlatformArchitecture);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>HandyFramework.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)HandyFramework\bin\$(Configuration)$(PlatformArchitecture);$(ProjectDir)src\3rd\lib$(PlatformArchitecture);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>HandyFramework.lib;Box2D$(Configuration).lib</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -160,8 +217,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalLibraryDirectories>$(SolutionDir)HandyFramework\bin\$(Configuration)$(PlatformArchitecture);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>HandyFramework.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)HandyFramework\bin\$(Configuration)$(PlatformArchitecture);$(ProjectDir)src\3rd\lib$(PlatformArchitecture);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>HandyFramework.lib;Box2D$(Configuration).lib</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -170,7 +227,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -183,8 +240,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalLibraryDirectories>$(SolutionDir)HandyFramework\bin\$(Configuration)$(PlatformArchitecture);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>HandyFramework.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)HandyFramework\bin\$(Configuration)$(PlatformArchitecture);$(ProjectDir)src\3rd\lib$(PlatformArchitecture);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>HandyFramework.lib;Box2D$(Configuration).lib</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -193,7 +250,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -206,8 +263,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalLibraryDirectories>$(SolutionDir)HandyFramework\bin\$(Configuration)$(PlatformArchitecture);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>HandyFramework.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)HandyFramework\bin\$(Configuration)$(PlatformArchitecture);$(ProjectDir)src\3rd\lib$(PlatformArchitecture);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>HandyFramework.lib;Box2D$(Configuration).lib</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
