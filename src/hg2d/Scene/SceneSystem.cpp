@@ -14,10 +14,10 @@ void AECSSystem::onShutdown() {
 void AECSSystem::onEvent(const hd::WindowEvent &event) {
 }
 
-void AECSSystem::onCreateComponent(AECSComponent *component, uint64_t typeHash) {
+void AECSSystem::onCreateComponent(AECSComponent *component, uint64_t typeHash, const HEntity &entity) {
 }
 
-void AECSSystem::onDestroyComponent(AECSComponent *component, uint64_t typeHash) {
+void AECSSystem::onDestroyComponent(AECSComponent *component, uint64_t typeHash, const HEntity &entity) {
 }
 
 void AECSSystem::onFixedUpdate() {
@@ -37,8 +37,8 @@ void SceneSystem::onInitialize() {
 
 void SceneSystem::onShutdown() {
     for (auto &components : mComponentsMap) {
-        for (auto &component : components.second) {
-            mDestroyComponent(component, components.first);
+        for (size_t i = 0; i < mEntities.size(); i++) {
+            mDestroyComponent(components.second.at(i), components.first, mEntities.at(i));
         }
     }
     for (auto &it : mSystems) {
@@ -83,7 +83,7 @@ void SceneSystem::destroyEntity(HEntity &handle) {
     mEntities.at(handle.value).invalidate();
     for (auto &components : mComponentsMap) {
         AECSComponent *&component = components.second.at(handle.value);
-        mDestroyComponent(component, components.first);
+        mDestroyComponent(component, components.first, handle);
     }
     handle.invalidate();
 }
@@ -100,10 +100,10 @@ const std::map<uint64_t, AECSSystem*> &SceneSystem::getSystem() const {
    return mSystems;
 }
 
-void SceneSystem::mDestroyComponent(AECSComponent *&component, uint64_t typeHash) {
+void SceneSystem::mDestroyComponent(AECSComponent *&component, uint64_t typeHash, const HEntity &entity) {
     if (component) {
         for (auto &system : mSystems) {
-            system.second->onDestroyComponent(component, typeHash);
+            system.second->onDestroyComponent(component, typeHash, entity);
         }
         HD_DELETE(component);
     }

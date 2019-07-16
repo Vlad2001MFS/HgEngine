@@ -196,7 +196,7 @@ bool BodyComponent::isShapeSensor() const {
 BodySystem::BodySystem(Engine &engine) : AECSSystem(engine), mWorld(b2Vec2(0, 0)) {
 }
 
-void BodySystem::onCreateComponent(AECSComponent* component, uint64_t typeHash) {
+void BodySystem::onCreateComponent(AECSComponent* component, uint64_t typeHash, const HEntity &entity) {
     if (typeHash == typeid(BodyComponent).hash_code()) {
         BodyComponent *body = static_cast<BodyComponent*>(component);
         b2BodyDef bd;
@@ -204,7 +204,7 @@ void BodySystem::onCreateComponent(AECSComponent* component, uint64_t typeHash) 
     }
 }
 
-void BodySystem::onDestroyComponent(AECSComponent* component, uint64_t typeHash) {
+void BodySystem::onDestroyComponent(AECSComponent* component, uint64_t typeHash, const HEntity &entity) {
     if (typeHash == typeid(BodyComponent).hash_code()) {
         BodyComponent *body = static_cast<BodyComponent*>(component);
         mWorld.DestroyBody(body->mBody);

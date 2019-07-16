@@ -25,8 +25,8 @@ public:
     virtual void onInitialize();
     virtual void onShutdown();
     virtual void onEvent(const hd::WindowEvent &event);
-    virtual void onCreateComponent(AECSComponent *component, uint64_t typeHash);
-    virtual void onDestroyComponent(AECSComponent *component, uint64_t typeHash);
+    virtual void onCreateComponent(AECSComponent *component, uint64_t typeHash, const HEntity &entity);
+    virtual void onDestroyComponent(AECSComponent *component, uint64_t typeHash, const HEntity &entity);
     virtual void onFixedUpdate();
     virtual void onUpdate();
     virtual void onDraw();
@@ -59,7 +59,7 @@ public:
             if (!component) {
                 component = new T();
                 for (auto &system : mSystems) {
-                    system.second->onCreateComponent(component, typeHash);
+                    system.second->onCreateComponent(component, typeHash, handle);
                 }
             }
             return static_cast<T*>(component);
@@ -77,7 +77,7 @@ public:
         uint64_t typeHash = typeInfo.hash_code();
         if (handle && handle.value < mEntities.size() && mComponentsMap.count(typeHash) != 0) {
             AECSComponent *&component = mComponentsMap.at(typeHash).at(handle.value);
-            mDestroyComponent(component);
+            mDestroyComponent(component, handle);
         }
     }
 
@@ -151,7 +151,7 @@ public:
 
 
 private:
-    void mDestroyComponent(AECSComponent *&component, uint64_t typeHash);
+    void mDestroyComponent(AECSComponent *&component, uint64_t typeHash, const HEntity &entity);
     void mDestroySystem(AECSSystem *&system);
 
     std::vector<HEntity> mEntities;
