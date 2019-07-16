@@ -12,7 +12,6 @@ struct Texture;
 class Font : public AEngineObject {
 public:
     Font(Engine &engine, const std::string &filename, uint32_t size);
-    ~Font();
     
     Texture *renderLine(const std::string &text, const hd::Color4 &color) const;
     Texture *renderText(const std::string &text, const hd::Color4 &color) const;

@@ -9,9 +9,6 @@ namespace hg2d {
 CacheSystem::CacheSystem(Engine &engine) : AEngineObject(engine) {
 }
 
-CacheSystem::~CacheSystem() {
-}
-
 void CacheSystem::onInitialize() {
 }
 

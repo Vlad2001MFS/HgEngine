@@ -4,12 +4,7 @@
 
 namespace hg2d {
 
-Font::Font(Engine &engine, const std::string &filename, uint32_t size) : AEngineObject(engine) {
-    mFont.create(filename, size);
-}
-
-Font::~Font() {
-    mFont.destroy();
+Font::Font(Engine &engine, const std::string &filename, uint32_t size) : AEngineObject(engine), mFont(filename, size) {
 }
 
 Texture *Font::renderLine(const std::string &text, const hd::Color4 &color) const {

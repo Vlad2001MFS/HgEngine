@@ -19,7 +19,6 @@ struct GUISkin {
 class GUISystem : public AEngineObject {
 public:
     explicit GUISystem(Engine &engine);
-    ~GUISystem();
 
     void onInitialize();
     void onShutdown();

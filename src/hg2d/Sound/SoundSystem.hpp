@@ -12,7 +12,6 @@ using SoundChannel = hd::HSoundChannel;
 class SoundSystem : public AEngineObject {
 public:
     explicit SoundSystem(Engine &engine);
-    ~SoundSystem();
 
     void onInitialize();
     void onShutdown();

@@ -28,7 +28,6 @@ struct RenderOp {
 class RenderSystem : public AEngineObject {
 public:
     explicit RenderSystem(Engine &engine);
-    ~RenderSystem();
 
     void onInitialize();
     void onShutdown();

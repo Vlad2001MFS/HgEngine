@@ -7,7 +7,7 @@ namespace hg2d {
 class GUIButton : public GUIImage {
 public:
     explicit GUIButton(Engine &engine);
-    virtual ~GUIButton();
+    virtual ~GUIButton() = default;
 
     void setText(const std::string &text);
     const std::string &getText() const;

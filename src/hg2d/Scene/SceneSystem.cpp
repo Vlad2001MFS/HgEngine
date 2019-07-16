@@ -5,9 +5,6 @@ namespace hg2d {
 AECSSystem::AECSSystem(Engine &engine) : AEngineObject(engine) {
 }
 
-AECSSystem::~AECSSystem() {
-}
-
 void AECSSystem::onInitialize() {
 }
 

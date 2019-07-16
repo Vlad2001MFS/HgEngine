@@ -8,9 +8,6 @@ namespace hg2d {
 GUISystem::GUISystem(Engine &engine) : AEngineObject(engine) {
 }
 
-GUISystem::~GUISystem() {
-}
-
 void GUISystem::onInitialize() {
     mSkin.font = createFontFromFile(mEngine.getCreateInfo().gui.fontPath, mEngine.getCreateInfo().gui.fontSize);
     mSkin.font->setHinting(FontHinting::Mono);

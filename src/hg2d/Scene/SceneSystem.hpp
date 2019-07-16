@@ -20,7 +20,7 @@ public:
 class AECSSystem : public AEngineObject {
 public:
     AECSSystem(Engine &engine);
-    virtual ~AECSSystem();
+    virtual ~AECSSystem() = default;
 
     virtual void onInitialize();
     virtual void onShutdown();
@@ -35,7 +35,6 @@ public:
 class SceneSystem : public AEngineObject{
 public:
     explicit SceneSystem(Engine &engine);
-    ~SceneSystem() = default;
 
     void onInitialize();
     void onShutdown();

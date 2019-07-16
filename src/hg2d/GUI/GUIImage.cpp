@@ -7,9 +7,6 @@ GUIImage::GUIImage(Engine &engine) : AGUIWidget(engine) {
     mTexture = nullptr;
 }
 
-GUIImage::~GUIImage() {
-}
-
 void GUIImage::setTexture(const Texture *texture) {
     mTexture = texture;
     if (getSize().x == 0 && getSize().y == 0) {

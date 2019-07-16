@@ -6,9 +6,6 @@ namespace hg2d {
 GameStateSystem::GameStateSystem(Engine &engine) : AEngineObject(engine) {
 }
 
-GameStateSystem::~GameStateSystem() {
-}
-
 void GameStateSystem::onInitialize() {
 }
 

@@ -9,7 +9,7 @@ class Engine;
 class AGameState : public AEngineObject {
 public:
     explicit AGameState(Engine &engine);
-    virtual ~AGameState();
+    virtual ~AGameState() = default;
 
     virtual void onInitialize() {}
     virtual void onShutdown() {}

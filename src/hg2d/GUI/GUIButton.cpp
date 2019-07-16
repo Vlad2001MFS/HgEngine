@@ -13,9 +13,6 @@ GUIButton::GUIButton(Engine &engine) : GUIImage(engine) {
     onMouseLeave.connect(std::bind(&GUIButton::mOnMouseLeave, this));
 }
 
-GUIButton::~GUIButton() {
-}
-
 void GUIButton::setText(const std::string &text) {
     mLabel->setText(text);
 }

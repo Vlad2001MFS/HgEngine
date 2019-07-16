@@ -13,7 +13,6 @@ struct MusicBuffer;
 class CacheSystem : public AEngineObject {
 public:
     explicit CacheSystem(Engine &engine);
-    ~CacheSystem();
 
     void onInitialize();
     void onShutdown();

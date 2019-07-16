@@ -10,7 +10,6 @@ namespace hg2d {
 class GameStateSystem : public AEngineObject {
 public:
     explicit GameStateSystem(Engine &engine);
-    ~GameStateSystem();
 
     void onInitialize();
     void onShutdown();

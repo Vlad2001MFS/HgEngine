@@ -15,9 +15,6 @@ struct MusicBuffer {
 SoundSystem::SoundSystem(Engine &engine) : AEngineObject(engine) {
 }
 
-SoundSystem::~SoundSystem() {
-}
-
 void SoundSystem::onInitialize() {
     mSoundContext.create(mEngine.getCreateInfo().sound.freq, mEngine.getCreateInfo().sound.chunkSize, mEngine.getCreateInfo().sound.isStereo);
 }
