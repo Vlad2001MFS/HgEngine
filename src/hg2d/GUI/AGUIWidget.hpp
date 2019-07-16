@@ -29,12 +29,12 @@ public:
     T *createChild(Args &&...args) { T *widget = new T(mEngine, args...); mAddChild(widget); return widget; }
     void destroyChild(AGUIWidget *&widget);
     
-    virtual void onInitialize() {}
-    virtual void onShutdown() {}
-    virtual void onEvent(const hd::WindowEvent &event) {}
-    virtual void onFixedUpdate() {}
-    virtual void onUpdate() {}
-    virtual void onDraw() {}
+    virtual void onInitialize();
+    virtual void onShutdown();
+    virtual void onEvent(const hd::WindowEvent &event);
+    virtual void onFixedUpdate();
+    virtual void onUpdate();
+    virtual void onDraw();
 
     void _onInitialize();
     void _onShutdown();

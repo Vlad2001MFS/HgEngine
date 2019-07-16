@@ -34,6 +34,24 @@ void AGUIWidget::destroyChild(AGUIWidget *&widget) {
     }
 }
 
+void AGUIWidget::onInitialize() {
+}
+
+void AGUIWidget::onShutdown() {
+}
+
+void AGUIWidget::onEvent(const hd::WindowEvent &event) {
+}
+
+void AGUIWidget::onFixedUpdate() {
+}
+
+void AGUIWidget::onUpdate() {
+}
+
+void AGUIWidget::onDraw() {
+}
+
 void AGUIWidget::_onInitialize() {
     onInitialize();
     for (auto &child : mChildren) {
