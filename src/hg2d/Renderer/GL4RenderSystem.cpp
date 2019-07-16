@@ -211,13 +211,13 @@ void RenderSystem::onInitialize() {
 
 
     const Vertex verts[] = {
-        { -0.5f,  0.5f, 0.0f, 0.0f, 0.0f },
-        {  0.5f, -0.5f, 0.0f, 1.0f, 1.0f },
-        { -0.5f, -0.5f, 0.0f, 0.0f, 1.0f },
+        { -1.0f,  1.0f, 0.0f, 0.0f, 0.0f },
+        {  1.0f, -1.0f, 0.0f, 1.0f, 1.0f },
+        { -1.0f, -1.0f, 0.0f, 0.0f, 1.0f },
 
-        { -0.5f,  0.5f, 0.0f, 0.0f, 0.0f },
-        {  0.5f,  0.5f, 0.0f, 1.0f, 0.0f },
-        {  0.5f, -0.5f, 0.0f, 1.0f, 1.0f },
+        { -1.0f,  1.0f, 0.0f, 0.0f, 0.0f },
+        {  1.0f,  1.0f, 0.0f, 1.0f, 0.0f },
+        {  1.0f, -1.0f, 0.0f, 1.0f, 1.0f },
     };
     glCreateBuffers(1, &impl->vertexBuffer);
     glNamedBufferData(impl->vertexBuffer, sizeof(verts), verts, GL_STATIC_DRAW);
@@ -273,7 +273,7 @@ void RenderSystem::onDraw() {
 
     glBindVertexBuffer(0, impl->vertexBuffer, 0, sizeof(Vertex));
     impl->cbData.proj = impl->proj;
-    impl->cbData.view = glm::lookAtLH(glm::vec3(0, 0, -10), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+    impl->cbData.view = glm::lookAtLH(glm::vec3(0, 0, -20), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
     for (const auto &rop : mRenderOps) {
         impl->cbData.world = glm::translate(glm::vec3(rop.pos, 0))*glm::rotate(rop.angle, glm::vec3(0, 0, 1))*glm::scale(glm::vec3(rop.size, 1.0f));
         impl->cbData.uvOffset = rop.uvOffset;
