@@ -40,7 +40,7 @@ class TransformSystem : public AECSSystem {
 public:
     TransformSystem(Engine &engine);
 
-    void onFixedUpdate();
+    virtual void onFixedUpdate() override;
 };
 
 }

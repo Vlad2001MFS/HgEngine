@@ -68,9 +68,9 @@ class BodySystem : public AECSSystem {
 public:
     BodySystem(Engine &engine);
 
-    void onCreateComponent(AECSComponent *component, uint64_t typeHash);
-    void onDestroyComponent(AECSComponent *component, uint64_t typeHash);
-    void onFixedUpdate();
+    virtual void onCreateComponent(AECSComponent *component, uint64_t typeHash) override;
+    virtual void onDestroyComponent(AECSComponent *component, uint64_t typeHash) override;
+    virtual void onFixedUpdate() override;
 
     void setGravity(const glm::vec2 &gravity);
 

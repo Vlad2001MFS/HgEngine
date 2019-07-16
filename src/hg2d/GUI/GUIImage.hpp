@@ -13,7 +13,7 @@ public:
     void setTexture(const Texture *texture);
     const Texture *getTexture() const;
 
-    void onDraw();
+    virtual void onDraw() override;
 
 private:
     const Texture *mTexture;

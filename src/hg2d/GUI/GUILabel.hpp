@@ -16,7 +16,7 @@ public:
     void setColor(const hd::Color4 &color);
     const hd::Color4 &getColor() const;
 
-    void onDraw();
+    virtual void onDraw() override;
 
 private:
     void mUpdateTexture();
