@@ -193,7 +193,32 @@ bool BodyComponent::isShapeSensor() const {
     }
 }
 
+CollisionInfo BodyComponent::getCollisionInfo() const {
+    CollisionInfo info;
+    info.hasCollision = mFixture->GetUserData() ? true : false;
+    if (info.hasCollision) {
+        b2Fixture *fixture = static_cast<b2Fixture*>(mFixture->GetUserData());
+        info.entity.value = reinterpret_cast<uint64_t>(fixture->GetBody()->GetUserData());
+    }
+    return info;
+}
+
+void ContactListener::BeginContact(b2Contact *contact) {
+    b2Fixture *a = contact->GetFixtureA();
+    b2Fixture *b = contact->GetFixtureB();
+    a->SetUserData(b);
+    b->SetUserData(a);
+}
+
+void ContactListener::EndContact(b2Contact *contact) {
+    b2Fixture *a = contact->GetFixtureA();
+    b2Fixture *b = contact->GetFixtureB();
+    a->SetUserData(nullptr);
+    b->SetUserData(nullptr);
+}
+
 BodySystem::BodySystem(Engine &engine) : AECSSystem(engine), mWorld(b2Vec2(0, 0)) {
+    mWorld.SetContactListener(&mContactListener);
 }
 
 void BodySystem::onCreateComponent(AECSComponent* component, uint64_t typeHash, const HEntity &entity) {
@@ -201,6 +226,7 @@ void BodySystem::onCreateComponent(AECSComponent* component, uint64_t typeHash, 
         BodyComponent *body = static_cast<BodyComponent*>(component);
         b2BodyDef bd;
         body->mBody = mWorld.CreateBody(&bd);
+        body->mBody->SetUserData(reinterpret_cast<void*>(entity.value));
     }
 }
 

@@ -12,6 +12,11 @@ enum class BodyType {
     Dynamic
 };
 
+struct CollisionInfo {
+    HEntity entity;
+    bool hasCollision;
+};
+
 class BodyComponent final : public AECSComponent {
     friend class BodySystem;
 public:
@@ -57,11 +62,19 @@ public:
     float getShapeRestitution() const;
     bool isShapeSensor() const;
 
+    CollisionInfo getCollisionInfo() const;
+
 private:
     b2BodyDef mBodyDef;
     b2Body *mBody;
     b2Fixture *mFixture;
     glm::vec2 mBoxShapeSize;
+};
+
+class ContactListener final : public b2ContactListener {
+public:
+    virtual void BeginContact(b2Contact *contact) override;
+    virtual void EndContact(b2Contact *contact) override;
 };
 
 class BodySystem final : public AECSSystem {
@@ -78,6 +91,7 @@ public:
 
 private:
     b2World mWorld;
+    ContactListener mContactListener;
 };
 
 }
