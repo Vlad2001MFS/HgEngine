@@ -203,6 +203,12 @@
       <AdditionalLibraryDirectories>$(SolutionDir)HandyFramework\bin\$(Configuration)$(PlatformArchitecture);$(ProjectDir)src\3rd\lib$(PlatformArchitecture);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>HandyFramework.lib;Box2D$(Configuration).lib</AdditionalDependencies>
     </Lib>
+    <PreBuildEvent>
+      <Command>$(ProjectDir)local\GenerateHeaders.exe</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>Generate a common headers for HgEngine2D</Message>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -222,6 +228,12 @@
       <AdditionalLibraryDirectories>$(SolutionDir)HandyFramework\bin\$(Configuration)$(PlatformArchitecture);$(ProjectDir)src\3rd\lib$(PlatformArchitecture);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>HandyFramework.lib;Box2D$(Configuration).lib</AdditionalDependencies>
     </Lib>
+    <PreBuildEvent>
+      <Command>$(ProjectDir)local\GenerateHeaders.exe</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>Generate a common headers for HgEngine2D</Message>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -245,6 +257,12 @@
       <AdditionalLibraryDirectories>$(SolutionDir)HandyFramework\bin\$(Configuration)$(PlatformArchitecture);$(ProjectDir)src\3rd\lib$(PlatformArchitecture);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>HandyFramework.lib;Box2D$(Configuration).lib</AdditionalDependencies>
     </Lib>
+    <PreBuildEvent>
+      <Command>$(ProjectDir)local\GenerateHeaders.exe</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>Generate a common headers for HgEngine2D</Message>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -268,6 +286,12 @@
       <AdditionalLibraryDirectories>$(SolutionDir)HandyFramework\bin\$(Configuration)$(PlatformArchitecture);$(ProjectDir)src\3rd\lib$(PlatformArchitecture);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>HandyFramework.lib;Box2D$(Configuration).lib</AdditionalDependencies>
     </Lib>
+    <PreBuildEvent>
+      <Command>$(ProjectDir)local\GenerateHeaders.exe</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>Generate a common headers for HgEngine2D</Message>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
