@@ -1,15 +1,16 @@
 #include "GUILabel.hpp"
-#include "../Core/Engine.hpp"
+#include "../Renderer/RenderSystem.hpp"
+#include "../GUI/GUISystem.hpp"
 
 namespace hg2d {
 
 GUILabel::GUILabel(Engine &engine) : AGUIWidget(engine) {
     mTexture = nullptr;
-    mColor = mEngine.getGUISystem().getSkin().fontColor;
+    mColor = mGUISystem.getSkin().fontColor;
 }
 
 GUILabel::~GUILabel() {
-    mEngine.getRenderSystem().destroyTexture(mTexture);
+    mRenderSystem.destroyTexture(mTexture);
 }
 
 void GUILabel::setText(const std::string &text) {
@@ -41,19 +42,19 @@ void GUILabel::onDraw() {
         rop.pos = getAbsolutePosition();
         rop.size = getSize();
         rop.isGUI = true;
-        mEngine.getRenderSystem().addRenderOp(rop);
+        mRenderSystem.addRenderOp(rop);
     }
 }
 
 void GUILabel::mUpdateTexture() {
     if (!mText.empty()) {
         if (mTexture) {
-            mEngine.getRenderSystem().destroyTexture(mTexture);
+            mRenderSystem.destroyTexture(mTexture);
         }
 
-        mTexture = mEngine.getGUISystem().getSkin().font->renderText(mText, mColor);
+        mTexture = mGUISystem.getSkin().font->renderText(mText, mColor);
         if (getSize().x == 0 && getSize().y == 0) {
-            setSize(mEngine.getRenderSystem().getTextureSize(mTexture));
+            setSize(mRenderSystem.getTextureSize(mTexture));
         }
     }
 }

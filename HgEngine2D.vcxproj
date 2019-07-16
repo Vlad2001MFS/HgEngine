@@ -73,6 +73,7 @@
     <ClInclude Include="src\3rd\include\Box2D\Rope\b2Rope.h" />
     <ClInclude Include="src\hg2d\BuildConfig.hpp" />
     <ClInclude Include="src\hg2d\Cache\CacheSystem.hpp" />
+    <ClInclude Include="src\hg2d\Core\AEngineObject.hpp" />
     <ClInclude Include="src\hg2d\Core\Engine.hpp" />
     <ClInclude Include="src\hg2d\GameState\AGameState.hpp" />
     <ClInclude Include="src\hg2d\GameState\GameStateSystem.hpp" />
@@ -94,6 +95,7 @@
     <ClCompile Include="src\3rd\include\b2dJson\b2dJsonImage.cpp" />
     <ClCompile Include="src\3rd\include\b2dJson\jsoncpp.cpp" />
     <ClCompile Include="src\hg2d\Cache\CacheSystem.cpp" />
+    <ClCompile Include="src\hg2d\Core\AEngineObject.cpp" />
     <ClCompile Include="src\hg2d\Core\Engine.cpp" />
     <ClCompile Include="src\hg2d\GameState\AGameState.cpp" />
     <ClCompile Include="src\hg2d\GameState\GameStateSystem.cpp" />

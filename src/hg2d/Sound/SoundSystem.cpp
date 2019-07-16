@@ -12,7 +12,7 @@ struct MusicBuffer {
     hd::HMusic handle;
 };
 
-SoundSystem::SoundSystem(Engine &engine) : mEngine(engine) {
+SoundSystem::SoundSystem(Engine &engine) : AEngineObject(engine) {
 }
 
 SoundSystem::~SoundSystem() {

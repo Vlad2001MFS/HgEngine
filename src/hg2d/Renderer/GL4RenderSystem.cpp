@@ -149,7 +149,7 @@ void debugCallback(uint32_t source, uint32_t type, uint32_t id, uint32_t severit
     }
 }
 
-RenderSystem::RenderSystem(Engine &engine) : mEngine(engine), impl(std::make_unique<Impl>()) {
+RenderSystem::RenderSystem(Engine &engine) : AEngineObject(engine), impl(std::make_unique<Impl>()) {
 }
 
 RenderSystem::~RenderSystem() {

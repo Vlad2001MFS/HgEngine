@@ -1,6 +1,5 @@
 #include "BodySystem.hpp"
 #include "TransformSystem.hpp"
-#include "../Core/Engine.hpp"
 
 namespace hg2d {
 
@@ -213,8 +212,8 @@ void BodySystem::onDestroyComponent(AECSComponent* component, uint64_t typeHash)
 }
 
 void BodySystem::onFixedUpdate() {
-    const std::vector<TransformComponent*> &transforms = mEngine.getSceneSystem().getComponents<TransformComponent>();
-    const std::vector<BodyComponent*> &bodies = mEngine.getSceneSystem().getComponents<BodyComponent>();
+    const std::vector<TransformComponent*> &transforms = mSceneSystem.getComponents<TransformComponent>();
+    const std::vector<BodyComponent*> &bodies = mSceneSystem.getComponents<BodyComponent>();
     for (size_t i = 0; i < transforms.size(); i++) {
         TransformComponent *transform = transforms[i];
         BodyComponent *body = bodies[i];

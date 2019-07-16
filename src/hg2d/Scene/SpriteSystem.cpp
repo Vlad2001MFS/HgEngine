@@ -1,6 +1,6 @@
 #include "SpriteSystem.hpp"
 #include "TransformSystem.hpp"
-#include "../Core/Engine.hpp"
+#include "../Renderer/RenderSystem.hpp"
 
 namespace hg2d {
 
@@ -20,8 +20,8 @@ SpriteSystem::SpriteSystem(Engine &engine) : AECSSystem(engine) {
 }
 
 void SpriteSystem::onDraw() {
-    const std::vector<TransformComponent*> &transforms = mEngine.getSceneSystem().getComponents<TransformComponent>();
-    const std::vector<SpriteComponent*> &sprites = mEngine.getSceneSystem().getComponents<SpriteComponent>();
+    const std::vector<TransformComponent*> &transforms = mSceneSystem.getComponents<TransformComponent>();
+    const std::vector<SpriteComponent*> &sprites = mSceneSystem.getComponents<SpriteComponent>();
     for (size_t i = 0; i < transforms.size(); i++) {
         TransformComponent *transform = transforms[i];
         SpriteComponent *sprite = sprites[i];
@@ -31,7 +31,7 @@ void SpriteSystem::onDraw() {
             rop.pos = transform->getAbsolutePosition();
             rop.size = transform->getSize();
             rop.angle = transform->getAngle();
-            mEngine.getRenderSystem().addRenderOp(rop);
+            mRenderSystem.addRenderOp(rop);
         }
     }
 }

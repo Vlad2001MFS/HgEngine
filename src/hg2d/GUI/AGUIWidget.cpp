@@ -3,7 +3,7 @@
 
 namespace hg2d {
 
-AGUIWidget::AGUIWidget(Engine &engine) : mEngine(engine), mPosition(0, 0), mSize(0, 0), mAbsolutePosition(0, 0) {
+AGUIWidget::AGUIWidget(Engine &engine) : AEngineObject(engine), mPosition(0, 0), mSize(0, 0), mAbsolutePosition(0, 0) {
     mParent = nullptr;
     mIsMouseHovered = false;
     mHAlign = GUIHAlign::None;

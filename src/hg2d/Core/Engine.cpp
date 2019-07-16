@@ -1,10 +1,23 @@
 #include "Engine.hpp"
+#include "../GameState/GameStateSystem.hpp"
+#include "../Renderer/RenderSystem.hpp"
+#include "../Sound/SoundSystem.hpp"
+#include "../GUI/GUISystem.hpp"
+#include "../Cache/CacheSystem.hpp"
+#include "../Scene/SceneSystem.hpp"
 #include "../BuildConfig.hpp"
 #include "hd/Core/hdClock.hpp"
 
 namespace hg2d {
 
-Engine::Engine(const EngineCreateInfo &createInfo) : mCreateInfo(createInfo), mGameStateSystem(*this), mRenderSystem(*this), mSoundSystem(*this), mGUISystem(*this), mCacheSystem(*this), mSceneSystem(*this) {
+Engine::Engine(const EngineCreateInfo &createInfo) : mCreateInfo(createInfo) {
+    mGameStateSystem = std::make_unique<GameStateSystem>(*this);
+    mRenderSystem = std::make_unique<RenderSystem>(*this);
+    mSoundSystem = std::make_unique<SoundSystem>(*this);
+    mGUISystem = std::make_unique<GUISystem>(*this);
+    mCacheSystem = std::make_unique<CacheSystem>(*this);
+    mSceneSystem = std::make_unique<SceneSystem>(*this);
+
     hd::WindowFlags flags = hd::WindowFlags::Resizable;
     if (createInfo.window.fullscreen) {
         flags |= hd::WindowFlags::Fullscreen;
@@ -21,19 +34,19 @@ Engine::Engine(const EngineCreateInfo &createInfo) : mCreateInfo(createInfo), mG
 #   pragma error("Cannot determine RenderSystem to use")
 #endif
 
-    mRenderSystem.onInitialize();
-    mSoundSystem.onInitialize();
-    mGUISystem.onInitialize();
-    mCacheSystem.onInitialize();
-    mSceneSystem.onInitialize();
+    mRenderSystem->onInitialize();
+    mSoundSystem->onInitialize();
+    mGUISystem->onInitialize();
+    mCacheSystem->onInitialize();
+    mSceneSystem->onInitialize();
 }
 
 Engine::~Engine() {
-    mSceneSystem.onShutdown();
-    mCacheSystem.onShutdown();
-    mGUISystem.onShutdown();
-    mSoundSystem.onShutdown();
-    mRenderSystem.onShutdown();
+    mSceneSystem->onShutdown();
+    mCacheSystem->onShutdown();
+    mGUISystem->onShutdown();
+    mSoundSystem->onShutdown();
+    mRenderSystem->onShutdown();
     mWindow.destroy();
 }
 
@@ -49,26 +62,26 @@ void Engine::run() {
             if (event.type == hd::WindowEventType::Close) {
                 isExit = true;
             }
-            mGameStateSystem.onEvent(event);
-            mRenderSystem.onEvent(event);
-            mGUISystem.onEvent(event);
-            mSceneSystem.onEvent(event);
+            mGameStateSystem->onEvent(event);
+            mRenderSystem->onEvent(event);
+            mGUISystem->onEvent(event);
+            mSceneSystem->onEvent(event);
         }
 
-        mGameStateSystem.onUpdate();
-        mGUISystem.onUpdate();
-        mSceneSystem.onUpdate();
+        mGameStateSystem->onUpdate();
+        mGUISystem->onUpdate();
+        mSceneSystem->onUpdate();
         if (hd::Clock::getElapsedTime(updateTimer) > UPDATE_TIME) {
-            mGameStateSystem.onFixedUpdate();
-            mGUISystem.onFixedUpdate();
-            mSceneSystem.onFixedUpdate();
+            mGameStateSystem->onFixedUpdate();
+            mGUISystem->onFixedUpdate();
+            mSceneSystem->onFixedUpdate();
             updateTimer = hd::Clock::getTime();
         }
 
-        mGameStateSystem.onDraw();
-        mRenderSystem.onDraw();
-        mGUISystem.onDraw();
-        mSceneSystem.onDraw();
+        mGameStateSystem->onDraw();
+        mRenderSystem->onDraw();
+        mGUISystem->onDraw();
+        mSceneSystem->onDraw();
 
         mFPSCounter.update();
     }
@@ -103,27 +116,27 @@ float Engine::getFrameTime() const {
 }
 
 GameStateSystem &Engine::getGameStateSystem() {
-    return mGameStateSystem;
+    return *mGameStateSystem;
 }
 
 RenderSystem &Engine::getRenderSystem() {
-    return mRenderSystem;
+    return *mRenderSystem;
 }
 
 SoundSystem &Engine::getSoundSystem() {
-    return mSoundSystem;
+    return *mSoundSystem;
 }
 
 GUISystem &Engine::getGUISystem() {
-    return mGUISystem;
+    return *mGUISystem;
 }
 
 CacheSystem &Engine::getCacheSystem() {
-    return mCacheSystem;
+    return *mCacheSystem;
 }
 
 SceneSystem &Engine::getSceneSystem() {
-    return mSceneSystem;
+    return *mSceneSystem;
 }
 
 }

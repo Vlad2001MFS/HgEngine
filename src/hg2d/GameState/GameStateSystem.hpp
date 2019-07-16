@@ -1,12 +1,13 @@
 #pragma once
 #include "AGameState.hpp"
+#include "../Core/AEngineObject.hpp"
 #include <string>
 #include <map>
 #include <stack>
 
 namespace hg2d {
 
-class GameStateSystem {
+class GameStateSystem : public AEngineObject {
 public:
     explicit GameStateSystem(Engine &engine);
     ~GameStateSystem();
@@ -26,7 +27,6 @@ private:
     void mAddState(AGameState *state, const std::string &name);
     void mDestroyState(AGameState *&state);
 
-    Engine &mEngine;
     std::map<std::string, AGameState*> mStates;
     std::stack<AGameState*> mStateStack;
 };

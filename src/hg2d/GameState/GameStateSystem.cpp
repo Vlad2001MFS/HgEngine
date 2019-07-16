@@ -3,7 +3,7 @@
 
 namespace hg2d {
 
-GameStateSystem::GameStateSystem(Engine &engine) : mEngine(engine) {
+GameStateSystem::GameStateSystem(Engine &engine) : AEngineObject(engine) {
 }
 
 GameStateSystem::~GameStateSystem() {

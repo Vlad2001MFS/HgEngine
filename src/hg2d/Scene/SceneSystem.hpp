@@ -1,4 +1,5 @@
 #pragma once
+#include "../Core/AEngineObject.hpp"
 #include "hd/Core/hdHandle.hpp"
 #include "hd/Core/hdCommon.hpp"
 #include "hd/System/hdWindowEvent.hpp"
@@ -8,8 +9,6 @@
 
 namespace hg2d {
 
-class Engine;
-
 using HEntity = hd::Handle<uint64_t, struct TAG_HEntity, UINT64_MAX>;
 
 class AECSComponent {
@@ -18,7 +17,7 @@ public:
     virtual ~AECSComponent() = default;
 };
 
-class AECSSystem {
+class AECSSystem : public AEngineObject {
 public:
     AECSSystem(Engine &engine);
     virtual ~AECSSystem();
@@ -31,12 +30,9 @@ public:
     virtual void onFixedUpdate();
     virtual void onUpdate();
     virtual void onDraw();
-
-protected:
-    Engine &mEngine;
 };
 
-class SceneSystem {
+class SceneSystem : public AEngineObject{
 public:
     explicit SceneSystem(Engine &engine);
     ~SceneSystem() = default;
@@ -159,7 +155,6 @@ private:
     void mDestroyComponent(AECSComponent *&component, uint64_t typeHash);
     void mDestroySystem(AECSSystem *&system);
 
-    Engine &mEngine;
     std::vector<HEntity> mEntities;
     std::map<uint64_t, std::vector<AECSComponent*>> mComponentsMap;
     std::map<uint64_t, AECSSystem*> mSystems;

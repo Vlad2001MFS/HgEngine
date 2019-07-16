@@ -1,16 +1,16 @@
 #pragma once
+#include "../Core/AEngineObject.hpp"
 #include <map>
 #include <string>
 
 namespace hg2d {
 
-class Engine;
 struct Texture;
 class Font;
 struct SoundBuffer;
 struct MusicBuffer;
 
-class CacheSystem {
+class CacheSystem : public AEngineObject {
 public:
     explicit CacheSystem(Engine &engine);
     ~CacheSystem();
@@ -24,7 +24,6 @@ public:
     MusicBuffer *loadMusic(const std::string &filename);
 
 private:
-    Engine &mEngine;
     std::map<std::string, Texture*> mTextures;
     std::map<std::string, Font*> mFonts;
     std::map<std::string, SoundBuffer*> mSoundBuffers;

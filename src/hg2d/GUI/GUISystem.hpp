@@ -1,23 +1,12 @@
 #pragma once
 #include "AGUIWidget.hpp"
 #include "Font.hpp"
+#include "../Core/AEngineObject.hpp"
 #include "hd/System/hdWindowEvent.hpp"
 #include <map>
 #include <stack>
 
 namespace hg2d {
-
-struct GUISystemCreateInfo {
-    std::string fontPath = "font.ttf";
-    uint32_t fontSize = 16;
-    bool monospacedFont = true;
-    hd::Color4 fontColor = hd::Color4::White;
-    std::string buttonTexturePath = "button.png";
-    std::string hoveredButtonTexturePath = "hoveredButton.png";
-    std::string clickedButtonTexturePath = "clickedButton.png";
-    int alignSpaceX = 10;
-    int alignSpaceY = 10;
-};
 
 struct GUISkin {
     Font *font = nullptr;
@@ -27,7 +16,7 @@ struct GUISkin {
     int alignSpaceY = 10;
 };
 
-class GUISystem {
+class GUISystem : public AEngineObject {
 public:
     explicit GUISystem(Engine &engine);
     ~GUISystem();
@@ -53,7 +42,6 @@ private:
     void mAddFrame(AGUIWidget *frame, const std::string &name);
     void mDestroyFrame(AGUIWidget *&frame);
 
-    Engine &mEngine;
     GUISkin mSkin;
     std::vector<Font*> mCreatedFonts;
     std::map<std::string, AGUIWidget*> mFrames;

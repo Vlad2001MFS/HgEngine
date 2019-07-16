@@ -1,12 +1,8 @@
 #pragma once
-#include "../GameState/GameStateSystem.hpp"
-#include "../Renderer/RenderSystem.hpp"
-#include "../Sound/SoundSystem.hpp"
-#include "../GUI/GUISystem.hpp"
-#include "../Cache/CacheSystem.hpp"
-#include "../Scene/SceneSystem.hpp"
+#include "AEngineObject.hpp"
 #include "hd/Core/hdFPSCounter.hpp"
 #include "hd/System/hdWindow.hpp"
+#include <memory>
 
 namespace hg2d {
 
@@ -15,6 +11,24 @@ struct WindowCreateInfo {
     uint32_t width = 640;
     uint32_t height = 480;
     bool fullscreen = false;
+};
+
+struct SoundSystemCreateInfo {
+    uint32_t freq = 22050;
+    uint32_t chunkSize = 4096;
+    bool isStereo = true;
+};
+
+struct GUISystemCreateInfo {
+    std::string fontPath = "font.ttf";
+    uint32_t fontSize = 16;
+    bool monospacedFont = true;
+    hd::Color4 fontColor = hd::Color4::White;
+    std::string buttonTexturePath = "button.png";
+    std::string hoveredButtonTexturePath = "hoveredButton.png";
+    std::string clickedButtonTexturePath = "clickedButton.png";
+    int alignSpaceX = 10;
+    int alignSpaceY = 10;
 };
 
 struct EngineCreateInfo {
@@ -48,12 +62,12 @@ private:
     EngineCreateInfo mCreateInfo;
     hd::Window mWindow;
     hd::FPSCounter mFPSCounter;
-    GameStateSystem mGameStateSystem;
-    RenderSystem mRenderSystem;
-    SoundSystem mSoundSystem;
-    GUISystem mGUISystem;
-    CacheSystem mCacheSystem;
-    SceneSystem mSceneSystem;
+    std::unique_ptr<GameStateSystem> mGameStateSystem;
+    std::unique_ptr<RenderSystem> mRenderSystem;
+    std::unique_ptr<SoundSystem> mSoundSystem;
+    std::unique_ptr<GUISystem> mGUISystem;
+    std::unique_ptr<CacheSystem> mCacheSystem;
+    std::unique_ptr<SceneSystem> mSceneSystem;
 };
 
 }

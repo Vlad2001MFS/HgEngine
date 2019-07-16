@@ -1,21 +1,15 @@
 #pragma once
+#include "../Core/AEngineObject.hpp"
 #include "hd/Sound/hdSoundContext.hpp"
 
 namespace hg2d {
 
-class Engine;
 struct SoundBuffer;
 struct MusicBuffer;
 
 using SoundChannel = hd::HSoundChannel;
 
-struct SoundSystemCreateInfo {
-    uint32_t freq = 22050;
-    uint32_t chunkSize = 4096;
-    bool isStereo = true;
-};
-
-class SoundSystem {
+class SoundSystem : public AEngineObject {
 public:
     explicit SoundSystem(Engine &engine);
     ~SoundSystem();
@@ -47,7 +41,6 @@ private:
     void mDestroySound(SoundBuffer *&buffer);
     void mDestroyMusic(MusicBuffer *&buffer);
 
-    Engine &mEngine;
     hd::SoundContext mSoundContext;
     std::vector<SoundBuffer*> mCreatedSoundBuffers;
     std::vector<MusicBuffer*> mCreatedMusicBuffers;

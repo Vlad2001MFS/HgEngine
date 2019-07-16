@@ -1,10 +1,8 @@
 #include "SceneSystem.hpp"
-#include "../Core/Engine.hpp"
-#include "hd/IO/hdSerializerRW.hpp"
 
 namespace hg2d {
 
-AECSSystem::AECSSystem(Engine &engine) : mEngine(engine) {
+AECSSystem::AECSSystem(Engine &engine) : AEngineObject(engine) {
 }
 
 AECSSystem::~AECSSystem() {
@@ -34,7 +32,7 @@ void AECSSystem::onUpdate() {
 void AECSSystem::onDraw() {
 }
 
-SceneSystem::SceneSystem(Engine &engine) : mEngine(engine) {
+SceneSystem::SceneSystem(Engine &engine) : AEngineObject(engine) {
 }
 
 void SceneSystem::onInitialize() { 

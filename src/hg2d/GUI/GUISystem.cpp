@@ -5,7 +5,7 @@
 
 namespace hg2d {
 
-GUISystem::GUISystem(Engine &engine) : mEngine(engine) {
+GUISystem::GUISystem(Engine &engine) : AEngineObject(engine) {
 }
 
 GUISystem::~GUISystem() {
@@ -15,17 +15,17 @@ void GUISystem::onInitialize() {
     mSkin.font = createFontFromFile(mEngine.getCreateInfo().gui.fontPath, mEngine.getCreateInfo().gui.fontSize);
     mSkin.font->setHinting(FontHinting::Mono);
     mSkin.fontColor = mEngine.getCreateInfo().gui.fontColor;
-    mSkin.buttonTexture = mEngine.getRenderSystem().createTextureFromFile(mEngine.getCreateInfo().gui.buttonTexturePath);
-    mSkin.hoveredButtonTexture = mEngine.getRenderSystem().createTextureFromFile(mEngine.getCreateInfo().gui.hoveredButtonTexturePath);
-    mSkin.clickedButtonTexture = mEngine.getRenderSystem().createTextureFromFile(mEngine.getCreateInfo().gui.clickedButtonTexturePath);
+    mSkin.buttonTexture = mRenderSystem.createTextureFromFile(mEngine.getCreateInfo().gui.buttonTexturePath);
+    mSkin.hoveredButtonTexture = mRenderSystem.createTextureFromFile(mEngine.getCreateInfo().gui.hoveredButtonTexturePath);
+    mSkin.clickedButtonTexture = mRenderSystem.createTextureFromFile(mEngine.getCreateInfo().gui.clickedButtonTexturePath);
     mSkin.alignSpaceX = mEngine.getCreateInfo().gui.alignSpaceX;
     mSkin.alignSpaceY = mEngine.getCreateInfo().gui.alignSpaceY;
 }
 
 void GUISystem::onShutdown() {
-    mEngine.getRenderSystem().destroyTexture(mSkin.clickedButtonTexture);
-    mEngine.getRenderSystem().destroyTexture(mSkin.hoveredButtonTexture);
-    mEngine.getRenderSystem().destroyTexture(mSkin.buttonTexture);
+    mRenderSystem.destroyTexture(mSkin.clickedButtonTexture);
+    mRenderSystem.destroyTexture(mSkin.hoveredButtonTexture);
+    mRenderSystem.destroyTexture(mSkin.buttonTexture);
     for (auto &it : mCreatedFonts) {
         HD_DELETE(it);
     }

@@ -1,5 +1,4 @@
 #include "TransformSystem.hpp"
-#include "../Core/Engine.hpp"
 
 namespace hg2d {
 
@@ -116,7 +115,7 @@ TransformSystem::TransformSystem(Engine& engine) : AECSSystem(engine) {
 }
 
 void TransformSystem::onFixedUpdate() {
-    const std::vector<TransformComponent*> &transforms = mEngine.getSceneSystem().getComponents<TransformComponent>();
+    const std::vector<TransformComponent*> &transforms = mSceneSystem.getComponents<TransformComponent>();
     for (auto &transform : transforms) {
         if (transform) {
             transform->updateAbsolutePosition();

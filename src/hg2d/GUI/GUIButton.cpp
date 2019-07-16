@@ -1,10 +1,10 @@
 #include "GUIButton.hpp"
-#include "../Core/Engine.hpp"
+#include "../GUI/GUISystem.hpp"
 
 namespace hg2d {
 
 GUIButton::GUIButton(Engine &engine) : GUIImage(engine) {
-    setTexture(mEngine.getGUISystem().getSkin().buttonTexture);
+    setTexture(mGUISystem.getSkin().buttonTexture);
     mLabel = createChild<GUILabel>();
     mLabel->setAlign(GUIHAlign::Center, GUIVAlign::Center);
     onMouseButtonPressed.connect(std::bind(&GUIButton::mOnMouseButtonPressed, this));
@@ -25,24 +25,24 @@ const std::string& GUIButton::getText() const {
 }
 
 void GUIButton::mOnMouseButtonPressed() {
-    setTexture(mEngine.getGUISystem().getSkin().clickedButtonTexture);
+    setTexture(mGUISystem.getSkin().clickedButtonTexture);
 }
 
 void GUIButton::mOnMouseButtonReleased() {
     if (isMouseHovered()) {
-        setTexture(mEngine.getGUISystem().getSkin().hoveredButtonTexture);
+        setTexture(mGUISystem.getSkin().hoveredButtonTexture);
     }
     else {
-        setTexture(mEngine.getGUISystem().getSkin().buttonTexture);
+        setTexture(mGUISystem.getSkin().buttonTexture);
     }
 }
 
 void GUIButton::mOnMouseEnter() {
-    setTexture(mEngine.getGUISystem().getSkin().hoveredButtonTexture);
+    setTexture(mGUISystem.getSkin().hoveredButtonTexture);
 }
 
 void GUIButton::mOnMouseLeave() {
-    setTexture(mEngine.getGUISystem().getSkin().buttonTexture);
+    setTexture(mGUISystem.getSkin().buttonTexture);
 }
 
 }

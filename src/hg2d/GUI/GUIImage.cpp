@@ -1,5 +1,5 @@
 #include "GUIImage.hpp"
-#include "../Core/Engine.hpp"
+#include "../Renderer/RenderSystem.hpp"
 
 namespace hg2d {
 
@@ -13,7 +13,7 @@ GUIImage::~GUIImage() {
 void GUIImage::setTexture(const Texture *texture) {
     mTexture = texture;
     if (getSize().x == 0 && getSize().y == 0) {
-        setSize(mEngine.getRenderSystem().getTextureSize(mTexture));
+        setSize(mRenderSystem.getTextureSize(mTexture));
     }
 }
 
@@ -27,7 +27,7 @@ void GUIImage::onDraw() {
         rop.pos = getAbsolutePosition();
         rop.size = getSize();
         rop.isGUI = true;
-        mEngine.getRenderSystem().addRenderOp(rop);
+        mRenderSystem.addRenderOp(rop);
     }
 }
     

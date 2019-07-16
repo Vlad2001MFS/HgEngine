@@ -1,4 +1,5 @@
 #pragma once
+#include "../Core/AEngineObject.hpp"
 #include "hd/Core/hdDelegate.hpp"
 #include "hd/System/hdWindowEvent.hpp"
 #include "3rd/include/glm/glm.hpp"
@@ -19,9 +20,7 @@ enum class GUIVAlign {
     Bottom
 };
 
-class Engine;
-
-class AGUIWidget {
+class AGUIWidget : public AEngineObject {
 public:
     explicit AGUIWidget(Engine &engine);
     virtual ~AGUIWidget();
@@ -63,9 +62,6 @@ public:
 
     hd::Delegate<> onMouseButtonPressed, onMouseButtonReleased;
     hd::Delegate<> onMouseEnter, onMouseLeave;
-
-protected:
-    Engine &mEngine;
 
 private:
     void mAddChild(AGUIWidget *widget);

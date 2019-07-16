@@ -1,4 +1,5 @@
 #pragma once
+#include "../Core/AEngineObject.hpp"
 #include "hd/IO/hdImage.hpp"
 #include "hd/System/hdWindowEvent.hpp"
 #include "3rd/include/glm/glm.hpp"
@@ -8,7 +9,6 @@
 
 namespace hg2d {
 
-class Engine;
 struct Texture;
 
 struct RenderOp {
@@ -25,7 +25,7 @@ struct RenderOp {
     bool isGUI;
 };
 
-class RenderSystem {
+class RenderSystem : public AEngineObject {
 public:
     explicit RenderSystem(Engine &engine);
     ~RenderSystem();
@@ -45,7 +45,6 @@ public:
     void addRenderOp(const RenderOp &rop);
 
 private:
-    Engine &mEngine;
     std::vector<RenderOp> mRenderOps;
     std::vector<RenderOp> mGUIRenderOps;
     struct Impl;

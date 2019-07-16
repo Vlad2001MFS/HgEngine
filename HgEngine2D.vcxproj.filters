@@ -273,6 +273,9 @@
     <ClInclude Include="src\3rd\include\b2dJson\bitmap.h">
       <Filter>src\3rd\include\b2dJson</Filter>
     </ClInclude>
+    <ClInclude Include="src\hg2d\Core\AEngineObject.hpp">
+      <Filter>src\hg2d\Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\hg2d\Core\Engine.cpp">
@@ -334,6 +337,9 @@
     </ClCompile>
     <ClCompile Include="src\3rd\include\b2dJson\b2dJsonImage.cpp">
       <Filter>src\3rd\include\b2dJson</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hg2d\Core\AEngineObject.cpp">
+      <Filter>src\hg2d\Core</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

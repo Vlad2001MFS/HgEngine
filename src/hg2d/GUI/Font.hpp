@@ -1,4 +1,5 @@
 #pragma once
+#include "../Core/AEngineObject.hpp"
 #include "hd/IO/hdFont.hpp"
 
 namespace hg2d {
@@ -6,10 +7,9 @@ namespace hg2d {
 using hd::FontStyle;
 using hd::FontHinting;
 
-class Engine;
 struct Texture;
 
-class Font {
+class Font : public AEngineObject {
 public:
     Font(Engine &engine, const std::string &filename, uint32_t size);
     ~Font();
@@ -27,7 +27,6 @@ public:
 private:
     void mRenderLine(hd::Image &target, uint32_t uOffset, uint32_t vOffset, const std::string &text, const hd::Color4 &color) const;
 
-    Engine &mEngine;
     hd::Font mFont;
 };
     
