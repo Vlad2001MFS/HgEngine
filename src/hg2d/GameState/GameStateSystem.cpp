@@ -7,6 +7,12 @@ GameStateSystem::GameStateSystem(Engine &engine) : AEngineObject(engine) {
 }
 
 GameStateSystem::~GameStateSystem() {
+}
+
+void GameStateSystem::onInitialize() {
+}
+
+void GameStateSystem::onShutdown() {
     for (auto &it : mStates) {
         mDestroyState(it.second);
     }

@@ -34,6 +34,7 @@ Engine::Engine(const EngineCreateInfo &createInfo) : mCreateInfo(createInfo) {
 #   pragma error("Cannot determine RenderSystem to use")
 #endif
 
+    mGameStateSystem->onInitialize();
     mRenderSystem->onInitialize();
     mSoundSystem->onInitialize();
     mGUISystem->onInitialize();
@@ -47,6 +48,7 @@ Engine::~Engine() {
     mGUISystem->onShutdown();
     mSoundSystem->onShutdown();
     mRenderSystem->onShutdown();
+    mGameStateSystem->onShutdown();
     mWindow.destroy();
 }
 
