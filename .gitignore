@@ -1,3 +1,4 @@
 obj/
 bin/
 HgEngine2D.vcxproj.user
+*.zip
