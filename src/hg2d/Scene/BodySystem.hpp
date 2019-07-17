@@ -81,6 +81,7 @@ class BodySystem final : public AECSSystem {
 public:
     BodySystem(Engine &engine);
 
+    virtual void onInitialize() override;
     virtual void onCreateComponent(AECSComponent *component, uint64_t typeHash, const HEntity &entity) override;
     virtual void onDestroyComponent(AECSComponent *component, uint64_t typeHash, const HEntity &entity) override;
     virtual void onFixedUpdate() override;

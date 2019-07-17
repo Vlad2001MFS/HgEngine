@@ -19,6 +19,10 @@ const Texture* SpriteComponent::getTexture() const {
 SpriteSystem::SpriteSystem(Engine &engine) : AECSSystem(engine) {
 }
 
+void SpriteSystem::onInitialize() {
+    mSceneSystem.registerComponentType<SpriteComponent>();
+}
+
 void SpriteSystem::onDraw() {
     const std::vector<TransformComponent*> &transforms = mSceneSystem.getComponents<TransformComponent>();
     const std::vector<SpriteComponent*> &sprites = mSceneSystem.getComponents<SpriteComponent>();

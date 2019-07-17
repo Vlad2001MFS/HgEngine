@@ -22,6 +22,7 @@ class SpriteSystem final : public AECSSystem {
 public:
     SpriteSystem(Engine &engine);
 
+    virtual void onInitialize() override;
     virtual void onDraw() override;
 };
 

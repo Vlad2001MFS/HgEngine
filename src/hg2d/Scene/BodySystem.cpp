@@ -221,6 +221,10 @@ BodySystem::BodySystem(Engine &engine) : AECSSystem(engine), mWorld(b2Vec2(0, 0)
     mWorld.SetContactListener(&mContactListener);
 }
 
+void BodySystem::onInitialize() {
+    mSceneSystem.registerComponentType<BodyComponent>();
+}
+
 void BodySystem::onCreateComponent(AECSComponent* component, uint64_t typeHash, const HEntity &entity) {
     if (typeHash == typeid(BodyComponent).hash_code()) {
         BodyComponent *body = static_cast<BodyComponent*>(component);

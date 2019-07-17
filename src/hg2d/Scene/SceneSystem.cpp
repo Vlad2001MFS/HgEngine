@@ -1,4 +1,5 @@
 #include "SceneSystem.hpp"
+#include <string>
 
 namespace hg2d {
 
@@ -88,6 +89,10 @@ void SceneSystem::destroyEntity(HEntity &handle) {
     handle.invalidate();
 }
 
+AECSComponent* SceneSystem::createComponent(HEntity& handle, uint64_t typeHash) {
+    return mCreateComponent(handle, typeHash, std::to_string(typeHash));
+}
+
 const std::vector<HEntity> &SceneSystem::getEntities() const {
     return mEntities;
 }
@@ -98,6 +103,31 @@ const std::map<uint64_t, std::vector<AECSComponent*>> &SceneSystem::getComponent
 
 const std::map<uint64_t, AECSSystem*> &SceneSystem::getSystem() const {
    return mSystems;
+}
+
+AECSComponent* SceneSystem::mCreateComponent(HEntity& handle, uint64_t typeHash, const std::string& typeName) {
+    auto factory = mComponentTypes.find(typeHash);
+    if (factory == mComponentTypes.end()) {
+        HD_LOG_ERROR("Failed to create component of not registered type '%s'", typeName.data());
+        return nullptr;
+    }
+    if (handle && handle.value < mEntities.size()) {
+        if (mComponentsMap.count(typeHash) == 0) {
+            mComponentsMap.insert(std::make_pair(typeHash, std::vector<AECSComponent*>(mEntities.size(), nullptr)));
+        }
+        AECSComponent *&component = mComponentsMap.at(typeHash).at(handle.value);
+        if (!component) {
+            component = factory->second.second();
+            for (auto &system : mSystems) {
+                system.second->onCreateComponent(component, typeHash, handle);
+            }
+        }
+        return component;
+    }
+    else {
+        HD_LOG_ERROR("Failed to create component '%s' for entity '%ll'", factory->second.first.data(), handle.value);
+        return nullptr;
+    }
 }
 
 void SceneSystem::mDestroyComponent(AECSComponent *&component, uint64_t typeHash, const HEntity &entity) {

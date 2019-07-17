@@ -114,6 +114,10 @@ float TransformComponent::getAngle() const {
 TransformSystem::TransformSystem(Engine& engine) : AECSSystem(engine) {
 }
 
+void TransformSystem::onInitialize() {
+    mSceneSystem.registerComponentType<TransformComponent>();
+}
+
 void TransformSystem::onFixedUpdate() {
     const std::vector<TransformComponent*> &transforms = mSceneSystem.getComponents<TransformComponent>();
     for (auto &transform : transforms) {
