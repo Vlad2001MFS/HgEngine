@@ -43,31 +43,31 @@ void SceneSystem::onShutdown() {
         }
     }
     for (auto &it : mSystems) {
-        mDestroySystem(it.second);
+        mDestroySystem(it.second.second);
     }
 }
 
 void SceneSystem::onEvent(const hd::WindowEvent &event) {	
     for (auto &system : mSystems) {
-        system.second->onEvent(event);
+        system.second.second->onEvent(event);
     }
 }
 
 void SceneSystem::onFixedUpdate() {
     for (auto &system : mSystems) {
-        system.second->onFixedUpdate();
+        system.second.second->onFixedUpdate();
     }
 }
 
 void SceneSystem::onUpdate() {
     for (auto &system : mSystems) {
-        system.second->onUpdate();
+        system.second.second->onUpdate();
     }
 }
 
 void SceneSystem::onDraw() {
     for (auto &system : mSystems) {
-        system.second->onDraw();
+        system.second.second->onDraw();
     }
 }
 
@@ -101,7 +101,7 @@ const std::map<uint64_t, std::vector<AECSComponent*>> &SceneSystem::getComponent
     return mComponentsMap;
 }
 
-const std::map<uint64_t, AECSSystem*> &SceneSystem::getSystem() const {
+const std::map<uint64_t, std::pair<std::string, AECSSystem*>> &SceneSystem::getSystems() const {
    return mSystems;
 }
 
@@ -119,7 +119,7 @@ AECSComponent* SceneSystem::mCreateComponent(HEntity& handle, uint64_t typeHash,
         if (!component) {
             component = factory->second.second();
             for (auto &system : mSystems) {
-                system.second->onCreateComponent(component, typeHash, handle);
+                system.second.second->onCreateComponent(component, typeHash, handle);
             }
         }
         return component;
@@ -133,7 +133,7 @@ AECSComponent* SceneSystem::mCreateComponent(HEntity& handle, uint64_t typeHash,
 void SceneSystem::mDestroyComponent(AECSComponent *&component, uint64_t typeHash, const HEntity &entity) {
     if (component) {
         for (auto &system : mSystems) {
-            system.second->onDestroyComponent(component, typeHash, entity);
+            system.second.second->onDestroyComponent(component, typeHash, entity);
         }
         HD_DELETE(component);
     }

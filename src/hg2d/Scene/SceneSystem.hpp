@@ -109,12 +109,12 @@ public:
         uint64_t typeHash = typeInfo.hash_code();
         if (mSystems.count(typeHash) == 0) {
             T *system = new T(mEngine);
-            mSystems.insert(std::make_pair(typeHash, system));
+            mSystems.insert(std::make_pair(typeHash, std::make_pair(typeName, system)));
             system->onInitialize();
             return system;
         }
         else {
-            return static_cast<T*>(mSystems.at(typeHash));
+            return static_cast<T*>(mSystems.at(typeHash).second);
         }
     }
 
@@ -124,7 +124,7 @@ public:
         const char *typeName = typeInfo.name();
         uint64_t typeHash = typeInfo.hash_code();
         if (mSystems.count(typeHash) != 0) {
-            mDestroySystem(mSystems.at(typeHash));
+            mDestroySystem(mSystems.at(typeHash).second);
             mSystems.erase(typeHash);
         }
     }
@@ -135,7 +135,7 @@ public:
         const char *typeName = typeInfo.name();
         uint64_t typeHash = typeInfo.hash_code();
         if (mSystems.count(typeHash) != 0) {
-            return static_cast<T*>(mSystems.at(typeHash));
+            return static_cast<T*>(mSystems.at(typeHash).second);
         }
         else {
             return nullptr;
@@ -144,7 +144,7 @@ public:
 
     const std::vector<HEntity> &getEntities() const;
     const std::map<uint64_t, std::vector<AECSComponent*>> &getComponentsMap() const;
-    const std::map<uint64_t, AECSSystem*> &getSystem() const;
+    const std::map<uint64_t, std::pair<std::string, AECSSystem*>> &getSystems() const;
 
 private:
     AECSComponent *mCreateComponent(HEntity& handle, uint64_t typeHash, const std::string &typeName);
@@ -153,7 +153,7 @@ private:
 
     std::vector<HEntity> mEntities;
     std::map<uint64_t, std::vector<AECSComponent*>> mComponentsMap;
-    std::map<uint64_t, AECSSystem*> mSystems;
+    std::map<uint64_t, std::pair<std::string, AECSSystem*>> mSystems;
 
     std::map<uint64_t, std::pair<std::string, std::function<AECSComponent*()>>> mComponentTypes;
 };
