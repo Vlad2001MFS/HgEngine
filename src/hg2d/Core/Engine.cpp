@@ -81,9 +81,9 @@ void Engine::run() {
         }
 
         mGameStateSystem->onDraw();
-        mRenderSystem->onDraw();
         mGUISystem->onDraw();
         mSceneSystem->onDraw();
+        mRenderSystem->onDraw();
 
         mFPSCounter.update();
     }
