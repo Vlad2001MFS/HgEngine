@@ -4,6 +4,7 @@
 #ifdef HG2D_RENDERER_OPENGL4
 
 #include "../Core/Engine.hpp"
+#include "hd/Core/hdStringUtils.hpp"
 #include "hd/Math/hdMathUtils.hpp"
 #include "hd/IO/hdImage.hpp"
 #include "hd/IO/hdFileStream.hpp"
@@ -315,7 +316,7 @@ Texture *RenderSystem::createTexture(const void *data, uint32_t w, uint32_t h) {
 
 Texture* RenderSystem::createTexture(const hd::Image& img) {
     Texture *texture = createTexture(img.getPixels(), img.getWidth(), img.getHeight());
-    texture->path = img.getPath();
+    texture->path = hd::StringUtils::replace(img.getPath(), "data/textures/", "");
     return texture;
 }
 
