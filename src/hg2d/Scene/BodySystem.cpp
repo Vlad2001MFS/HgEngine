@@ -1,5 +1,5 @@
 #include "BodySystem.hpp"
-#include "TransformSystem.hpp"
+#include "TransformComponent.hpp"
 
 namespace hg2d {
 

@@ -87,7 +87,7 @@
     <ClInclude Include="src\hg2d\Scene\BodySystem.hpp" />
     <ClInclude Include="src\hg2d\Scene\SceneSystem.hpp" />
     <ClInclude Include="src\hg2d\Scene\SpriteSystem.hpp" />
-    <ClInclude Include="src\hg2d\Scene\TransformSystem.hpp" />
+    <ClInclude Include="src\hg2d\Scene\TransformComponent.hpp" />
     <ClInclude Include="src\hg2d\Sound\SoundSystem.hpp" />
   </ItemGroup>
   <ItemGroup>
@@ -110,7 +110,7 @@
     <ClCompile Include="src\hg2d\Scene\BodySystem.cpp" />
     <ClCompile Include="src\hg2d\Scene\SceneSystem.cpp" />
     <ClCompile Include="src\hg2d\Scene\SpriteSystem.cpp" />
-    <ClCompile Include="src\hg2d\Scene\TransformSystem.cpp" />
+    <ClCompile Include="src\hg2d\Scene\TransformComponent.cpp" />
     <ClCompile Include="src\hg2d\Sound\SoundSystem.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

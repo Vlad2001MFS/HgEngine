@@ -1,5 +1,5 @@
 #include "SpriteSystem.hpp"
-#include "TransformSystem.hpp"
+#include "TransformComponent.hpp"
 #include "../Renderer/RenderSystem.hpp"
 
 namespace hg2d {
@@ -32,7 +32,7 @@ void SpriteSystem::onDraw() {
         if (transform && sprite && sprite->getTexture()) {
             RenderOp rop;
             rop.texture = sprite->getTexture();
-            rop.pos = transform->getAbsolutePosition();
+            rop.pos = transform->getPosition();
             rop.size = transform->getSize();
             rop.angle = transform->getAngle();
             mRenderSystem.addRenderOp(rop);

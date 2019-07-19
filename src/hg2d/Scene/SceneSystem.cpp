@@ -1,4 +1,6 @@
 #include "SceneSystem.hpp"
+#include "TransformComponent.hpp"
+#include "hd/IO/hdFileStream.hpp"
 #include <string>
 
 namespace hg2d {
@@ -34,6 +36,7 @@ SceneSystem::SceneSystem(Engine &engine) : AEngineObject(engine) {
 }
 
 void SceneSystem::onInitialize() { 
+    registerComponentType<TransformComponent>();
 }
 
 void SceneSystem::onShutdown() {

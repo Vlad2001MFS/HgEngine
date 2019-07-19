@@ -105,9 +105,6 @@
     <ClInclude Include="src\hg2d\Scene\SceneSystem.hpp">
       <Filter>src\hg2d\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="src\hg2d\Scene\TransformSystem.hpp">
-      <Filter>src\hg2d\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="src\hg2d\Scene\SpriteSystem.hpp">
       <Filter>src\hg2d\Scene</Filter>
     </ClInclude>
@@ -276,6 +273,9 @@
     <ClInclude Include="src\hg2d\Core\BuildConfig.hpp">
       <Filter>src\hg2d\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\hg2d\Scene\TransformComponent.hpp">
+      <Filter>src\hg2d\Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\hg2d\Core\Engine.cpp">
@@ -320,9 +320,6 @@
     <ClCompile Include="src\hg2d\Scene\SceneSystem.cpp">
       <Filter>src\hg2d\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="src\hg2d\Scene\TransformSystem.cpp">
-      <Filter>src\hg2d\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="src\hg2d\Scene\SpriteSystem.cpp">
       <Filter>src\hg2d\Scene</Filter>
     </ClCompile>
@@ -340,6 +337,9 @@
     </ClCompile>
     <ClCompile Include="src\hg2d\Core\AEngineObject.cpp">
       <Filter>src\hg2d\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hg2d\Scene\TransformComponent.cpp">
+      <Filter>src\hg2d\Scene</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
