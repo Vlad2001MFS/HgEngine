@@ -46,6 +46,8 @@ void AECSSystem::onDraw() {
 }
 
 SceneSystem::SceneSystem(Engine &engine) : AEngineObject(engine) {
+    mIsUpdateEnabled = true;
+    mIsDrawEnabled = true;
 }
 
 void SceneSystem::onInitialize() { 
@@ -63,28 +65,44 @@ void SceneSystem::onShutdown() {
     }
 }
 
-void SceneSystem::onEvent(const hd::WindowEvent &event) {	
-    for (auto &system : mSystems) {
-        system.second.second->onEvent(event);
+void SceneSystem::onEvent(const hd::WindowEvent &event) {
+    if (mIsUpdateEnabled) {
+        for (auto &system : mSystems) {
+            system.second.second->onEvent(event);
+        }
     }
 }
 
 void SceneSystem::onFixedUpdate() {
-    for (auto &system : mSystems) {
-        system.second.second->onFixedUpdate();
+    if (mIsUpdateEnabled) {
+        for (auto &system : mSystems) {
+            system.second.second->onFixedUpdate();
+        }
     }
 }
 
 void SceneSystem::onUpdate() {
-    for (auto &system : mSystems) {
-        system.second.second->onUpdate();
+    if (mIsUpdateEnabled) {
+        for (auto &system : mSystems) {
+            system.second.second->onUpdate();
+        }
     }
 }
 
 void SceneSystem::onDraw() {
-    for (auto &system : mSystems) {
-        system.second.second->onDraw();
+    if (mIsDrawEnabled) {
+        for (auto &system : mSystems) {
+            system.second.second->onDraw();
+        }
     }
+}
+
+void SceneSystem::setUpdateEnabled(bool enabled) {
+    mIsUpdateEnabled = enabled;
+}
+
+void SceneSystem::setDrawEnabled(bool enabled) {
+    mIsDrawEnabled = enabled;
 }
 
 void SceneSystem::clear() {

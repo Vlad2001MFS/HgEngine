@@ -49,6 +49,9 @@ public:
     void onUpdate();
     void onDraw();
 
+    void setUpdateEnabled(bool enabled);
+    void setDrawEnabled(bool enabled);
+
     void clear();
     void save(const std::string &name);
     void load(const std::string &name);
@@ -160,6 +163,9 @@ private:
     AECSComponent *mCreateComponent(HEntity& handle, uint64_t typeHash, const std::string &typeName);
     void mDestroyComponent(AECSComponent *&component, uint64_t typeHash, const HEntity &entity);
     void mDestroySystem(AECSSystem *&system);
+
+    bool mIsUpdateEnabled;
+    bool mIsDrawEnabled;
 
     std::vector<HEntity> mEntities;
     std::map<uint64_t, std::vector<AECSComponent*>> mComponentsMap;
