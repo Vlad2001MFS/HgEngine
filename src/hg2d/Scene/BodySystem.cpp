@@ -3,17 +3,81 @@
 
 namespace hg2d {
 
-HD_FORCEINLINE const b2Vec2 &toBox2D(const glm::vec2 &v) {
-    return reinterpret_cast<const b2Vec2&>(v);
+HD_FORCEINLINE b2Vec2 toBox2D(const glm::vec2 &v) {
+    return b2Vec2(v.x, v.y);
 }
 
-HD_FORCEINLINE const glm::vec2 &fromBox2D(const b2Vec2 &v) {
-    return reinterpret_cast<const glm::vec2&>(v);
+HD_FORCEINLINE glm::vec2 fromBox2D(const b2Vec2 &v) {
+    return glm::vec2(v.x, v.y);
 }
 
-BodyComponent::BodyComponent() : mBoxShapeSize(0, 0) {
+BodyComponent::BodyComponent(Engine &engine) : AECSComponent(engine), mBoxShapeSize(0, 0) {
     mBody = nullptr;
     mFixture = nullptr;
+}
+
+void BodyComponent::onSaveLoad(JSONObject& json, bool isLoad) {
+    JSONObject &jsonPosition = json["position"];
+    JSONObject &jsonAngle = json["angle"];
+    JSONObject &jsonLinearVelocity = json["linearVelocity"];
+    JSONObject &jsonAngularVelocity = json["angularVelocity"];
+    JSONObject &jsonLinearDamping = json["linearDamping"];
+    JSONObject &jsonAngularDamping = json["angularDamping"];
+    JSONObject &jsonSleepAllowed = json["isSleepingAllowed"];
+    JSONObject &jsonAwake = json["isAwake"];
+    JSONObject &jsonFixedRotation = json["isFixedRotation"];
+    JSONObject &jsonBullet = json["isBullet"];
+    JSONObject &jsonType = json["type"];
+    JSONObject &jsonActive = json["isActive"];
+    JSONObject &jsonGravityScale = json["gravityScale"];
+
+    JSONObject &jsonBoxShape = json["boxShapeSize"];
+    JSONObject &jsonShapeDensity = json["density"];
+    JSONObject &jsonShapeFriction = json["friction"];
+    JSONObject &jsonShapeRestitution = json["restitution"];
+    JSONObject &jsonShapeSensor = json["isSensor"];
+    if (isLoad) {
+        setPosition(jsonPosition.get<glm::vec2>());
+        setAngle(jsonAngle.get<float>());
+        setLinearVelocity(jsonLinearVelocity.get<glm::vec2>());
+        setAngularVelocity(jsonAngularVelocity.get<float>());
+        setLinearDamping(jsonLinearDamping.get<float>());
+        setAngularDamping(jsonAngularDamping.get<float>());
+        setSleepAllowed(jsonSleepAllowed.get<bool>());
+        setAwake(jsonAwake.get<bool>());
+        setFixedRotation(jsonFixedRotation.get<bool>());
+        setBullet(jsonBullet.get<bool>());
+        setType(jsonType.get<BodyType>());
+        setActive(jsonActive.get<bool>());
+        setGravityScale(jsonGravityScale.get<float>());
+
+        setBoxShapeSize(jsonBoxShape.get<glm::vec2>());
+        setShapeDensity(jsonShapeDensity.get<float>());
+        setShapeFriction(jsonShapeFriction.get<float>());
+        setShapeRestitution(jsonShapeRestitution.get<float>());
+        setShapeSensor(jsonShapeSensor.get<bool>());
+    }
+    else {
+        jsonPosition = getPosition();
+        jsonAngle = getAngle();
+        jsonLinearVelocity = getLinearVelocity();
+        jsonAngularVelocity = getAngularVelocity();
+        jsonLinearDamping = getLinearDamping();
+        jsonAngularDamping = getAngularDamping();
+        jsonSleepAllowed = isSleepAllowed();
+        jsonAwake = isAwake();
+        jsonFixedRotation = isFixedRotation();
+        jsonBullet = isBullet();
+        jsonType = getType();
+        jsonActive = isActive();
+        jsonGravityScale = getGravityScale();
+
+        jsonBoxShape = getBoxShapeSize();
+        jsonShapeDensity = getShapeDensity();
+        jsonShapeFriction = getShapeFriction();
+        jsonShapeRestitution = getShapeRestitution();
+        jsonShapeSensor = isShapeSensor();
+    }
 }
 
 void BodyComponent::setPosition(const glm::vec2 &pos) {
@@ -68,7 +132,7 @@ void BodyComponent::setGravityScale(float scale) {
     mBody->SetGravityScale(scale);
 }
 
-void BodyComponent::setBoxShape(const glm::vec2& size) {
+void BodyComponent::setBoxShapeSize(const glm::vec2& size) {
     mBoxShapeSize = size;
     b2PolygonShape shape;
     shape.SetAsBox(size.x, size.y);
@@ -105,7 +169,7 @@ const glm::vec2& BodyComponent::getBoxShapeSize() const {
     return mBoxShapeSize;
 }
 
-const glm::vec2 &BodyComponent::getPosition() const {
+glm::vec2 BodyComponent::getPosition() const {
     return fromBox2D(mBody->GetPosition());
 }
 
@@ -113,7 +177,7 @@ float BodyComponent::getAngle() const {
     return mBody->GetAngle();
 }
 
-const glm::vec2 &BodyComponent::getLinearVelocity() const {
+glm::vec2 BodyComponent::getLinearVelocity() const {
     return fromBox2D(mBody->GetLinearVelocity());
 }
 
@@ -217,19 +281,25 @@ void ContactListener::EndContact(b2Contact *contact) {
     b->SetUserData(nullptr);
 }
 
-BodySystem::BodySystem(Engine &engine) : AECSSystem(engine), mWorld(b2Vec2(0, 0)) {
-    mWorld.SetContactListener(&mContactListener);
+BodySystem::BodySystem(Engine &engine) : AECSSystem(engine) {
 }
 
 void BodySystem::onInitialize() {
     mSceneSystem.registerComponentType<BodyComponent>();
+
+    mWorld = new b2World(b2Vec2(0, 0));
+    mWorld->SetContactListener(&mContactListener);
+}
+
+void BodySystem::onShutdown() {
+    HD_DELETE(mWorld);
 }
 
 void BodySystem::onCreateComponent(AECSComponent* component, uint64_t typeHash, const HEntity &entity) {
     if (typeHash == typeid(BodyComponent).hash_code()) {
         BodyComponent *body = static_cast<BodyComponent*>(component);
         b2BodyDef bd;
-        body->mBody = mWorld.CreateBody(&bd);
+        body->mBody = mWorld->CreateBody(&bd);
         body->mBody->SetUserData(reinterpret_cast<void*>(entity.value));
     }
 }
@@ -237,8 +307,25 @@ void BodySystem::onCreateComponent(AECSComponent* component, uint64_t typeHash, 
 void BodySystem::onDestroyComponent(AECSComponent* component, uint64_t typeHash, const HEntity &entity) {
     if (typeHash == typeid(BodyComponent).hash_code()) {
         BodyComponent *body = static_cast<BodyComponent*>(component);
-        mWorld.DestroyBody(body->mBody);
+        body->mBody->DestroyFixture(body->mFixture);
+        mWorld->DestroyBody(body->mBody);
     }
+}
+
+void BodySystem::onSaveLoad(JSONObject& json, bool isLoad) {
+    JSONObject &jsonGravity = json["gravity"];
+    if (isLoad) {
+        setGravity(jsonGravity.get<glm::vec2>());
+    }
+    else {
+        jsonGravity = getGravity();
+    }
+}
+
+void BodySystem::onClear() {
+    HD_DELETE(mWorld);
+    mWorld = new b2World(b2Vec2(0, 0));
+    mWorld->SetContactListener(&mContactListener);
 }
 
 void BodySystem::onFixedUpdate() {
@@ -253,15 +340,15 @@ void BodySystem::onFixedUpdate() {
             transform->setAngle(body->getAngle());
         }
     }
-    mWorld.Step(1.0f / 30.0f, 6, 2);
+    mWorld->Step(1.0f / 30.0f, 6, 2);
 }
 
 void BodySystem::setGravity(const glm::vec2 &gravity) {
-    mWorld.SetGravity(toBox2D(gravity));
+    mWorld->SetGravity(toBox2D(gravity));
 }
 
-const glm::vec2 &BodySystem::getGravity() const {
-    return fromBox2D(mWorld.GetGravity());
+glm::vec2 BodySystem::getGravity() const {
+    return fromBox2D(mWorld->GetGravity());
 }
 
 }

@@ -1,9 +1,16 @@
 #include "SceneSystem.hpp"
 #include "TransformComponent.hpp"
+#include "hd/Core/hdStringUtils.hpp"
 #include "hd/IO/hdFileStream.hpp"
 #include <string>
 
 namespace hg2d {
+
+AECSComponent::AECSComponent(Engine &engine) : AEngineObject(engine) {
+}
+
+void AECSComponent::onSaveLoad(JSONObject &json, bool isLoad) {
+}
 
 AECSSystem::AECSSystem(Engine &engine) : AEngineObject(engine) {
 }
@@ -21,6 +28,12 @@ void AECSSystem::onCreateComponent(AECSComponent *component, uint64_t typeHash, 
 }
 
 void AECSSystem::onDestroyComponent(AECSComponent *component, uint64_t typeHash, const HEntity &entity) {
+}
+
+void AECSSystem::onSaveLoad(JSONObject &json, bool isLoad) {
+}
+
+void AECSSystem::onClear() {
 }
 
 void AECSSystem::onFixedUpdate() {
@@ -74,22 +87,96 @@ void SceneSystem::onDraw() {
     }
 }
 
-HEntity SceneSystem::createEntity() {
-    HEntity handle(mEntities.size());
-    mEntities.push_back(handle);
-    for (auto &components : mComponentsMap) {
-        components.second.push_back(nullptr);
+void SceneSystem::clear() {
+    for (auto entity : mEntities) {
+        destroyEntity(entity);
     }
-    return handle;
+    mEntities.clear();
+    mComponentsMap.clear();
+    for (auto &system : mSystems) {
+        system.second.second->onClear();
+    }
+}
+
+void SceneSystem::save(const std::string& name) {
+    std::string path = "data/levels/" + name;
+    JSONObject json;
+
+    JSONObject &jsonSystems = json["systems"];
+    for (auto &system : mSystems) {
+        JSONObject &jsonSystem = jsonSystems[std::to_string(system.first)];
+        jsonSystem["name"] = system.second.first;
+        system.second.second->onSaveLoad(jsonSystem["data"], false);
+    }
+
+    JSONObject &jsonEntities = json["entities"];
+    for (size_t i = 0; i < mEntities.size(); i++) {
+        HEntity entity = mEntities.at(i);
+        if (entity) {
+            JSONObject &jsonEntity = jsonEntities[std::to_string(entity.value)];
+            JSONObject &jsonComponents = jsonEntity["components"];
+            for (auto &components : mComponentsMap) {
+                AECSComponent *component = components.second.at(entity.value);
+                JSONObject &jsonComponent = jsonComponents[std::to_string(components.first)];
+                jsonComponent["name"] = mComponentTypes.at(components.first).first;
+                if (component) {
+                    component->onSaveLoad(jsonComponent["data"], false);
+                }
+                else {
+                    jsonComponent["data"] = nullptr;
+                }
+            }
+        }
+    }
+
+    hd::FileWriter(path).writeString(json.dump(4));
+}
+
+void SceneSystem::load(const std::string& name) {
+    clear();
+
+    std::string path = "data/levels/" + name;
+    JSONObject json = JSONObject::parse(hd::FileReader(path).readAllText());
+
+    JSONObject &jsonSystems = json["systems"];
+    for (auto &jsonSystem : jsonSystems.items()) {
+        uint64_t typeHash = hd::StringUtils::toUint64(jsonSystem.key());
+        if (mSystems.count(typeHash) != 0) {
+            AECSSystem *system = mSystems.at(typeHash).second;
+            JSONObject &jsonData = jsonSystem.value()["data"];
+            if (!jsonData.is_null()) {
+                system->onSaveLoad(jsonData, true);
+            }
+        }
+    }
+
+    JSONObject &jsonEntities = json["entities"];
+    for (auto &jsonEntity : jsonEntities.items()) {
+        HEntity entity = mCreateEntity(hd::StringUtils::toUint64(jsonEntity.key()));
+        JSONObject &jsonComponents = jsonEntity.value()["components"];
+        for (auto &jsonComponent : jsonComponents.items()) {
+            AECSComponent *component = createComponent(entity, hd::StringUtils::toUint64(jsonComponent.key()));
+            JSONObject &jsonData = jsonComponent.value()["data"];
+            if (!jsonData.is_null()) {
+                component->onSaveLoad(jsonData, true);
+            }
+        }
+    }
+}
+
+HEntity SceneSystem::createEntity() {
+    return mCreateEntity(mEntities.size());
 }
 
 void SceneSystem::destroyEntity(HEntity &handle) {
-    mEntities.at(handle.value).invalidate();
-    for (auto &components : mComponentsMap) {
-        AECSComponent *&component = components.second.at(handle.value);
-        mDestroyComponent(component, components.first, handle);
+    if (handle) {
+        mEntities.at(handle.value).invalidate();
+        for (auto &components : mComponentsMap) {
+            AECSComponent *&component = components.second.at(handle.value);
+            mDestroyComponent(component, components.first, handle);
+        }
+        handle.invalidate();
     }
-    handle.invalidate();
 }
 
 AECSComponent* SceneSystem::createComponent(HEntity& handle, uint64_t typeHash) {
@@ -106,6 +193,21 @@ const std::map<uint64_t, std::vector<AECSComponent*>> &SceneSystem::getComponent
 
 const std::map<uint64_t, std::pair<std::string, AECSSystem*>> &SceneSystem::getSystems() const {
    return mSystems;
+}
+
+HEntity SceneSystem::mCreateEntity(uint64_t idx) {
+    while (idx > mEntities.size()) {
+        mEntities.push_back(HEntity(mEntities.size()));
+        for (auto &components : mComponentsMap) {
+            components.second.push_back(nullptr);
+        }
+    }
+    HEntity handle(idx);
+    mEntities.push_back(handle);
+    for (auto &components : mComponentsMap) {
+        components.second.push_back(nullptr);
+    }
+    return handle;
 }
 
 AECSComponent* SceneSystem::mCreateComponent(HEntity& handle, uint64_t typeHash, const std::string& typeName) {

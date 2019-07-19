@@ -6,7 +6,9 @@ namespace hg2d {
 
 class TransformComponent final : public AECSComponent {
 public:
-    TransformComponent();
+    TransformComponent(Engine &engine);
+
+    virtual void onSaveLoad(JSONObject &json, bool isLoad) override;
 
     void translate(const glm::vec2 &offset);
     void scale(const glm::vec2 &scale);

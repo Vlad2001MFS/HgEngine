@@ -8,7 +8,9 @@ struct Texture;
 
 class SpriteComponent final : public AECSComponent {
 public:
-    SpriteComponent();
+    SpriteComponent(Engine &engine);
+
+    virtual void onSaveLoad(JSONObject &json, bool isLoad) override;
 
     void setTexture(const Texture *texture);
 

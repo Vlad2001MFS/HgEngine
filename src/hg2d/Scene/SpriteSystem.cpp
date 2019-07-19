@@ -1,11 +1,27 @@
 #include "SpriteSystem.hpp"
 #include "TransformComponent.hpp"
 #include "../Renderer/RenderSystem.hpp"
+#include "../Cache/CacheSystem.hpp"
 
 namespace hg2d {
 
-SpriteComponent::SpriteComponent() {
+SpriteComponent::SpriteComponent(Engine &engine) : AECSComponent(engine) {
     mTexture = nullptr;
+}
+
+void SpriteComponent::onSaveLoad(JSONObject& json, bool isLoad) {
+    JSONObject &jsonPath = json["texturePath"];
+    if (isLoad) {
+        if (!jsonPath.is_null()) {
+            setTexture(mCacheSystem.loadTexture(jsonPath.get<std::string>()));
+        }
+    }
+    else {
+        std::string path = mRenderSystem.getTexturePath(getTexture());
+        if (!path.empty()) {
+            jsonPath = path;
+        }
+    }
 }
 
 void SpriteComponent::setTexture(const Texture* texture) {

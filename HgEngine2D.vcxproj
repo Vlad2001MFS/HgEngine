@@ -19,11 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\3rd\include\b2dJson\b2dJson.h" />
-    <ClInclude Include="src\3rd\include\b2dJson\b2dJsonImage.h" />
-    <ClInclude Include="src\3rd\include\b2dJson\bitmap.h" />
-    <ClInclude Include="src\3rd\include\b2dJson\json\json-forwards.h" />
-    <ClInclude Include="src\3rd\include\b2dJson\json\json.h" />
     <ClInclude Include="src\3rd\include\Box2D\Box2D.h" />
     <ClInclude Include="src\3rd\include\Box2D\Collision\b2BroadPhase.h" />
     <ClInclude Include="src\3rd\include\Box2D\Collision\b2Collision.h" />
@@ -71,10 +66,12 @@
     <ClInclude Include="src\3rd\include\Box2D\Dynamics\Joints\b2WeldJoint.h" />
     <ClInclude Include="src\3rd\include\Box2D\Dynamics\Joints\b2WheelJoint.h" />
     <ClInclude Include="src\3rd\include\Box2D\Rope\b2Rope.h" />
+    <ClInclude Include="src\3rd\include\json\json.hpp" />
     <ClInclude Include="src\hg2d\Cache\CacheSystem.hpp" />
     <ClInclude Include="src\hg2d\Core\AEngineObject.hpp" />
     <ClInclude Include="src\hg2d\Core\BuildConfig.hpp" />
     <ClInclude Include="src\hg2d\Core\Engine.hpp" />
+    <ClInclude Include="src\hg2d\Core\JSONObject.hpp" />
     <ClInclude Include="src\hg2d\GameState\AGameState.hpp" />
     <ClInclude Include="src\hg2d\GameState\GameStateSystem.hpp" />
     <ClInclude Include="src\hg2d\GUI\AGUIWidget.hpp" />
@@ -91,12 +88,10 @@
     <ClInclude Include="src\hg2d\Sound\SoundSystem.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\3rd\include\b2dJson\b2dJson.cpp" />
-    <ClCompile Include="src\3rd\include\b2dJson\b2dJsonImage.cpp" />
-    <ClCompile Include="src\3rd\include\b2dJson\jsoncpp.cpp" />
     <ClCompile Include="src\hg2d\Cache\CacheSystem.cpp" />
     <ClCompile Include="src\hg2d\Core\AEngineObject.cpp" />
     <ClCompile Include="src\hg2d\Core\Engine.cpp" />
+    <ClCompile Include="src\hg2d\Core\JSONObject.cpp" />
     <ClCompile Include="src\hg2d\GameState\AGameState.cpp" />
     <ClCompile Include="src\hg2d\GameState\GameStateSystem.cpp" />
     <ClCompile Include="src\hg2d\GUI\AGUIWidget.cpp" />

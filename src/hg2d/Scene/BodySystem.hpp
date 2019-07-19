@@ -20,7 +20,9 @@ struct CollisionInfo {
 class BodyComponent final : public AECSComponent {
     friend class BodySystem;
 public:
-    BodyComponent();
+    BodyComponent(Engine &engine);
+
+    virtual void onSaveLoad(JSONObject &json, bool isLoad) override;
     
     void setPosition(const glm::vec2 &pos);
     void setAngle(float angle);
@@ -36,16 +38,16 @@ public:
     void setActive(bool active);
     void setGravityScale(float scale);
 
-    void setBoxShape(const glm::vec2 &size);
+    void setBoxShapeSize(const glm::vec2 &size);
     void setShapeDensity(float density);
     void setShapeFriction(float friction);
     void setShapeRestitution(float restitution);
     void setShapeSensor(bool sensor);
 
     const glm::vec2 &getBoxShapeSize() const;
-    const glm::vec2 &getPosition() const;
+    glm::vec2 getPosition() const;
     float getAngle() const;
-    const glm::vec2 &getLinearVelocity() const;
+    glm::vec2 getLinearVelocity() const;
     float getAngularVelocity() const;
     float getLinearDamping() const;
     float getAngularDamping() const;
@@ -82,16 +84,19 @@ public:
     BodySystem(Engine &engine);
 
     virtual void onInitialize() override;
+    virtual void onShutdown() override;
     virtual void onCreateComponent(AECSComponent *component, uint64_t typeHash, const HEntity &entity) override;
     virtual void onDestroyComponent(AECSComponent *component, uint64_t typeHash, const HEntity &entity) override;
+    virtual void onSaveLoad(JSONObject &json, bool isLoad) override;
+    virtual void onClear() override;
     virtual void onFixedUpdate() override;
 
     void setGravity(const glm::vec2 &gravity);
 
-    const glm::vec2 &getGravity() const;
+    glm::vec2 getGravity() const;
 
 private:
-    b2World mWorld;
+    b2World *mWorld;
     ContactListener mContactListener;
 };
 

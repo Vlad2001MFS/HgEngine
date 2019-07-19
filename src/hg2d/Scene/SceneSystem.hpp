@@ -1,4 +1,5 @@
 #pragma once
+#include "../Core/JSONObject.hpp"
 #include "../Core/AEngineObject.hpp"
 #include "hd/Core/hdHandle.hpp"
 #include "hd/Core/hdCommon.hpp"
@@ -12,10 +13,12 @@ namespace hg2d {
 
 using HEntity = hd::Handle<uint64_t, struct TAG_HEntity, UINT64_MAX>;
 
-class AECSComponent {
+class AECSComponent : public AEngineObject {
 public:
-    AECSComponent() = default;
+    AECSComponent(Engine &engine);
     virtual ~AECSComponent() = default;
+
+    virtual void onSaveLoad(JSONObject &json, bool isLoad);
 };
 
 class AECSSystem : public AEngineObject {
@@ -28,6 +31,8 @@ public:
     virtual void onEvent(const hd::WindowEvent &event);
     virtual void onCreateComponent(AECSComponent *component, uint64_t typeHash, const HEntity &entity);
     virtual void onDestroyComponent(AECSComponent *component, uint64_t typeHash, const HEntity &entity);
+    virtual void onSaveLoad(JSONObject &json, bool isLoad);
+    virtual void onClear();
     virtual void onFixedUpdate();
     virtual void onUpdate();
     virtual void onDraw();
@@ -44,6 +49,10 @@ public:
     void onUpdate();
     void onDraw();
 
+    void clear();
+    void save(const std::string &name);
+    void load(const std::string &name);
+
     HEntity createEntity();
     void destroyEntity(HEntity &handle);
 
@@ -53,7 +62,7 @@ public:
         const char *typeName = typeInfo.name();
         uint64_t typeHash = typeInfo.hash_code();
         if (mComponentTypes.count(typeHash) == 0) {
-            mComponentTypes.insert(std::make_pair(typeHash, std::make_pair(typeName, []() { return new T(); })));
+            mComponentTypes.insert(std::make_pair(typeHash, std::make_pair(typeName, [&]() { return new T(mEngine); })));
         }
     }
 
@@ -147,6 +156,7 @@ public:
     const std::map<uint64_t, std::pair<std::string, AECSSystem*>> &getSystems() const;
 
 private:
+    HEntity mCreateEntity(uint64_t idx);
     AECSComponent *mCreateComponent(HEntity& handle, uint64_t typeHash, const std::string &typeName);
     void mDestroyComponent(AECSComponent *&component, uint64_t typeHash, const HEntity &entity);
     void mDestroySystem(AECSSystem *&system);
