@@ -4,6 +4,7 @@
 namespace hg2d {
 
 GameStateSystem::GameStateSystem(Engine &engine) : AEngineObject(engine) {
+    mCurrentState = nullptr;
 }
 
 void GameStateSystem::onInitialize() {
@@ -26,63 +27,59 @@ void GameStateSystem::destroyState(const std::string &name) {
     }
 }
 
-void GameStateSystem::pushState(const std::string& name) {
-    auto it = mStates.find(name);
-    if (it != mStates.end()) {
-        if (mStateStack.empty() || mStateStack.top() != it->second) {
-            mStateStack.push(it->second);
+void GameStateSystem::setState(const std::string& name) {
+    if (name.empty()) {
+        mCurrentState = nullptr;
+    }
+    else {
+        auto it = mStates.find(name);
+        if (it != mStates.end()) {
+            if (mCurrentState != it->second) {
+                mCurrentState = it->second;
+            }
+            else {
+                HD_LOG_WARNING("Failed to set GameState. The GameState '%s' already current state", name.data());
+            }
         }
         else {
-            HD_LOG_WARNING("Failed to push GameState. The GameState '%s' already on top of the stack of states", name.data());
+            HD_LOG_WARNING("Failed to set GameState. The GameState '%s' not registered at GameStateSystem", name.data());
         }
-    }
-    else {
-        HD_LOG_WARNING("Failed to push GameState. The GameState '%s' not registered at GameStateSystem", name.data());
-    }
-}
-
-void GameStateSystem::popState() {
-    if (mStateStack.size() > 1) {
-        mStateStack.pop();
-    }
-    else {
-        HD_LOG_WARNING("Failed to pop GameState. Impossible to pop the last GameState from stack of states");
     }
 }
 
 void GameStateSystem::onEvent(const hd::WindowEvent &event) {
-    if (!mStateStack.empty()) {
-        mStateStack.top()->onEvent(event);
+    if (mCurrentState) {
+        mCurrentState->onEvent(event);
     }
     else {
-        HD_LOG_WARNING("The stack of GameStates is empty!");
+        HD_LOG_WARNING("Current GameState is nullptr!");
     }
 }
 
 void GameStateSystem::onFixedUpdate() {
-    if (!mStateStack.empty()) {
-        mStateStack.top()->onFixedUpdate();
+    if (mCurrentState) {
+        mCurrentState->onFixedUpdate();
     }
     else {
-        HD_LOG_WARNING("The stack of GameStates is empty!");
+        HD_LOG_WARNING("Current GameState is nullptr!");
     }
 }
 
 void GameStateSystem::onUpdate() {
-    if (!mStateStack.empty()) {
-        mStateStack.top()->onUpdate();
+    if (mCurrentState) {
+        mCurrentState->onUpdate();
     }
     else {
-        HD_LOG_WARNING("The stack of GameStates is empty!");
+        HD_LOG_WARNING("Current GameState is nullptr!");
     }
 }
 
 void GameStateSystem::onDraw() {
-    if (!mStateStack.empty()) {
-        mStateStack.top()->onDraw();
+    if (mCurrentState) {
+        mCurrentState->onDraw();
     }
     else {
-        HD_LOG_WARNING("The stack of GameStates is empty!");
+        HD_LOG_WARNING("Current GameState is nullptr!");
     }
 }
 

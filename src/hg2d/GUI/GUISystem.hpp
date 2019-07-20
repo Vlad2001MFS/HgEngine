@@ -4,7 +4,6 @@
 #include "../Core/AEngineObject.hpp"
 #include "hd/System/hdWindowEvent.hpp"
 #include <map>
-#include <stack>
 
 namespace hg2d {
 
@@ -34,8 +33,7 @@ public:
     template<typename T, typename ...Args>
     T *createFrame(const std::string &name, Args &&...args) { T *frame = new T(mEngine, args...); mAddFrame(frame, name); return frame; }
     void destroyFrame(const std::string &name);
-    void pushFrame(const std::string &name);
-    void popFrame();
+    void setFrame(const std::string &name);
 
 private:
     void mAddFrame(AGUIWidget *frame, const std::string &name);
@@ -44,7 +42,7 @@ private:
     GUISkin mSkin;
     std::vector<Font*> mCreatedFonts;
     std::map<std::string, AGUIWidget*> mFrames;
-    std::stack<AGUIWidget*> mFrameStack;
+    AGUIWidget *mCurrentFrame;
 };
     
 }

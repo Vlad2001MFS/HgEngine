@@ -6,6 +6,7 @@
 namespace hg2d {
 
 GUISystem::GUISystem(Engine &engine) : AEngineObject(engine) {
+    mCurrentFrame = nullptr;
 }
 
 void GUISystem::onInitialize() {
@@ -71,51 +72,50 @@ void GUISystem::destroyFrame(const std::string &name) {
     }
 }
 
-void GUISystem::pushFrame(const std::string& name) {
-    auto it = mFrames.find(name);
-    if (it != mFrames.end()) {
-        if (mFrameStack.empty() || mFrameStack.top() != it->second) {
-            mFrameStack.push(it->second);
-        }
-        else {
-            HD_LOG_WARNING("Failed to push GUIFrame. The GUIFrame '%s' already on top of the stack of frames", name.data());
-        }
+void GUISystem::setFrame(const std::string& name) {
+    if (name.empty()) {
+        mCurrentFrame = nullptr;
     }
     else {
-        HD_LOG_WARNING("Failed to push GUIFrame. The GUIFrame '%s' not registered at GUISystem", name.data());
-    }
-}
-
-void GUISystem::popFrame() {
-    if (mFrameStack.size() > 1) {
-        mFrameStack.pop();
+        auto it = mFrames.find(name);
+        if (it != mFrames.end()) {
+            if (mCurrentFrame != it->second) {
+                mCurrentFrame = it->second;
+            }
+            else {
+                HD_LOG_WARNING("Failed to set GUIFrame. The GUIFrame '%s' already current frame", name.data());
+            }
+        }
+        else {
+            HD_LOG_WARNING("Failed to set GUIFrame. The GUIFrame '%s' not registered at GUISystem", name.data());
+        }
     }
 }
 
 void GUISystem::onEvent(const hd::WindowEvent &event) {
-    if (!mFrameStack.empty()) {
+    if (mCurrentFrame) {
         if (event.type == hd::WindowEventType::Resize) {
-            mFrameStack.top()->setSize(event.resize.width, event.resize.height);
+            mCurrentFrame->setSize(event.resize.width, event.resize.height);
         }
-        mFrameStack.top()->_onEvent(event);
+        mCurrentFrame->_onEvent(event);
     }
 }
 
 void GUISystem::onFixedUpdate() {
-    if (!mFrameStack.empty()) {
-        mFrameStack.top()->_onFixedUpdate();
+    if (mCurrentFrame) {
+        mCurrentFrame->_onFixedUpdate();
     }
 }
 
 void GUISystem::onUpdate() {
-    if (!mFrameStack.empty()) {
-        mFrameStack.top()->_onUpdate();
+    if (mCurrentFrame) {
+        mCurrentFrame->_onUpdate();
     }
 }
 
 void GUISystem::onDraw() {
-    if (!mFrameStack.empty()) {
-        mFrameStack.top()->_onDraw();
+    if (mCurrentFrame) {
+        mCurrentFrame->_onDraw();
     }
 }
 

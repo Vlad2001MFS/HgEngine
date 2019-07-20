@@ -3,7 +3,6 @@
 #include "../Core/AEngineObject.hpp"
 #include <string>
 #include <map>
-#include <stack>
 
 namespace hg2d {
 
@@ -21,15 +20,14 @@ public:
     template<typename T, typename ...Args>
     void createState(const std::string &name, Args &&...args) { mAddState(new T(mEngine, args...), name); }
     void destroyState(const std::string &name);
-    void pushState(const std::string &name);
-    void popState();
+    void setState(const std::string &name);
 
 private:
     void mAddState(AGameState *state, const std::string &name);
     void mDestroyState(AGameState *&state);
 
     std::map<std::string, AGameState*> mStates;
-    std::stack<AGameState*> mStateStack;
+    AGameState *mCurrentState;
 };
 
 }
