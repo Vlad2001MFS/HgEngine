@@ -95,7 +95,9 @@ void GUISystem::setFrame(const std::string& name) {
 void GUISystem::onEvent(const hd::WindowEvent &event) {
     if (mCurrentFrame) {
         if (event.type == hd::WindowEventType::Resize) {
-            mCurrentFrame->setSize(event.resize.width, event.resize.height);
+            for (auto &frame : mFrames) {
+                frame.second->setSize(event.resize.width, event.resize.height);
+            }
         }
         mCurrentFrame->_onEvent(event);
     }
