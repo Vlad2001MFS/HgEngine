@@ -274,8 +274,8 @@ void RenderSystem::onDraw() {
 
     glBindVertexBuffer(0, impl->vertexBuffer, 0, sizeof(Vertex));
     impl->cbData.proj = impl->proj;
-    impl->cbData.view = glm::lookAtLH(glm::vec3(0, 0, -20), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
     for (const auto &rop : mRenderOps) {
+        impl->cbData.view = glm::translate(-rop.camPos)*glm::rotate(-rop.camAngle, glm::vec3(0, 0, 1));
         impl->cbData.world = glm::translate(glm::vec3(rop.pos, 0))*glm::rotate(rop.angle, glm::vec3(0, 0, 1))*glm::scale(glm::vec3(rop.size, 1.0f));
         impl->cbData.uvOffset = rop.uvOffset;
         impl->cbData.uvSize = rop.uvSize;

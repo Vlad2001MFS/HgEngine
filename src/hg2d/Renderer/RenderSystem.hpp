@@ -12,16 +12,18 @@ namespace hg2d {
 struct Texture;
 
 struct RenderOp {
-    RenderOp() : pos(0, 0), size(1, 1), uvOffset(0, 0), uvSize(1, 1) {
+    RenderOp() : camPos(0, 0, 0), pos(0, 0), size(1, 1), uvOffset(0, 0), uvSize(1, 1) {
         this->texture = nullptr;
         this->angle = 0.0f;
+        this->camAngle = 0.0f;
         this->isGUI = false;
     }
 
+    glm::vec3 camPos;
     const Texture *texture;
     glm::vec2 pos, size;
     glm::vec2 uvOffset, uvSize;
-    float angle;
+    float angle, camAngle;
     bool isGUI;
 };
 
