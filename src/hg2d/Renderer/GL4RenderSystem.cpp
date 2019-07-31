@@ -263,7 +263,7 @@ void RenderSystem::onEvent(const hd::WindowEvent &event) {
 }
 
 void RenderSystem::onDraw() {
-    const float clearColor[] = { 0.5f, 0.5f, 1.0f, 1.0f };
+    const float clearColor[] = { 0.0f, 0.0f, 0.0f, 1.0f };
     glClearBufferfv(GL_COLOR, 0, clearColor);
 
     glEnable(GL_BLEND);
