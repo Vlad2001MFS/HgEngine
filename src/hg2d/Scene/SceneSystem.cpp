@@ -135,13 +135,10 @@ void SceneSystem::save(const std::string& name) {
             JSONObject &jsonComponents = jsonEntity["components"];
             for (auto &components : mComponentsMap) {
                 AECSComponent *component = components.second.at(entity.value);
-                JSONObject &jsonComponent = jsonComponents[std::to_string(components.first)];
-                jsonComponent["name"] = mComponentTypes.at(components.first).first;
                 if (component) {
+                    JSONObject &jsonComponent = jsonComponents[std::to_string(components.first)];
+                    jsonComponent["name"] = mComponentTypes.at(components.first).first;
                     component->onSaveLoad(jsonComponent["data"], false);
-                }
-                else {
-                    jsonComponent["data"] = nullptr;
                 }
             }
         }
