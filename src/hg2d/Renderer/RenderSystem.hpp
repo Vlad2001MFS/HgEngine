@@ -40,6 +40,7 @@ public:
     Texture *createTexture(const void *data, uint32_t w, uint32_t h);
     Texture *createTexture(const hd::Image &img);
     Texture *createTextureFromFile(const std::string &path);
+    Texture *createTextureFromColor(const hd::Color4 &color);
     void destroyTexture(Texture *&texture);
     const glm::ivec2 &getTextureSize(const Texture *texture) const;
     const std::string &getTexturePath(const Texture *texture) const;

@@ -324,6 +324,10 @@ Texture *RenderSystem::createTextureFromFile(const std::string &path) {
     return createTexture(hd::Image("data/textures/" + path));
 }
 
+Texture *RenderSystem::createTextureFromColor(const hd::Color4 &color) {
+    return createTexture(&color, 1, 1);
+}
+
 void RenderSystem::destroyTexture(Texture *&texture) {
     if (!texture) {
         HD_LOG_WARNING("Failed to destroy Texture. The texture is nullptr");
