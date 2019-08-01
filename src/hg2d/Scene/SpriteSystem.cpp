@@ -73,6 +73,12 @@ void SpriteSystem::onSaveLoad(JSONObject& json, bool isLoad) {
     }
 }
 
+void SpriteSystem::onClear() {
+    mCameraEntity.invalidate();
+    mTransformComponent = nullptr;
+    mCameraComponent = nullptr;
+}
+
 void SpriteSystem::onDraw() {
     if (!mTransformComponent || !mCameraComponent) {
         HD_LOG_WARNING("No camera entity. Please use setCameraEntity method to set entity with CameraComponent");

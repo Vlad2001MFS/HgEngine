@@ -39,6 +39,7 @@ public:
 
     virtual void onInitialize() override;
     virtual void onSaveLoad(JSONObject &json, bool isLoad) override;
+    virtual void onClear() override;
     virtual void onDraw() override;
 
     void setCameraEntity(const HEntity &handle);
