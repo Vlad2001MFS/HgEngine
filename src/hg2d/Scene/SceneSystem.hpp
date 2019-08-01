@@ -86,7 +86,7 @@ public:
         uint64_t typeHash = typeInfo.hash_code();
         if (handle && handle.value < mEntities.size() && mComponentsMap.count(typeHash) != 0) {
             AECSComponent *&component = mComponentsMap.at(typeHash).at(handle.value);
-            mDestroyComponent(component, handle);
+            mDestroyComponent(component, typeHash, handle);
         }
     }
 
