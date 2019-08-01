@@ -17,9 +17,8 @@ void SpriteComponent::onSaveLoad(JSONObject& json, bool isLoad) {
         }
     }
     else {
-        std::string path = mRenderSystem.getTexturePath(getTexture());
-        if (!path.empty()) {
-            jsonPath = path;
+        if (getTexture()) {
+            jsonPath = mRenderSystem.getTexturePath(getTexture());
         }
     }
 }
@@ -80,8 +79,22 @@ void SpriteSystem::onClear() {
 }
 
 void SpriteSystem::onDraw() {
-    if (!mTransformComponent || !mCameraComponent) {
+    if (!mCameraEntity) {
         HD_LOG_WARNING("No camera entity. Please use setCameraEntity method to set entity with CameraComponent");
+    }
+    else {
+        if (!mTransformComponent) {
+            mTransformComponent = mSceneSystem.getComponent<TransformComponent>(mCameraEntity);
+            if (!mTransformComponent) {
+                HD_LOG_WARNING("Not found TransformComponent on camera entity");
+            }
+        }
+        if (!mCameraComponent) {
+            mCameraComponent = mSceneSystem.getComponent<CameraComponent>(mCameraEntity);
+            if (!mTransformComponent) {
+                HD_LOG_WARNING("Not found CameraComponent on camera entity");
+            }
+        }
     }
 
     const std::vector<TransformComponent*> &transforms = mSceneSystem.getComponents<TransformComponent>();
@@ -105,24 +118,13 @@ void SpriteSystem::onDraw() {
 }
 
 void SpriteSystem::setCameraEntity(const HEntity& handle) {
-    TransformComponent *transform = mSceneSystem.getComponent<TransformComponent>(handle);
-    CameraComponent *camera = mSceneSystem.getComponent<CameraComponent>(handle);
-    if (!transform) {
-        HD_LOG_WARNING("Failed to set camera entity. The entity '%dll' hasn't TransformComponent", handle.value);
-    }
-    if (!camera) {
-        HD_LOG_WARNING("Failed to set camera entity. The entity '%dll' hasn't CameraComponent", handle.value);
-    }
-
-    if (transform && camera) {
+    if (handle) {
         mCameraEntity = handle;
-        mTransformComponent = transform;
-        mCameraComponent = camera;
+        mTransformComponent = mSceneSystem.getComponent<TransformComponent>(handle);
+        mCameraComponent = mSceneSystem.getComponent<CameraComponent>(handle);
     }
     else {
-        mCameraEntity.invalidate();
-        mTransformComponent = nullptr;
-        mCameraComponent = nullptr;
+        HD_LOG_WARNING("Failed to set invalid entity as camera");
     }
 }
 
