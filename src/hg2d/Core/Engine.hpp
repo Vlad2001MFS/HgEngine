@@ -24,9 +24,9 @@ struct GUISystemCreateInfo {
     uint32_t fontSize = 16;
     bool monospacedFont = true;
     hd::Color4 fontColor = hd::Color4::White;
-    std::string buttonTexturePath = "button.png";
-    std::string hoveredButtonTexturePath = "hoveredButton.png";
-    std::string clickedButtonTexturePath = "clickedButton.png";
+    std::string buttonTexturePath = "gui/button.png";
+    std::string hoveredButtonTexturePath = "gui/hoveredButton.png";
+    std::string clickedButtonTexturePath = "gui/clickedButton.png";
     int alignSpaceX = 10;
     int alignSpaceY = 10;
 };
