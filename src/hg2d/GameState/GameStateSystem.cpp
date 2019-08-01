@@ -124,11 +124,8 @@ void GameStateSystem::mDestroyState(AGameState *&state) {
 }
 
 void GameStateSystem::mSetState(AGameState *state) {
-	if (mCurrentState) {
-		mCurrentState->onChangeCurrentState(state);
-	}
+	state->onChangeCurrentState(mCurrentState);
 	mCurrentState = state;
-	state->onChangeCurrentState(state);
 }
 
 }
