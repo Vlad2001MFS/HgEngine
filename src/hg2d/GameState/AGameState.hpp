@@ -14,6 +14,7 @@ public:
     virtual void onInitialize();
     virtual void onShutdown();
     virtual void onEvent(const hd::WindowEvent &event);
+	virtual void onChangeCurrentState(AGameState *newState);
     virtual void onFixedUpdate();
     virtual void onUpdate();
     virtual void onDraw();

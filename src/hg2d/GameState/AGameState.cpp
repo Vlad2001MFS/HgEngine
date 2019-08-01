@@ -14,6 +14,9 @@ void AGameState::onShutdown() {
 void AGameState::onEvent(const hd::WindowEvent &event) {
 }
 
+void AGameState::onChangeCurrentState(AGameState *newState) {
+}
+
 void AGameState::onFixedUpdate() {
 }
 

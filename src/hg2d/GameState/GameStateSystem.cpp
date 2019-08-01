@@ -28,14 +28,11 @@ void GameStateSystem::destroyState(const std::string &name) {
 }
 
 void GameStateSystem::setState(const std::string& name) {
-    if (name.empty()) {
-        mCurrentState = nullptr;
-    }
-    else {
-        auto it = mStates.find(name);
+    if (!name.empty()) {
+		auto it = mStates.find(name);
         if (it != mStates.end()) {
             if (mCurrentState != it->second) {
-                mCurrentState = it->second;
+                mSetState(it->second);
             }
             else {
                 HD_LOG_WARNING("Failed to set GameState. The GameState '%s' already current state", name.data());
@@ -45,6 +42,26 @@ void GameStateSystem::setState(const std::string& name) {
             HD_LOG_WARNING("Failed to set GameState. The GameState '%s' not registered at GameStateSystem", name.data());
         }
     }
+	else {
+		HD_LOG_ERROR("Failed to set GameState without name");
+	}
+}
+
+AGameState *GameStateSystem::getState(const std::string &name) const {
+	if (!name.empty()) {
+		auto it = mStates.find(name);
+		if (it != mStates.end()) {
+			return it->second;
+		}
+		else {
+			HD_LOG_WARNING("Failed to get GameState. The GameState '%s' not registered at GameStateSystem", name.data());
+			return nullptr;
+		}
+	}
+	else {
+		HD_LOG_WARNING("Try to get GameState with empty name");
+		return nullptr;
+	}
 }
 
 void GameStateSystem::onEvent(const hd::WindowEvent &event) {
@@ -104,6 +121,14 @@ void GameStateSystem::mAddState(AGameState *state, const std::string &name) {
 void GameStateSystem::mDestroyState(AGameState *&state) {
     state->onShutdown();
     HD_DELETE(state);
+}
+
+void GameStateSystem::mSetState(AGameState *state) {
+	if (mCurrentState) {
+		mCurrentState->onChangeCurrentState(state);
+	}
+	mCurrentState = state;
+	state->onChangeCurrentState(state);
 }
 
 }
