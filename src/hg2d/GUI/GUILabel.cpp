@@ -4,7 +4,7 @@
 
 namespace hg2d {
 
-GUILabel::GUILabel(Engine &engine) : AGUIWidget(engine) {
+GUILabel::GUILabel(Engine &engine) : AGUIWidget(engine), mIsUserSize(false, false) {
     mTexture = nullptr;
     mColor = mGUISystem.getSkin().fontColor;
 }
@@ -46,15 +46,30 @@ void GUILabel::onDraw() {
     }
 }
 
+void GUILabel::setSize(int x, int y) {
+    mIsUserSize.x = x != 0;
+    mIsUserSize.y = y != 0;
+    AGUIWidget::setSize(x, y);
+}
+
+void GUILabel::setSize(const glm::ivec2 &size) {
+    mIsUserSize.x = size.x != 0;
+    mIsUserSize.y = size.y != 0;
+    AGUIWidget::setSize(size);
+}
+
 void GUILabel::mUpdateTexture() {
     if (!mText.empty()) {
         if (mTexture) {
             mRenderSystem.destroyTexture(mTexture);
         }
-
+        
         mTexture = mGUISystem.getSkin().font->renderText(mText, mColor);
-        if (getSize().x == 0 && getSize().y == 0) {
-            setSize(mRenderSystem.getTextureSize(mTexture));
+        if (!mIsUserSize.x) {
+            AGUIWidget::setSize(mRenderSystem.getTextureSize(mTexture).x, getSize().y);
+        }
+        if (!mIsUserSize.y) {
+            AGUIWidget::setSize(getSize().x, mRenderSystem.getTextureSize(mTexture).y);
         }
     }
 }

@@ -18,12 +18,16 @@ public:
 
     virtual void onDraw() override;
 
+    virtual void setSize(int x, int y) override;
+    virtual void setSize(const glm::ivec2 &size) override;
+
 private:
     void mUpdateTexture();
 
     Texture *mTexture;
     std::string mText;
     hd::Color4 mColor;
+    glm::bvec2 mIsUserSize;
 };
 
 }
