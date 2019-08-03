@@ -48,13 +48,14 @@ Texture *CacheSystem::loadTexture(const std::string &filename) {
 }
 
 Texture *CacheSystem::loadTexture(const hd::Color4 &color) {
-    if (mColorTextures.count(color) == 0) {
+    std::string key = hd::StringUtils::format("%d %d %d %d", color.r, color.g, color.b, color.a);
+    if (mColorTextures.count(key) == 0) {
         Texture *texture = mRenderSystem.createTextureFromColor(color);
-        mColorTextures.insert(std::make_pair(color, texture));
+        mColorTextures.insert(std::make_pair(key, texture));
         return texture;
     }
     else {
-        return mColorTextures.at(color);
+        return mColorTextures.at(key);
     }
 }
 

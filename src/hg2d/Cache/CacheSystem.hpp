@@ -26,7 +26,7 @@ public:
 
 private:
     std::map<std::string, Texture*> mTextures;
-    std::map<hd::Color4, Texture*, std::equal_to<hd::Color4>> mColorTextures;
+    std::map<std::string, Texture*> mColorTextures;
     std::map<std::string, Font*> mFonts;
     std::map<std::string, SoundBuffer*> mSoundBuffers;
     std::map<std::string, MusicBuffer*> mMusicBuffers;
