@@ -16,6 +16,9 @@ void CacheSystem::onShutdown() {
     for (auto &texture : mTextures) {
         mRenderSystem.destroyTexture(texture.second);
     }
+    for (auto &texture : mColorTextures) {
+        mRenderSystem.destroyTexture(texture.second);
+    }
     for (auto &font : mFonts) {
         mGUISystem.destroyFont(font.second);
     }
@@ -41,6 +44,17 @@ Texture *CacheSystem::loadTexture(const std::string &filename) {
     else {
         HD_LOG_ERROR("Failed to load texture. Filename is empty");
         return nullptr;
+    }
+}
+
+Texture *CacheSystem::loadTexture(const hd::Color4 &color) {
+    if (mColorTextures.count(color) == 0) {
+        Texture *texture = mRenderSystem.createTextureFromColor(color);
+        mColorTextures.insert(std::make_pair(color, texture));
+        return texture;
+    }
+    else {
+        return mColorTextures.at(color);
     }
 }
 
