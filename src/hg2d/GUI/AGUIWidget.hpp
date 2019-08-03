@@ -43,13 +43,13 @@ public:
     void _onUpdate();
     void _onDraw();
 
-    void setPosition(int x, int y);
-    void setPosition(const glm::ivec2 &position);
-    void setSize(int x, int y);
-    void setSize(const glm::ivec2 &size);
-    void setHAlign(GUIHAlign align);
-    void setVAlign(GUIVAlign align);
-    void setAlign(GUIHAlign hAlign, GUIVAlign vAlign);
+    virtual void setPosition(int x, int y);
+    virtual void setPosition(const glm::ivec2 &position);
+    virtual void setSize(int x, int y);
+    virtual void setSize(const glm::ivec2 &size);
+    virtual void setHAlign(GUIHAlign align);
+    virtual void setVAlign(GUIVAlign align);
+    virtual void setAlign(GUIHAlign hAlign, GUIVAlign vAlign);
 
     AGUIWidget *getParent() const;
     const std::vector<AGUIWidget*> &getChildren() const;
