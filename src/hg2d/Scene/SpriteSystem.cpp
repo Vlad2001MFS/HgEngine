@@ -79,22 +79,11 @@ void SpriteSystem::onClear() {
 }
 
 void SpriteSystem::onDraw() {
-    if (!mCameraEntity) {
-        HD_LOG_WARNING("No camera entity. Please use setCameraEntity method to set entity with CameraComponent");
+    if (!mTransformComponent) {
+        mTransformComponent = mSceneSystem.getComponent<TransformComponent>(mCameraEntity);
     }
-    else {
-        if (!mTransformComponent) {
-            mTransformComponent = mSceneSystem.getComponent<TransformComponent>(mCameraEntity);
-            if (!mTransformComponent) {
-                HD_LOG_WARNING("Not found TransformComponent on camera entity");
-            }
-        }
-        if (!mCameraComponent) {
-            mCameraComponent = mSceneSystem.getComponent<CameraComponent>(mCameraEntity);
-            if (!mTransformComponent) {
-                HD_LOG_WARNING("Not found CameraComponent on camera entity");
-            }
-        }
+    if (!mCameraComponent) {
+        mCameraComponent = mSceneSystem.getComponent<CameraComponent>(mCameraEntity);
     }
 
     const std::vector<TransformComponent*> &transforms = mSceneSystem.getComponents<TransformComponent>();
