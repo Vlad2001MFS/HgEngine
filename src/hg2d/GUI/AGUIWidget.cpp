@@ -1,5 +1,6 @@
 #include "AGUIWidget.hpp"
 #include "../Core/Engine.hpp"
+#include "hd/Core/hdLog.hpp"
 
 namespace hg2d {
 

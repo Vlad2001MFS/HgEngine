@@ -1,6 +1,7 @@
 #include "GUISystem.hpp"
 #include "../Core/Engine.hpp"
-#include "..//Renderer/RenderSystem.hpp"
+#include "../Renderer/RenderSystem.hpp"
+#include "hd/Core/hdLog.hpp"
 #include <algorithm>
 
 namespace hg2d {

@@ -2,7 +2,6 @@
 #include "../Core/JSONObject.hpp"
 #include "../Core/AEngineObject.hpp"
 #include "hd/Core/hdHandle.hpp"
-#include "hd/Core/hdCommon.hpp"
 #include "hd/System/hdWindowEvent.hpp"
 #include <map>
 #include <vector>

@@ -2,6 +2,7 @@
 #include "../Core/AEngineObject.hpp"
 #include "hd/IO/hdImage.hpp"
 #include "hd/System/hdWindowEvent.hpp"
+#include "hd/Core/hdColor.hpp"
 #include "3rd/include/glm/glm.hpp"
 #include <memory>
 #include <string>

@@ -1,5 +1,6 @@
 #include "BodySystem.hpp"
 #include "TransformComponent.hpp"
+#include "hd/Core/hdMacros.hpp"
 
 namespace hg2d {
 

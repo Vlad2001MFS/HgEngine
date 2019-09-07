@@ -2,6 +2,7 @@
 #include "TransformComponent.hpp"
 #include "../Renderer/RenderSystem.hpp"
 #include "../Cache/CacheSystem.hpp"
+#include "hd/Core/hdLog.hpp"
 
 namespace hg2d {
 

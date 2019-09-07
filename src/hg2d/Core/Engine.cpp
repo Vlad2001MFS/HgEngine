@@ -6,7 +6,7 @@
 #include "../GUI/GUISystem.hpp"
 #include "../Cache/CacheSystem.hpp"
 #include "../Scene/SceneSystem.hpp"
-#include "hd/Core/hdClock.hpp"
+#include "hd/Core/hdTime.hpp"
 
 namespace hg2d {
 
@@ -23,12 +23,12 @@ Engine::Engine(const EngineCreateInfo &createInfo) : mCreateInfo(createInfo) {
         flags |= hd::WindowFlags::Fullscreen;
     }
 #ifdef HG2D_RENDERER_D3D11
-    mWindow.create(createInfo.window.title, createInfo.window.width, createInfo.window.height, flags);
+    mWindow.create(createInfo.window.title, createInfo.window.size, flags);
 #elif defined(HG2D_RENDERER_OPENGL4)
   #ifdef HD_BUILDMODE_DEBUG
-    mWindow.create(createInfo.window.title, createInfo.window.width, createInfo.window.height, flags, hd::OpenGLContextSettings(4, 5, 0, 0, 0, true, true));
+    mWindow.create(createInfo.window.title, createInfo.window.size, flags, hd::OpenGLContextSettings(4, 5, 0, 0, 0, true, true));
   #else
-    mWindow.create(createInfo.window.title, createInfo.window.width, createInfo.window.height, flags, hd::OpenGLContextSettings(4, 5, 0, 0, 0, true, false));
+    mWindow.create(createInfo.window.title, createInfo.window.size, flags, hd::OpenGLContextSettings(4, 5, 0, 0, 0, true, false));
   #endif
 #else
 #   pragma error("Cannot determine RenderSystem to use")
@@ -73,11 +73,11 @@ void Engine::run() {
         mGameStateSystem->onUpdate();
         mGUISystem->onUpdate();
         mSceneSystem->onUpdate();
-        if (hd::Clock::getElapsedTime(updateTimer) > UPDATE_TIME) {
+        if (hd::Time::getElapsedTime(updateTimer) > UPDATE_TIME) {
             mGameStateSystem->onFixedUpdate();
             mGUISystem->onFixedUpdate();
             mSceneSystem->onFixedUpdate();
-            updateTimer = hd::Clock::getTime();
+            updateTimer = hd::Time::getCurrentTime();
         }
 
         mGameStateSystem->onDraw();
@@ -98,7 +98,7 @@ bool Engine::isKeyDown(hd::KeyCode key) const {
 }
 
 bool Engine::isKeyDown(hd::MouseButton button) const {
-    return mWindow.isMouseButtonDown(button);
+    return mWindow.isKeyDown(button);
 }
 
 const EngineCreateInfo &Engine::getCreateInfo() const {

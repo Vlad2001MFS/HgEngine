@@ -1,5 +1,6 @@
 #include "SoundSystem.hpp"
 #include "../Core/Engine.hpp"
+#include "hd/Core/hdLog.hpp"
 #include <algorithm>
 
 namespace hg2d {

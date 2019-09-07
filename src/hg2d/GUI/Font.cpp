@@ -1,6 +1,7 @@
 #include "Font.hpp"
 #include "..//Renderer/RenderSystem.hpp"
 #include "hd/Core/hdStringUtils.hpp"
+#include "hd/Core/hdLog.hpp"
 
 namespace hg2d {
 
@@ -14,7 +15,7 @@ Texture *Font::renderLine(const std::string &text, const hd::Color4 &color) cons
     if (color.a == 0) {
         HD_LOG_WARNING("Rendering fully transparent text line to texture");
     }
-    hd::Image img(nullptr, mFont.calcTextWidth(text), mFont.getLineHeight());
+    hd::Image img(nullptr, glm::ivec2(mFont.calcTextWidth(text), mFont.getLineHeight()), hd::ImageFormat::RGBA);
     mRenderLine(img, 0, 0, text, color);
     return mRenderSystem.createTexture(img);
 }
@@ -33,7 +34,7 @@ Texture *Font::renderText(const std::string &text, const hd::Color4 &color) cons
     size_t width =  mFont.calcTextWidth(*maxLine);
     size_t height = lines.size()*mFont.getLineHeight();
 
-    hd::Image img(nullptr, width, height);
+    hd::Image img(nullptr, glm::ivec2(width, height), hd::ImageFormat::RGBA);
     for (uint32_t i = 0; i < lines.size(); i++) {
         mRenderLine(img, 0, i*mFont.getLineHeight(), lines[i], color);
     }
@@ -64,15 +65,14 @@ uint32_t Font::getLineHeight() const {
     return mFont.getLineHeight();
 }
 
-
 void Font::mRenderLine(hd::Image &target, uint32_t uOffset, uint32_t vOffset, const std::string &text, const hd::Color4 &color) const {
     hd::Image img = mFont.renderLine(text, color);
-    for (int y = 0; y < img.getHeight(); y++) {
-        const hd::Color4 *line = img.getPixels() + y*img.getWidth();
-        int baseOffset = uOffset + vOffset*target.getWidth();
-        int offset = baseOffset + y*target.getWidth();
-        int size = img.getWidth();
-        memcpy(target.getPixels() + static_cast<size_t>(offset), line, sizeof(hd::Color4)*static_cast<size_t>(size));
+    for (int y = 0; y < img.getSize().y; y++) {
+        const hd::Color4 *line = static_cast<const hd::Color4*>(img.getData()) + y*img.getSize().x;
+        int baseOffset = uOffset + vOffset*target.getSize().x;
+        int offset = baseOffset + y*target.getSize().x;
+        int size = img.getSize().x;
+        memcpy(static_cast<hd::Color4*>(target.getData()) + static_cast<size_t>(offset), line, sizeof(hd::Color4)*static_cast<size_t>(size));
     }
 }
 

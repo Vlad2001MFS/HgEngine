@@ -3,6 +3,7 @@
 #include "../Sound/SoundSystem.hpp"
 #include "../GUI/GUISystem.hpp"
 #include "hd/Core/hdStringUtils.hpp"
+#include "hd/Core/hdLog.hpp"
 
 namespace hg2d {
 

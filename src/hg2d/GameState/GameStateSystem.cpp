@@ -1,5 +1,5 @@
 #include "GameStateSystem.hpp"
-#include "hd/Core/hdCommon.hpp"
+#include "hd/Core/hdLog.hpp"
 
 namespace hg2d {
 

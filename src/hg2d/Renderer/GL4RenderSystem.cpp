@@ -5,6 +5,7 @@
 
 #include "../Core/Engine.hpp"
 #include "hd/Core/hdStringUtils.hpp"
+#include "hd/Core/hdLog.hpp"
 #include "hd/Math/hdMathUtils.hpp"
 #include "hd/IO/hdImage.hpp"
 #include "hd/IO/hdFileStream.hpp"
@@ -177,14 +178,14 @@ void RenderSystem::onInitialize() {
 
 
     uint32_t vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    std::string vsCode = hd::FileReader("data/shaders/simpleVS.glsl").readAllText();
+    std::string vsCode = hd::FileStream("data/shaders/simpleVS.glsl", hd::FileMode::Read).readAllText();
     const char *vsSources[] = { vsCode.data() };
     const int vsLengths[] = { static_cast<int>(vsCode.size()) };
     glShaderSource(vertexShader, 1, vsSources, vsLengths);
     glCompileShader(vertexShader);
 
     uint32_t pixelShader = glCreateShader(GL_FRAGMENT_SHADER);
-    std::string psCode = hd::FileReader("data/shaders/simplePS.glsl").readAllText();
+    std::string psCode = hd::FileStream("data/shaders/simplePS.glsl", hd::FileMode::Read).readAllText();
     const char *psSources[] = { psCode.data() };
     const int psLengths[] = { static_cast<int>(psCode.size()) };
     glShaderSource(pixelShader, 1, psSources, psLengths);
@@ -315,7 +316,7 @@ Texture *RenderSystem::createTexture(const void *data, uint32_t w, uint32_t h) {
 }
 
 Texture* RenderSystem::createTexture(const hd::Image& img) {
-    Texture *texture = createTexture(img.getPixels(), img.getWidth(), img.getHeight());
+    Texture *texture = createTexture(img.getData(), img.getSize().x, img.getSize().y);
     texture->path = hd::StringUtils::replace(img.getPath(), "data/textures/", "");
     return texture;
 }

@@ -2,6 +2,7 @@
 #include "TransformComponent.hpp"
 #include "hd/Core/hdStringUtils.hpp"
 #include "hd/IO/hdFileStream.hpp"
+#include "hd/Core/hdLog.hpp"
 #include <string>
 
 namespace hg2d {
@@ -144,14 +145,14 @@ void SceneSystem::save(const std::string& name) {
         }
     }
 
-    hd::FileWriter(path).writeString(json.dump(4));
+    hd::FileStream(path, hd::FileMode::Write).writeLine(json.dump(4));
 }
 
 void SceneSystem::load(const std::string& name) {
     clear();
 
     std::string path = "data/levels/" + name;
-    JSONObject json = JSONObject::parse(hd::FileReader(path).readAllText());
+    JSONObject json = JSONObject::parse(hd::FileStream(path, hd::FileMode::Read).readAllText());
 
     JSONObject &jsonSystems = json["systems"];
     for (auto &jsonSystem : jsonSystems.items()) {
