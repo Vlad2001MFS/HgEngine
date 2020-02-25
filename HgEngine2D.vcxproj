@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -18,51 +18,9 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\hg2d\Cache\CacheSystem.hpp" />
-    <ClInclude Include="src\hg2d\Core\AEngineObject.hpp" />
-    <ClInclude Include="src\hg2d\Core\BuildConfig.hpp" />
-    <ClInclude Include="src\hg2d\Core\Engine.hpp" />
-    <ClInclude Include="src\hg2d\Core\JSONObject.hpp" />
-    <ClInclude Include="src\hg2d\GameState\AGameState.hpp" />
-    <ClInclude Include="src\hg2d\GameState\GameStateSystem.hpp" />
-    <ClInclude Include="src\hg2d\GUI\AGUIWidget.hpp" />
-    <ClInclude Include="src\hg2d\GUI\Font.hpp" />
-    <ClInclude Include="src\hg2d\GUI\GUIButton.hpp" />
-    <ClInclude Include="src\hg2d\GUI\GUIImage.hpp" />
-    <ClInclude Include="src\hg2d\GUI\GUILabel.hpp" />
-    <ClInclude Include="src\hg2d\GUI\GUISystem.hpp" />
-    <ClInclude Include="src\hg2d\Renderer\RenderSystem.hpp" />
-    <ClInclude Include="src\hg2d\Scene\BodySystem.hpp" />
-    <ClInclude Include="src\hg2d\Scene\SceneSystem.hpp" />
-    <ClInclude Include="src\hg2d\Scene\SpriteSystem.hpp" />
-    <ClInclude Include="src\hg2d\Scene\TransformComponent.hpp" />
-    <ClInclude Include="src\hg2d\Sound\SoundSystem.hpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="src\hg2d\Cache\CacheSystem.cpp" />
-    <ClCompile Include="src\hg2d\Core\AEngineObject.cpp" />
-    <ClCompile Include="src\hg2d\Core\Engine.cpp" />
-    <ClCompile Include="src\hg2d\Core\JSONObject.cpp" />
-    <ClCompile Include="src\hg2d\GameState\AGameState.cpp" />
-    <ClCompile Include="src\hg2d\GameState\GameStateSystem.cpp" />
-    <ClCompile Include="src\hg2d\GUI\AGUIWidget.cpp" />
-    <ClCompile Include="src\hg2d\GUI\Font.cpp" />
-    <ClCompile Include="src\hg2d\GUI\GUIButton.cpp" />
-    <ClCompile Include="src\hg2d\GUI\GUIImage.cpp" />
-    <ClCompile Include="src\hg2d\GUI\GUILabel.cpp" />
-    <ClCompile Include="src\hg2d\GUI\GUISystem.cpp" />
-    <ClCompile Include="src\hg2d\Renderer\D3D11RenderSystem.cpp" />
-    <ClCompile Include="src\hg2d\Renderer\GL4RenderSystem.cpp" />
-    <ClCompile Include="src\hg2d\Scene\BodySystem.cpp" />
-    <ClCompile Include="src\hg2d\Scene\SceneSystem.cpp" />
-    <ClCompile Include="src\hg2d\Scene\SpriteSystem.cpp" />
-    <ClCompile Include="src\hg2d\Scene\TransformComponent.cpp" />
-    <ClCompile Include="src\hg2d\Sound\SoundSystem.cpp" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{65CD55C0-3911-4E6D-8B1F-5EEDF1D7085C}</ProjectGuid>
+    <ProjectGuid>{F73C8AB4-7414-4CB7-B32C-DB56053EF5E9}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>HgEngine2D</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
@@ -114,89 +72,74 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>bin\$(Configuration)$(PlatformArchitecture)\</OutDir>
-    <IntDir>obj\$(Configuration)$(PlatformArchitecture)\</IntDir>
+    <OutDir>../_build/$(ProjectName)/$(Configuration)$(PlatformArchitecture)/</OutDir>
+    <IntDir>../_build/$(ProjectName)/_temp/$(Configuration)$(PlatformArchitecture)/</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>bin\$(Configuration)$(PlatformArchitecture)\</OutDir>
-    <IntDir>obj\$(Configuration)$(PlatformArchitecture)\</IntDir>
+    <OutDir>../_build/$(ProjectName)/$(Configuration)$(PlatformArchitecture)/</OutDir>
+    <IntDir>../_build/$(ProjectName)/_temp/$(Configuration)$(PlatformArchitecture)/</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>bin\$(Configuration)$(PlatformArchitecture)\</OutDir>
-    <IntDir>obj\$(Configuration)$(PlatformArchitecture)\</IntDir>
+    <OutDir>../_build/$(ProjectName)/$(Configuration)$(PlatformArchitecture)/</OutDir>
+    <IntDir>../_build/$(ProjectName)/_temp/$(Configuration)$(PlatformArchitecture)/</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>bin\$(Configuration)$(PlatformArchitecture)\</OutDir>
-    <IntDir>obj\$(Configuration)$(PlatformArchitecture)\</IntDir>
+    <OutDir>../_build/$(ProjectName)/$(Configuration)$(PlatformArchitecture)/</OutDir>
+    <IntDir>../_build/$(ProjectName)/_temp/$(Configuration)$(PlatformArchitecture)/</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <SDLCheck>false</SDLCheck>
+      <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)HandyFramework\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../_deps/include;../HandyFramework;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalLibraryDirectories>$(SolutionDir)HandyFramework\bin\$(Configuration)$(PlatformArchitecture);$(ProjectDir)src\3rd\lib$(PlatformArchitecture);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>HandyFramework.lib;Box2D$(Configuration).lib</AdditionalDependencies>
+      <AdditionalDependencies>Box2D-$(Configuration).lib;HandyFramework.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
-    <PreBuildEvent>
-      <Command>
-      </Command>
-    </PreBuildEvent>
-    <PreBuildEvent>
-      <Message>
-      </Message>
-    </PreBuildEvent>
+    <Lib>
+      <AdditionalLibraryDirectories>../_deps/lib$(PlatformArchitecture);../_build/HandyFramework/$(Configuration)$(PlatformArchitecture);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <SDLCheck>false</SDLCheck>
+      <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)HandyFramework\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../_deps/include;../HandyFramework;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalLibraryDirectories>$(SolutionDir)HandyFramework\bin\$(Configuration)$(PlatformArchitecture);$(ProjectDir)src\3rd\lib$(PlatformArchitecture);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>HandyFramework.lib;Box2D$(Configuration).lib</AdditionalDependencies>
+      <AdditionalDependencies>Box2D-$(Configuration).lib;HandyFramework.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
-    <PreBuildEvent>
-      <Command>
-      </Command>
-    </PreBuildEvent>
-    <PreBuildEvent>
-      <Message>
-      </Message>
-    </PreBuildEvent>
+    <Lib>
+      <AdditionalLibraryDirectories>../_deps/lib$(PlatformArchitecture);../_build/HandyFramework/$(Configuration)$(PlatformArchitecture);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>false</SDLCheck>
+      <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)HandyFramework\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../_deps/include;../HandyFramework;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -205,29 +148,22 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalLibraryDirectories>$(SolutionDir)HandyFramework\bin\$(Configuration)$(PlatformArchitecture);$(ProjectDir)src\3rd\lib$(PlatformArchitecture);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>HandyFramework.lib;Box2D$(Configuration).lib</AdditionalDependencies>
+      <AdditionalDependencies>Box2D-$(Configuration).lib;HandyFramework.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
-    <PreBuildEvent>
-      <Command>
-      </Command>
-    </PreBuildEvent>
-    <PreBuildEvent>
-      <Message>
-      </Message>
-    </PreBuildEvent>
+    <Lib>
+      <AdditionalLibraryDirectories>../_deps/lib$(PlatformArchitecture);../_build/HandyFramework/$(Configuration)$(PlatformArchitecture);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>false</SDLCheck>
+      <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)HandyFramework\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../_deps/include;../HandyFramework;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -236,18 +172,54 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalLibraryDirectories>$(SolutionDir)HandyFramework\bin\$(Configuration)$(PlatformArchitecture);$(ProjectDir)src\3rd\lib$(PlatformArchitecture);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>HandyFramework.lib;Box2D$(Configuration).lib</AdditionalDependencies>
+      <AdditionalDependencies>Box2D-$(Configuration).lib;HandyFramework.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
-    <PreBuildEvent>
-      <Command>
-      </Command>
-    </PreBuildEvent>
-    <PreBuildEvent>
-      <Message>
-      </Message>
-    </PreBuildEvent>
+    <Lib>
+      <AdditionalLibraryDirectories>../_deps/lib$(PlatformArchitecture);../_build/HandyFramework/$(Configuration)$(PlatformArchitecture);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="hg2d\Cache\CacheSystem.cpp" />
+    <ClCompile Include="hg2d\Core\AEngineObject.cpp" />
+    <ClCompile Include="hg2d\Core\Engine.cpp" />
+    <ClCompile Include="hg2d\Core\JSONObject.cpp" />
+    <ClCompile Include="hg2d\GameState\AGameState.cpp" />
+    <ClCompile Include="hg2d\GameState\GameStateSystem.cpp" />
+    <ClCompile Include="hg2d\GUI\AGUIWidget.cpp" />
+    <ClCompile Include="hg2d\GUI\Font.cpp" />
+    <ClCompile Include="hg2d\GUI\GUIButton.cpp" />
+    <ClCompile Include="hg2d\GUI\GUIImage.cpp" />
+    <ClCompile Include="hg2d\GUI\GUILabel.cpp" />
+    <ClCompile Include="hg2d\GUI\GUISystem.cpp" />
+    <ClCompile Include="hg2d\Renderer\D3D11RenderSystem.cpp" />
+    <ClCompile Include="hg2d\Renderer\GL4RenderSystem.cpp" />
+    <ClCompile Include="hg2d\Scene\BodySystem.cpp" />
+    <ClCompile Include="hg2d\Scene\SceneSystem.cpp" />
+    <ClCompile Include="hg2d\Scene\SpriteSystem.cpp" />
+    <ClCompile Include="hg2d\Scene\TransformComponent.cpp" />
+    <ClCompile Include="hg2d\Sound\SoundSystem.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="hg2d\Cache\CacheSystem.hpp" />
+    <ClInclude Include="hg2d\Core\AEngineObject.hpp" />
+    <ClInclude Include="hg2d\Core\BuildConfig.hpp" />
+    <ClInclude Include="hg2d\Core\Engine.hpp" />
+    <ClInclude Include="hg2d\Core\JSONObject.hpp" />
+    <ClInclude Include="hg2d\GameState\AGameState.hpp" />
+    <ClInclude Include="hg2d\GameState\GameStateSystem.hpp" />
+    <ClInclude Include="hg2d\GUI\AGUIWidget.hpp" />
+    <ClInclude Include="hg2d\GUI\Font.hpp" />
+    <ClInclude Include="hg2d\GUI\GUIButton.hpp" />
+    <ClInclude Include="hg2d\GUI\GUIImage.hpp" />
+    <ClInclude Include="hg2d\GUI\GUILabel.hpp" />
+    <ClInclude Include="hg2d\GUI\GUISystem.hpp" />
+    <ClInclude Include="hg2d\Renderer\RenderSystem.hpp" />
+    <ClInclude Include="hg2d\Scene\BodySystem.hpp" />
+    <ClInclude Include="hg2d\Scene\SceneSystem.hpp" />
+    <ClInclude Include="hg2d\Scene\SpriteSystem.hpp" />
+    <ClInclude Include="hg2d\Scene\TransformComponent.hpp" />
+    <ClInclude Include="hg2d\Sound\SoundSystem.hpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
