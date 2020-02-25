@@ -1,6 +1,7 @@
 #pragma once
+#include "../Core/Engine.hpp"
 #include "../Core/JSONObject.hpp"
-#include "../Core/AEngineObject.hpp"
+#include "hd/Core/Common.hpp"
 #include "hd/Core/Handle.hpp"
 #include "hd/Window/WindowEvent.hpp"
 #include <map>
@@ -12,17 +13,15 @@ namespace hg2d {
 
 using HEntity = hd::Handle<uint64_t, struct TAG_HEntity, UINT64_MAX>;
 
-class AECSComponent : public AEngineObject {
+class AECSComponent {
 public:
-    AECSComponent(Engine &engine);
     virtual ~AECSComponent() = default;
 
     virtual void onSaveLoad(JSONObject &json, bool isLoad);
 };
 
-class AECSSystem : public AEngineObject {
+class AECSSystem {
 public:
-    AECSSystem(Engine &engine);
     virtual ~AECSSystem() = default;
 
     virtual void onInitialize();
@@ -37,12 +36,13 @@ public:
     virtual void onDraw();
 };
 
-class SceneSystem final : public AEngineObject{
+class SceneSystem final : public hd::Singleton<SceneSystem> {
 public:
-    explicit SceneSystem(Engine &engine);
+    SceneSystem();
 
-    void onInitialize();
-    void onShutdown();
+    void initialize();
+    void shutdown();
+
     void onEvent(const hd::WindowEvent &event);
     void onFixedUpdate();
     void onUpdate();
@@ -64,7 +64,7 @@ public:
         const char *typeName = typeInfo.name();
         uint64_t typeHash = typeInfo.hash_code();
         if (mComponentTypes.count(typeHash) == 0) {
-            mComponentTypes.insert(std::make_pair(typeHash, std::make_pair(typeName, [&]() { return new T(mEngine); })));
+            mComponentTypes.insert(std::make_pair(typeHash, std::make_pair(typeName, [&]() { return new T(); })));
         }
     }
 
@@ -119,7 +119,7 @@ public:
         const char *typeName = typeInfo.name();
         uint64_t typeHash = typeInfo.hash_code();
         if (mSystems.count(typeHash) == 0) {
-            T *system = new T(mEngine);
+            T *system = new T();
             mSystems.insert(std::make_pair(typeHash, std::make_pair(typeName, system)));
             system->onInitialize();
             return system;
@@ -172,5 +172,9 @@ private:
 
     std::map<uint64_t, std::pair<std::string, std::function<AECSComponent*()>>> mComponentTypes;
 };
+
+inline SceneSystem &getSceneSystem() {
+    return SceneSystem::get();
+}
 
 }

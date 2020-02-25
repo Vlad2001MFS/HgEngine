@@ -13,14 +13,11 @@ struct MusicBuffer {
     hd::HMusic handle;
 };
 
-SoundSystem::SoundSystem(Engine &engine) : AEngineObject(engine) {
+void SoundSystem::initialize() {
+    mSoundContext.create(getEngine().getCreateInfo().sound.freq, getEngine().getCreateInfo().sound.chunkSize, getEngine().getCreateInfo().sound.isStereo);
 }
 
-void SoundSystem::onInitialize() {
-    mSoundContext.create(mEngine.getCreateInfo().sound.freq, mEngine.getCreateInfo().sound.chunkSize, mEngine.getCreateInfo().sound.isStereo);
-}
-
-void SoundSystem::onShutdown() {
+void SoundSystem::shutdown() {
     for (auto &it : mCreatedMusicBuffers) {
         mDestroyMusic(it);
     }

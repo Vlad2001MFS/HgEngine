@@ -4,23 +4,23 @@
 
 namespace hg2d {
 
-GameStateSystem::GameStateSystem(Engine &engine) : AEngineObject(engine) {
+GameStateSystem::GameStateSystem() {
     mCurrentState = nullptr;
 }
 
-void GameStateSystem::onInitialize() {
+void GameStateSystem::initialize() {
 }
 
-void GameStateSystem::onShutdown() {
+void GameStateSystem::shutdown() {
     for (auto &it : mStates) {
-        mDestroyState(it.second);
+        HD_DELETE(it.second);
     }
 }
 
 void GameStateSystem::destroyState(const std::string &name) {
     auto it = mStates.find(name);
     if (it != mStates.end()) {
-        mDestroyState(it->second);
+        HD_DELETE(it->second);
         mStates.erase(it);
     }
     else {
@@ -99,29 +99,6 @@ void GameStateSystem::onDraw() {
     else {
         LOG_F(WARNING, "Current GameState is nullptr!");
     }
-}
-
-void GameStateSystem::mAddState(AGameState *state, const std::string &name) {
-    if (!name.empty()) {
-        auto it = mStates.find(name);
-        if (it == mStates.end()) {
-            mStates.insert(std::make_pair(name, state));
-            state->onInitialize();
-        }
-        else {
-            HD_DELETE(state);
-            LOG_F(WARNING, "Failed to register GameState. The GameState '{}' already registered at GameStateSystem", name.data());
-        }
-    }
-    else {
-        HD_DELETE(state);
-        LOG_F(WARNING, "Failed to register GameState without name");
-    }
-}
-
-void GameStateSystem::mDestroyState(AGameState *&state) {
-    state->onShutdown();
-    HD_DELETE(state);
 }
 
 void GameStateSystem::mSetState(AGameState *state) {

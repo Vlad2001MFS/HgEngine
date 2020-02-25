@@ -1,5 +1,5 @@
 #pragma once
-#include "../Core/AEngineObject.hpp"
+#include "hd/Core/Common.hpp"
 #include "hd/Core/Color.hpp"
 #include <map>
 #include <string>
@@ -11,12 +11,10 @@ class Font;
 struct SoundBuffer;
 struct MusicBuffer;
 
-class CacheSystem final : public AEngineObject {
+class CacheSystem final : public hd::Singleton<CacheSystem> {
 public:
-    explicit CacheSystem(Engine &engine);
-
-    void onInitialize();
-    void onShutdown();
+    void initialize();
+    void shutdown();
 
     Texture *loadTexture(const std::string &filename);
     Texture *loadTexture(const hd::Color4 &color);
@@ -31,5 +29,9 @@ private:
     std::map<std::string, SoundBuffer*> mSoundBuffers;
     std::map<std::string, MusicBuffer*> mMusicBuffers;
 };
+
+inline CacheSystem &getCacheSystem() {
+    return CacheSystem::get();
+}
 
 }

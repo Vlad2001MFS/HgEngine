@@ -4,13 +4,13 @@
 
 namespace hg2d {
 
-GUILabel::GUILabel(Engine &engine) : AGUIWidget(engine), mIsUserSize(false, false) {
+GUILabel::GUILabel() : mIsUserSize(false, false) {
     mTexture = nullptr;
-    mColor = mGUISystem.getSkin().fontColor;
+    mColor = getGUISystem().getSkin().fontColor;
 }
 
 GUILabel::~GUILabel() {
-    mRenderSystem.destroyTexture(mTexture);
+    getRenderSystem().destroyTexture(mTexture);
 }
 
 void GUILabel::setText(const std::string &text) {
@@ -41,8 +41,7 @@ void GUILabel::onDraw() {
         rop.texture = mTexture;
         rop.pos = getAbsolutePosition();
         rop.size = getSize();
-        rop.isGUI = true;
-        mRenderSystem.addRenderOp(rop);
+        getRenderSystem().addRenderOp(rop, true);
     }
 }
 
@@ -61,15 +60,15 @@ void GUILabel::setSize(const glm::ivec2 &size) {
 void GUILabel::mUpdateTexture() {
     if (!mText.empty()) {
         if (mTexture) {
-            mRenderSystem.destroyTexture(mTexture);
+            getRenderSystem().destroyTexture(mTexture);
         }
         
-        mTexture = mGUISystem.getSkin().font->renderText(mText, mColor);
+        mTexture = getGUISystem().getSkin().font->renderText(mText, mColor);
         if (!mIsUserSize.x) {
-            AGUIWidget::setSize(mRenderSystem.getTextureSize(mTexture).x, getSize().y);
+            AGUIWidget::setSize(getRenderSystem().getTextureSize(mTexture).x, getSize().y);
         }
         if (!mIsUserSize.y) {
-            AGUIWidget::setSize(getSize().x, mRenderSystem.getTextureSize(mTexture).y);
+            AGUIWidget::setSize(getSize().x, getRenderSystem().getTextureSize(mTexture).y);
         }
     }
 }

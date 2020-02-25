@@ -9,7 +9,7 @@ struct Texture;
 
 class SpriteComponent final : public AECSComponent {
 public:
-    SpriteComponent(Engine &engine);
+    SpriteComponent();
 
     virtual void onSaveLoad(JSONObject &json, bool isLoad) override;
 
@@ -22,7 +22,7 @@ private:
 
 class CameraComponent final : public AECSComponent {
 public:
-    CameraComponent(Engine &engine);
+    CameraComponent();
 
     virtual void onSaveLoad(JSONObject &json, bool isLoad) override;
 
@@ -35,7 +35,7 @@ private:
 
 class SpriteSystem final : public AECSSystem {
 public:
-    SpriteSystem(Engine &engine);
+    SpriteSystem();
 
     virtual void onInitialize() override;
     virtual void onSaveLoad(JSONObject &json, bool isLoad) override;

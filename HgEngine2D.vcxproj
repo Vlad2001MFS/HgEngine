@@ -180,7 +180,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="hg2d\Cache\CacheSystem.cpp" />
-    <ClCompile Include="hg2d\Core\AEngineObject.cpp" />
     <ClCompile Include="hg2d\Core\Engine.cpp" />
     <ClCompile Include="hg2d\Core\JSONObject.cpp" />
     <ClCompile Include="hg2d\GameState\AGameState.cpp" />
@@ -201,7 +200,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="hg2d\Cache\CacheSystem.hpp" />
-    <ClInclude Include="hg2d\Core\AEngineObject.hpp" />
     <ClInclude Include="hg2d\Core\BuildConfig.hpp" />
     <ClInclude Include="hg2d\Core\Engine.hpp" />
     <ClInclude Include="hg2d\Core\JSONObject.hpp" />

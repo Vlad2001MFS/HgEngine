@@ -4,7 +4,7 @@
 
 namespace hg2d {
 
-AGUIWidget::AGUIWidget(Engine &engine) : AEngineObject(engine), mPosition(0, 0), mSize(0, 0), mAbsolutePosition(0, 0) {
+AGUIWidget::AGUIWidget() : mPosition(0, 0), mSize(0, 0), mAbsolutePosition(0, 0) {
     mParent = nullptr;
     mIsMouseHovered = false;
     mHAlign = GUIHAlign::None;
@@ -231,10 +231,10 @@ void AGUIWidget::mApplyHAlign() {
         AGUIWidget *child = getChildren()[i];
         AGUIWidget *invChild = getChildren()[childrenCount - i - 1];
         if (child->getHAlign() == GUIHAlign::Left) {
-            child->setPosition(mEngine.getCreateInfo().gui.alignSpaceX, child->getPosition().y);
+            child->setPosition(getEngine().getCreateInfo().gui.alignSpaceX, child->getPosition().y);
         }
         if (invChild->getHAlign() == GUIHAlign::Right) {
-            int x = getSize().x - invChild->getSize().x - mEngine.getCreateInfo().gui.alignSpaceX;
+            int x = getSize().x - invChild->getSize().x - getEngine().getCreateInfo().gui.alignSpaceX;
             invChild->setPosition(x, invChild->getPosition().y);
         }
         if (child->getHAlign() == GUIHAlign::Center) {
@@ -246,16 +246,16 @@ void AGUIWidget::mApplyHAlign() {
 
 void AGUIWidget::mApplyVAlign() {
     int topY[4] = { // 0 - none, 1 - left, 2 - center, 3 - right
-        mEngine.getCreateInfo().gui.alignSpaceY,
-        mEngine.getCreateInfo().gui.alignSpaceY,
-        mEngine.getCreateInfo().gui.alignSpaceY,
-        mEngine.getCreateInfo().gui.alignSpaceY,
+        getEngine().getCreateInfo().gui.alignSpaceY,
+        getEngine().getCreateInfo().gui.alignSpaceY,
+        getEngine().getCreateInfo().gui.alignSpaceY,
+        getEngine().getCreateInfo().gui.alignSpaceY,
     };
     int bottomY[4] = { // 0 - none, 1 - left, 2 - center, 3 - right
-        getSize().y - mEngine.getCreateInfo().gui.alignSpaceY,
-        getSize().y - mEngine.getCreateInfo().gui.alignSpaceY,
-        getSize().y - mEngine.getCreateInfo().gui.alignSpaceY,
-        getSize().y - mEngine.getCreateInfo().gui.alignSpaceY,
+        getSize().y - getEngine().getCreateInfo().gui.alignSpaceY,
+        getSize().y - getEngine().getCreateInfo().gui.alignSpaceY,
+        getSize().y - getEngine().getCreateInfo().gui.alignSpaceY,
+        getSize().y - getEngine().getCreateInfo().gui.alignSpaceY,
     };
     int centerHeight = 0;
     const size_t childrenCount = getChildren().size();
@@ -264,24 +264,24 @@ void AGUIWidget::mApplyVAlign() {
         AGUIWidget *invChild = getChildren()[childrenCount - i - 1];
         if (child->getVAlign() == GUIVAlign::Top) {
             child->setPosition(child->getPosition().x, topY[static_cast<size_t>(child->getHAlign())]);
-            topY[static_cast<size_t>(child->getHAlign())] += child->getSize().y + mEngine.getCreateInfo().gui.alignSpaceY;
+            topY[static_cast<size_t>(child->getHAlign())] += child->getSize().y + getEngine().getCreateInfo().gui.alignSpaceY;
         }
         if (invChild->getVAlign() == GUIVAlign::Bottom) {
             invChild->setPosition(invChild->getPosition().x, bottomY[static_cast<size_t>(invChild->getHAlign())] - invChild->getSize().y);
-            bottomY[static_cast<size_t>(invChild->getHAlign())] -= invChild->getSize().y + mEngine.getCreateInfo().gui.alignSpaceY;
+            bottomY[static_cast<size_t>(invChild->getHAlign())] -= invChild->getSize().y + getEngine().getCreateInfo().gui.alignSpaceY;
         }
         if (child->getVAlign() == GUIVAlign::Center) {
-            centerHeight += child->getSize().y + mEngine.getCreateInfo().gui.alignSpaceY;
+            centerHeight += child->getSize().y + getEngine().getCreateInfo().gui.alignSpaceY;
         }
     }
 
-    centerHeight -= mEngine.getCreateInfo().gui.alignSpaceY;
+    centerHeight -= getEngine().getCreateInfo().gui.alignSpaceY;
     int centerY = getSize().y / 2 - centerHeight / 2;
     for (size_t i = 0; i < childrenCount; i++) {
         AGUIWidget *child = getChildren()[i];
         if (child->getVAlign() == GUIVAlign::Center) {
             child->setPosition(child->getPosition().x, centerY);
-            centerY += child->getSize().y + mEngine.getCreateInfo().gui.alignSpaceY;
+            centerY += child->getSize().y + getEngine().getCreateInfo().gui.alignSpaceY;
         }
     }
 }

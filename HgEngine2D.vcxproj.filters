@@ -27,9 +27,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="hg2d\Core\AEngineObject.cpp">
-      <Filter>hg2d\Core</Filter>
-    </ClCompile>
     <ClCompile Include="hg2d\Core\Engine.cpp">
       <Filter>hg2d\Core</Filter>
     </ClCompile>
@@ -86,9 +83,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="hg2d\Core\AEngineObject.hpp">
-      <Filter>hg2d\Core</Filter>
-    </ClInclude>
     <ClInclude Include="hg2d\Core\BuildConfig.hpp">
       <Filter>hg2d\Core</Filter>
     </ClInclude>

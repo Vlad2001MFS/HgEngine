@@ -6,7 +6,7 @@ namespace hg2d {
 
 class TransformComponent final : public AECSComponent {
 public:
-    TransformComponent(Engine &engine);
+    TransformComponent();
 
     virtual void onSaveLoad(JSONObject &json, bool isLoad) override;
 

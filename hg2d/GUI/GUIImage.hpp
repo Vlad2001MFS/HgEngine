@@ -7,7 +7,7 @@ struct Texture;
 
 class GUIImage : public AGUIWidget {
 public:
-    explicit GUIImage(Engine &engine);
+    GUIImage();
     virtual ~GUIImage() = default;
 
     void setTexture(const Texture *texture);

@@ -8,7 +8,7 @@ struct Texture;
 
 class GUILabel : public AGUIWidget {
 public:
-    explicit GUILabel(Engine &engine);
+   GUILabel();
     virtual ~GUILabel();
 
     void setText(const std::string &text);

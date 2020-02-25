@@ -1,7 +1,6 @@
 #pragma once
 #include "AGUIWidget.hpp"
 #include "Font.hpp"
-#include "../Core/AEngineObject.hpp"
 #include "hd/Window/WindowEvent.hpp"
 #include <map>
 
@@ -15,12 +14,13 @@ struct GUISkin {
     int alignSpaceY = 10;
 };
 
-class GUISystem final : public AEngineObject {
+class GUISystem final : public hd::Singleton<GUISystem> {
 public:
-    explicit GUISystem(Engine &engine);
+    GUISystem();
 
-    void onInitialize();
-    void onShutdown();
+    void initialize();
+    void shutdown();
+
     void onEvent(const hd::WindowEvent &event);
     void onFixedUpdate();
     void onUpdate();
@@ -31,7 +31,7 @@ public:
     const GUISkin &getSkin() const { return mSkin; }
 
     template<typename T, typename ...Args>
-    T *createFrame(const std::string &name, Args &&...args) { T *frame = new T(mEngine, args...); mAddFrame(frame, name); return frame; }
+    T *createFrame(const std::string &name, Args &&...args) { T *frame = new T(args...); mAddFrame(frame, name); return frame; }
     void destroyFrame(const std::string &name);
     void setFrame(const std::string &name);
 
@@ -44,5 +44,9 @@ private:
     std::map<std::string, AGUIWidget*> mFrames;
     AGUIWidget *mCurrentFrame;
 };
+
+inline GUISystem &getGUISystem() {
+    return GUISystem::get();
+}
     
 }

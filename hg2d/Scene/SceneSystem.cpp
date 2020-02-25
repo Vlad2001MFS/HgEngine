@@ -7,13 +7,7 @@
 
 namespace hg2d {
 
-AECSComponent::AECSComponent(Engine &engine) : AEngineObject(engine) {
-}
-
 void AECSComponent::onSaveLoad(JSONObject &json, bool isLoad) {
-}
-
-AECSSystem::AECSSystem(Engine &engine) : AEngineObject(engine) {
 }
 
 void AECSSystem::onInitialize() {
@@ -46,16 +40,16 @@ void AECSSystem::onUpdate() {
 void AECSSystem::onDraw() {
 }
 
-SceneSystem::SceneSystem(Engine &engine) : AEngineObject(engine) {
+SceneSystem::SceneSystem() {
     mIsUpdateEnabled = true;
     mIsDrawEnabled = true;
 }
 
-void SceneSystem::onInitialize() { 
+void SceneSystem::initialize() { 
     registerComponentType<TransformComponent>();
 }
 
-void SceneSystem::onShutdown() {
+void SceneSystem::shutdown() {
     for (auto &components : mComponentsMap) {
         for (size_t i = 0; i < mEntities.size(); i++) {
             mDestroyComponent(components.second.at(i), components.first, mEntities.at(i));

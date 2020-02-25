@@ -6,25 +6,25 @@
 
 namespace hg2d {
 
-GUISystem::GUISystem(Engine &engine) : AEngineObject(engine) {
+GUISystem::GUISystem() {
     mCurrentFrame = nullptr;
 }
 
-void GUISystem::onInitialize() {
-    mSkin.font = createFontFromFile(mEngine.getCreateInfo().gui.fontPath, mEngine.getCreateInfo().gui.fontSize);
+void GUISystem::initialize() {
+    mSkin.font = createFontFromFile(getEngine().getCreateInfo().gui.fontPath, getEngine().getCreateInfo().gui.fontSize);
     mSkin.font->setHinting(FontHinting::Mono);
-    mSkin.fontColor = mEngine.getCreateInfo().gui.fontColor;
-    mSkin.buttonTexture = mRenderSystem.createTextureFromFile(mEngine.getCreateInfo().gui.buttonTexturePath);
-    mSkin.hoveredButtonTexture = mRenderSystem.createTextureFromFile(mEngine.getCreateInfo().gui.hoveredButtonTexturePath);
-    mSkin.clickedButtonTexture = mRenderSystem.createTextureFromFile(mEngine.getCreateInfo().gui.clickedButtonTexturePath);
-    mSkin.alignSpaceX = mEngine.getCreateInfo().gui.alignSpaceX;
-    mSkin.alignSpaceY = mEngine.getCreateInfo().gui.alignSpaceY;
+    mSkin.fontColor = getEngine().getCreateInfo().gui.fontColor;
+    mSkin.buttonTexture = getRenderSystem().createTextureFromFile(getEngine().getCreateInfo().gui.buttonTexturePath);
+    mSkin.hoveredButtonTexture = getRenderSystem().createTextureFromFile(getEngine().getCreateInfo().gui.hoveredButtonTexturePath);
+    mSkin.clickedButtonTexture = getRenderSystem().createTextureFromFile(getEngine().getCreateInfo().gui.clickedButtonTexturePath);
+    mSkin.alignSpaceX = getEngine().getCreateInfo().gui.alignSpaceX;
+    mSkin.alignSpaceY = getEngine().getCreateInfo().gui.alignSpaceY;
 }
 
-void GUISystem::onShutdown() {
-    mRenderSystem.destroyTexture(mSkin.clickedButtonTexture);
-    mRenderSystem.destroyTexture(mSkin.hoveredButtonTexture);
-    mRenderSystem.destroyTexture(mSkin.buttonTexture);
+void GUISystem::shutdown() {
+    getRenderSystem().destroyTexture(mSkin.clickedButtonTexture);
+    getRenderSystem().destroyTexture(mSkin.hoveredButtonTexture);
+    getRenderSystem().destroyTexture(mSkin.buttonTexture);
     for (auto &it : mCreatedFonts) {
         HD_DELETE(it);
     }
@@ -36,7 +36,7 @@ void GUISystem::onShutdown() {
 Font *GUISystem::createFontFromFile(const std::string &filename, uint32_t size) {
     if (!filename.empty() && size > 0) {
         std::string path = "data/configs/" + filename;
-        Font *font = new Font(mEngine, path, size);
+        Font *font = new Font(path, size);
         mCreatedFonts.push_back(font);
         return font;
     }

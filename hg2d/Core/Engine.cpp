@@ -10,13 +10,8 @@
 
 namespace hg2d {
 
-Engine::Engine(const EngineCreateInfo &createInfo) : mCreateInfo(createInfo) {
-    mGameStateSystem = std::make_unique<GameStateSystem>(*this);
-    mRenderSystem = std::make_unique<RenderSystem>(*this);
-    mSoundSystem = std::make_unique<SoundSystem>(*this);
-    mGUISystem = std::make_unique<GUISystem>(*this);
-    mCacheSystem = std::make_unique<CacheSystem>(*this);
-    mSceneSystem = std::make_unique<SceneSystem>(*this);
+void Engine::initialize(const EngineCreateInfo &createInfo) {
+    mCreateInfo = createInfo;
 
     hd::WindowFlags flags = hd::WindowFlags::Resizable;
     if (createInfo.window.fullscreen) {
@@ -25,30 +20,30 @@ Engine::Engine(const EngineCreateInfo &createInfo) : mCreateInfo(createInfo) {
 #ifdef HG2D_RENDERER_D3D11
     mWindow.create(createInfo.window.title, createInfo.window.size, flags);
 #elif defined(HG2D_RENDERER_OPENGL4)
-  #ifdef HD_BUILDMODE_DEBUG
+#ifdef HD_BUILDMODE_DEBUG
     mWindow.create(createInfo.window.title, createInfo.window.size, flags, hd::OpenGLContextSettings(4, 5, 0, 0, 0, true, true));
-  #else
-    mWindow.create(createInfo.window.title, createInfo.window.size, flags, hd::OpenGLContextSettings(4, 5, 0, 0, 0, true, false));
-  #endif
 #else
-#   pragma error("Cannot determine RenderSystem to use")
+    mWindow.create(createInfo.window.title, createInfo.window.size, flags, hd::OpenGLContextSettings(4, 5, 0, 0, 0, true, false));
+#endif
+#else
+#   pragma error("Cannot determine which RenderSystem to use")
 #endif
 
-    mGameStateSystem->onInitialize();
-    mRenderSystem->onInitialize();
-    mSoundSystem->onInitialize();
-    mGUISystem->onInitialize();
-    mCacheSystem->onInitialize();
-    mSceneSystem->onInitialize();
+    getGameStateSystem().initialize();
+    getRenderSystem().initialize();
+    getSoundSystem().initialize();
+    getGUISystem().initialize();
+    getCacheSystem().initialize();
+    getSceneSystem().initialize();
 }
 
-Engine::~Engine() {
-    mSceneSystem->onShutdown();
-    mCacheSystem->onShutdown();
-    mGUISystem->onShutdown();
-    mSoundSystem->onShutdown();
-    mRenderSystem->onShutdown();
-    mGameStateSystem->onShutdown();
+void Engine::shutdown() {
+    getSceneSystem().shutdown();
+    getCacheSystem().shutdown();
+    getGUISystem().shutdown();
+    getSoundSystem().shutdown();
+    getRenderSystem().shutdown();
+    getGameStateSystem().shutdown();
     mWindow.destroy();
 }
 
@@ -64,26 +59,26 @@ void Engine::run() {
             if (event.type == hd::WindowEventType::Close) {
                 isExit = true;
             }
-            mGameStateSystem->onEvent(event);
-            mRenderSystem->onEvent(event);
-            mGUISystem->onEvent(event);
-            mSceneSystem->onEvent(event);
+            getGameStateSystem().onEvent(event);
+            getRenderSystem().onEvent(event);
+            getGUISystem().onEvent(event);
+            getSceneSystem().onEvent(event);
         }
 
-        mGameStateSystem->onUpdate();
-        mGUISystem->onUpdate();
-        mSceneSystem->onUpdate();
+        getGameStateSystem().onUpdate();
+        getGUISystem().onUpdate();
+        getSceneSystem().onUpdate();
         if (hd::Time::getElapsedTime(updateTimer) > UPDATE_TIME) {
-            mGameStateSystem->onFixedUpdate();
-            mGUISystem->onFixedUpdate();
-            mSceneSystem->onFixedUpdate();
+            getGameStateSystem().onFixedUpdate();
+            getGUISystem().onFixedUpdate();
+            getSceneSystem().onFixedUpdate();
             updateTimer = hd::Time::getCurrentTime();
         }
 
-        mGameStateSystem->onDraw();
-        mGUISystem->onDraw();
-        mSceneSystem->onDraw();
-        mRenderSystem->onDraw();
+        getGameStateSystem().onDraw();
+        getGUISystem().onDraw();
+        getSceneSystem().onDraw();
+        getRenderSystem().onDraw();
 
         mFPSCounter.update();
     }
@@ -115,30 +110,6 @@ uint32_t Engine::getFps() const {
 
 float Engine::getFrameTime() const {
     return mFPSCounter.getFrameTime();
-}
-
-GameStateSystem &Engine::getGameStateSystem() {
-    return *mGameStateSystem;
-}
-
-RenderSystem &Engine::getRenderSystem() {
-    return *mRenderSystem;
-}
-
-SoundSystem &Engine::getSoundSystem() {
-    return *mSoundSystem;
-}
-
-GUISystem &Engine::getGUISystem() {
-    return *mGUISystem;
-}
-
-CacheSystem &Engine::getCacheSystem() {
-    return *mCacheSystem;
-}
-
-SceneSystem &Engine::getSceneSystem() {
-    return *mSceneSystem;
 }
 
 }

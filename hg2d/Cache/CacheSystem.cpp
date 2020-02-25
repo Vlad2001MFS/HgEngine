@@ -7,34 +7,31 @@
 
 namespace hg2d {
 
-CacheSystem::CacheSystem(Engine &engine) : AEngineObject(engine) {
+void CacheSystem::initialize() {
 }
 
-void CacheSystem::onInitialize() {
-}
-
-void CacheSystem::onShutdown() {
+void CacheSystem::shutdown() {
     for (auto &texture : mTextures) {
-        mRenderSystem.destroyTexture(texture.second);
+        getRenderSystem().destroyTexture(texture.second);
     }
     for (auto &texture : mColorTextures) {
-        mRenderSystem.destroyTexture(texture.second);
+        getRenderSystem().destroyTexture(texture.second);
     }
     for (auto &font : mFonts) {
-        mGUISystem.destroyFont(font.second);
+        getGUISystem().destroyFont(font.second);
     }
     for (auto &soundBuffer : mSoundBuffers) {
-        mSoundSystem.destroySound(soundBuffer.second);
+        getSoundSystem().destroySound(soundBuffer.second);
     }
     for (auto &musicBuffer : mMusicBuffers) {
-        mSoundSystem.destroyMusic(musicBuffer.second);
+        getSoundSystem().destroyMusic(musicBuffer.second);
     }
 }
 
 Texture *CacheSystem::loadTexture(const std::string &filename) {
     if (!filename.empty()) {
         if (mTextures.count(filename) == 0) {
-            Texture *texture = mRenderSystem.createTextureFromFile(filename);
+            Texture *texture = getRenderSystem().createTextureFromFile(filename);
             mTextures.insert(std::make_pair(filename, texture));
             return texture;
         }
@@ -51,7 +48,7 @@ Texture *CacheSystem::loadTexture(const std::string &filename) {
 Texture *CacheSystem::loadTexture(const hd::Color4 &color) {
     std::string key = fmt::format("{} {} {} {}", color.r, color.g, color.b, color.a);
     if (mColorTextures.count(key) == 0) {
-        Texture *texture = mRenderSystem.createTextureFromColor(color);
+        Texture *texture = getRenderSystem().createTextureFromColor(color);
         mColorTextures.insert(std::make_pair(key, texture));
         return texture;
     }
@@ -64,7 +61,7 @@ Font *CacheSystem::loadFont(const std::string &filename, uint32_t fontSize) {
     if (!filename.empty()) {
         std::string name = filename + "@" + std::to_string(fontSize);
         if (mFonts.count(name) == 0) {
-            Font *font = mGUISystem.createFontFromFile(filename, fontSize);
+            Font *font = getGUISystem().createFontFromFile(filename, fontSize);
             mFonts.insert(std::make_pair(name, font));
             return font;
         }
@@ -81,7 +78,7 @@ Font *CacheSystem::loadFont(const std::string &filename, uint32_t fontSize) {
 SoundBuffer *CacheSystem::loadSound(const std::string &filename) {
     if (!filename.empty()) {
         if (mSoundBuffers.count(filename) == 0) {
-            SoundBuffer *soundBuffer = mSoundSystem.createSoundFromFile(filename);
+            SoundBuffer *soundBuffer = getSoundSystem().createSoundFromFile(filename);
             mSoundBuffers.insert(std::make_pair(filename, soundBuffer));
             return soundBuffer;
         }
@@ -98,7 +95,7 @@ SoundBuffer *CacheSystem::loadSound(const std::string &filename) {
 MusicBuffer *CacheSystem::loadMusic(const std::string &filename) {
     if (!filename.empty()) {
         if (mMusicBuffers.count(filename) == 0) {
-            MusicBuffer *musicBuffer = mSoundSystem.createMusicFromFile(filename);
+            MusicBuffer *musicBuffer = getSoundSystem().createMusicFromFile(filename);
             mMusicBuffers.insert(std::make_pair(filename, musicBuffer));
             return musicBuffer;
         }

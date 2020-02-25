@@ -12,7 +12,7 @@ HD_FORCEINLINE glm::vec2 fromBox2D(const b2Vec2 &v) {
     return glm::vec2(v.x, v.y);
 }
 
-BodyComponent::BodyComponent(Engine &engine) : AECSComponent(engine), mBoxShapeSize(0, 0) {
+BodyComponent::BodyComponent() : mBoxShapeSize(0, 0) {
     mBody = nullptr;
     mFixture = nullptr;
 }
@@ -282,11 +282,11 @@ void ContactListener::EndContact(b2Contact *contact) {
     b->SetUserData(nullptr);
 }
 
-BodySystem::BodySystem(Engine &engine) : AECSSystem(engine) {
+BodySystem::BodySystem() : mWorld(nullptr) {
 }
 
 void BodySystem::onInitialize() {
-    mSceneSystem.registerComponentType<BodyComponent>();
+    getSceneSystem().registerComponentType<BodyComponent>();
 
     mWorld = new b2World(b2Vec2(0, 0));
     mWorld->SetContactListener(&mContactListener);
@@ -330,8 +330,8 @@ void BodySystem::onClear() {
 }
 
 void BodySystem::onFixedUpdate() {
-    const std::vector<TransformComponent*> &transforms = mSceneSystem.getComponents<TransformComponent>();
-    const std::vector<BodyComponent*> &bodies = mSceneSystem.getComponents<BodyComponent>();
+    const std::vector<TransformComponent*> &transforms = getSceneSystem().getComponents<TransformComponent>();
+    const std::vector<BodyComponent*> &bodies = getSceneSystem().getComponents<BodyComponent>();
     for (size_t i = 0; i < transforms.size(); i++) {
         TransformComponent *transform = transforms[i];
         BodyComponent *body = bodies[i];

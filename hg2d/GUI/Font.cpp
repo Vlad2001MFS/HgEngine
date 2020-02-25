@@ -5,7 +5,7 @@
 
 namespace hg2d {
 
-Font::Font(Engine &engine, const std::string &filename, uint32_t size) : AEngineObject(engine), mFont(filename, size) {
+Font::Font(const std::string &filename, uint32_t size) : mFont(filename, size) {
 }
 
 Texture *Font::renderLine(const std::string &text, const hd::Color4 &color) const {
@@ -17,7 +17,7 @@ Texture *Font::renderLine(const std::string &text, const hd::Color4 &color) cons
     }
     hd::Image img(nullptr, glm::ivec2(mFont.calcTextWidth(text), mFont.getLineHeight()), hd::ImageFormat::RGBA);
     mRenderLine(img, 0, 0, text, color);
-    return mRenderSystem.createTexture(img);
+    return getRenderSystem().createTexture(img);
 }
 
 Texture *Font::renderText(const std::string &text, const hd::Color4 &color) const {
@@ -38,7 +38,7 @@ Texture *Font::renderText(const std::string &text, const hd::Color4 &color) cons
     for (uint32_t i = 0; i < lines.size(); i++) {
         mRenderLine(img, 0, i*mFont.getLineHeight(), lines[i], color);
     }
-    return mRenderSystem.createTexture(img);
+    return getRenderSystem().createTexture(img);
 }
 
 void Font::setStyle(FontStyle style) {

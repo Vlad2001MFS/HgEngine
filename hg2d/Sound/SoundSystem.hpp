@@ -1,5 +1,4 @@
 #pragma once
-#include "../Core/AEngineObject.hpp"
 #include "hd/Sound/SoundContext.hpp"
 
 namespace hg2d {
@@ -9,12 +8,10 @@ struct MusicBuffer;
 
 using SoundChannel = hd::HSoundChannel;
 
-class SoundSystem final : public AEngineObject {
+class SoundSystem final : public hd::Singleton<SoundSystem> {
 public:
-    explicit SoundSystem(Engine &engine);
-
-    void onInitialize();
-    void onShutdown();
+    void initialize();
+    void shutdown();
 
     SoundBuffer *createSoundFromFile(const std::string &filename);
     MusicBuffer *createMusicFromFile(const std::string &filename);
@@ -44,5 +41,9 @@ private:
     std::vector<SoundBuffer*> mCreatedSoundBuffers;
     std::vector<MusicBuffer*> mCreatedMusicBuffers;
 };
+
+inline SoundSystem &getSoundSystem() {
+    return SoundSystem::get();
+}
 
 }

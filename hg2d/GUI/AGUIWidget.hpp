@@ -1,5 +1,4 @@
 #pragma once
-#include "../Core/AEngineObject.hpp"
 #include "hd/Core/Delegate.hpp"
 #include "hd/Window/WindowEvent.hpp"
 #include "glm/glm.hpp"
@@ -20,13 +19,13 @@ enum class GUIVAlign {
     Bottom
 };
 
-class AGUIWidget : public AEngineObject {
+class AGUIWidget {
 public:
-    explicit AGUIWidget(Engine &engine);
+    AGUIWidget();
     virtual ~AGUIWidget();
 
     template<typename T, typename ...Args>
-    T *createChild(Args &&...args) { T *widget = new T(mEngine, args...); mAddChild(widget); return widget; }
+    T *createChild(Args &&...args) { T *widget = new T(args...); mAddChild(widget); return widget; }
     void destroyChild(AGUIWidget *&widget);
     
     virtual void onInitialize();

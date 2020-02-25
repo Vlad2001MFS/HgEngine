@@ -6,7 +6,7 @@
 
 namespace hg2d {
 
-SpriteComponent::SpriteComponent(Engine &engine) : AECSComponent(engine) {
+SpriteComponent::SpriteComponent() {
     mTexture = nullptr;
 }
 
@@ -14,12 +14,12 @@ void SpriteComponent::onSaveLoad(JSONObject& json, bool isLoad) {
     JSONObject &jsonPath = json["texturePath"];
     if (isLoad) {
         if (!jsonPath.is_null()) {
-            setTexture(mCacheSystem.loadTexture(jsonPath.get<std::string>()));
+            setTexture(getCacheSystem().loadTexture(jsonPath.get<std::string>()));
         }
     }
     else {
         if (getTexture()) {
-            jsonPath = mRenderSystem.getTexturePath(getTexture());
+            jsonPath = getRenderSystem().getTexturePath(getTexture());
         }
     }
 }
@@ -32,7 +32,7 @@ const Texture* SpriteComponent::getTexture() const {
     return mTexture;
 }
 
-CameraComponent::CameraComponent(Engine& engine) : AECSComponent(engine) {
+CameraComponent::CameraComponent() {
     mZoom = 0.0f;
 }
 
@@ -54,13 +54,13 @@ float CameraComponent::getZoom() const {
     return mZoom;
 }
 
-SpriteSystem::SpriteSystem(Engine &engine) : AECSSystem(engine) {
+SpriteSystem::SpriteSystem() {
     mCameraComponent = nullptr;
 }
 
 void SpriteSystem::onInitialize() {
-    mSceneSystem.registerComponentType<SpriteComponent>();
-    mSceneSystem.registerComponentType<CameraComponent>();
+    getSceneSystem().registerComponentType<SpriteComponent>();
+    getSceneSystem().registerComponentType<CameraComponent>();
 }
 
 void SpriteSystem::onSaveLoad(JSONObject& json, bool isLoad) {
@@ -81,14 +81,14 @@ void SpriteSystem::onClear() {
 
 void SpriteSystem::onDraw() {
     if (!mTransformComponent) {
-        mTransformComponent = mSceneSystem.getComponent<TransformComponent>(mCameraEntity);
+        mTransformComponent = getSceneSystem().getComponent<TransformComponent>(mCameraEntity);
     }
     if (!mCameraComponent) {
-        mCameraComponent = mSceneSystem.getComponent<CameraComponent>(mCameraEntity);
+        mCameraComponent = getSceneSystem().getComponent<CameraComponent>(mCameraEntity);
     }
 
-    const std::vector<TransformComponent*> &transforms = mSceneSystem.getComponents<TransformComponent>();
-    const std::vector<SpriteComponent*> &sprites = mSceneSystem.getComponents<SpriteComponent>();
+    const std::vector<TransformComponent*> &transforms = getSceneSystem().getComponents<TransformComponent>();
+    const std::vector<SpriteComponent*> &sprites = getSceneSystem().getComponents<SpriteComponent>();
     for (size_t i = 0; i < transforms.size(); i++) {
         TransformComponent *transform = transforms[i];
         SpriteComponent *sprite = sprites[i];
@@ -102,7 +102,7 @@ void SpriteSystem::onDraw() {
             rop.pos = transform->getPosition();
             rop.size = transform->getSize();
             rop.angle = transform->getAngle();
-            mRenderSystem.addRenderOp(rop);
+            getRenderSystem().addRenderOp(rop, false);
         }
     }
 }
@@ -110,8 +110,8 @@ void SpriteSystem::onDraw() {
 void SpriteSystem::setCameraEntity(const HEntity& handle) {
     if (handle) {
         mCameraEntity = handle;
-        mTransformComponent = mSceneSystem.getComponent<TransformComponent>(handle);
-        mCameraComponent = mSceneSystem.getComponent<CameraComponent>(handle);
+        mTransformComponent = getSceneSystem().getComponent<TransformComponent>(handle);
+        mCameraComponent = getSceneSystem().getComponent<CameraComponent>(handle);
     }
     else {
         LOG_F(WARNING, "Failed to set invalid entity as camera");

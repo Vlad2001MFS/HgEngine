@@ -2,7 +2,7 @@
 
 namespace hg2d {
 
-TransformComponent::TransformComponent(Engine &engine) : AECSComponent(engine), mPos(0, 0), mSize(0, 0) {
+TransformComponent::TransformComponent() : mPos(0, 0), mSize(0, 0) {
     mAngle = 0.0f;
 }
 

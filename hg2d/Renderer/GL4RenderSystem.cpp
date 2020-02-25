@@ -151,20 +151,21 @@ void debugCallback(uint32_t source, uint32_t type, uint32_t id, uint32_t severit
     }
 }
 
-RenderSystem::RenderSystem(Engine &engine) : AEngineObject(engine), impl(std::make_unique<Impl>()) {
+RenderSystem::RenderSystem() : impl(new Impl()) {
 }
 
 RenderSystem::~RenderSystem() {
+    HD_DELETE(impl);
 }
 
-void RenderSystem::onInitialize() {
+void RenderSystem::initialize() {
     glewExperimental = true;
     GLenum glewResult = glewInit();
     if (glewInit() != GLEW_OK) {
         LOG_F(FATAL, "Failed to initialize GLEW. Error: {}", glewGetErrorString(glewResult));
     }
 
-    if (mEngine.getWindow().getOpenGLContextSettings().isDebug) {
+    if (getEngine().getWindow().getOpenGLContextSettings().isDebug) {
         if (GLEW_ARB_debug_output) {
             glEnable(GL_DEBUG_OUTPUT);
             glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
@@ -242,7 +243,7 @@ void RenderSystem::onInitialize() {
     glNamedBufferData(impl->constantBuffer, sizeof(ConstantBuffer), nullptr, GL_DYNAMIC_DRAW);
 }
 
-void RenderSystem::onShutdown() {
+void RenderSystem::shutdown() {
     for (auto &it : impl->createdTextures) {
         impl->destroyTexture(it);
     }
@@ -299,7 +300,7 @@ void RenderSystem::onDraw() {
     }
     mGUIRenderOps.clear();
 
-    mEngine.getWindow().swapBuffers();
+    getEngine().getWindow().swapBuffers();
 }
 
 Texture *RenderSystem::createTexture(const void *data, uint32_t w, uint32_t h) {
@@ -359,8 +360,8 @@ const std::string &RenderSystem::getTexturePath(const Texture *texture) const {
     return texture->path;
 }
 
-void RenderSystem::addRenderOp(const RenderOp &rop) {
-    if (rop.isGUI) {
+void RenderSystem::addRenderOp(const RenderOp &rop, bool isGUI) {
+    if (isGUI) {
         mGUIRenderOps.push_back(rop);
     }
     else {

@@ -20,7 +20,7 @@ struct CollisionInfo {
 class BodyComponent final : public AECSComponent {
     friend class BodySystem;
 public:
-    BodyComponent(Engine &engine);
+    BodyComponent();
 
     virtual void onSaveLoad(JSONObject &json, bool isLoad) override;
     
@@ -81,7 +81,7 @@ public:
 
 class BodySystem final : public AECSSystem {
 public:
-    BodySystem(Engine &engine);
+    BodySystem();
 
     virtual void onInitialize() override;
     virtual void onShutdown() override;

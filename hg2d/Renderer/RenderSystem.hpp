@@ -1,5 +1,4 @@
 #pragma once
-#include "../Core/AEngineObject.hpp"
 #include "hd/IO/Image.hpp"
 #include "hd/Window/WindowEvent.hpp"
 #include "hd/Core/Color.hpp"
@@ -17,7 +16,6 @@ struct RenderOp {
         this->texture = nullptr;
         this->angle = 0.0f;
         this->camAngle = 0.0f;
-        this->isGUI = false;
     }
 
     glm::vec3 camPos;
@@ -25,16 +23,16 @@ struct RenderOp {
     glm::vec2 pos, size;
     glm::vec2 uvOffset, uvSize;
     float angle, camAngle;
-    bool isGUI;
 };
 
-class RenderSystem final : public AEngineObject {
+class RenderSystem final : public hd::Singleton<RenderSystem> {
 public:
-    explicit RenderSystem(Engine &engine);
+    RenderSystem();
     ~RenderSystem();
 
-    void onInitialize();
-    void onShutdown();
+    void initialize();
+    void shutdown();
+
     void onEvent(const hd::WindowEvent &event);
     void onDraw();
 
@@ -46,13 +44,17 @@ public:
     const glm::ivec2 &getTextureSize(const Texture *texture) const;
     const std::string &getTexturePath(const Texture *texture) const;
 
-    void addRenderOp(const RenderOp &rop);
+    void addRenderOp(const RenderOp &rop, bool isGUI);
 
 private:
     std::vector<RenderOp> mRenderOps;
     std::vector<RenderOp> mGUIRenderOps;
     struct Impl;
-    std::unique_ptr<Impl> impl;
+    Impl *impl;
 };
+
+inline RenderSystem &getRenderSystem() {
+    return RenderSystem::get();
+}
 
 }
