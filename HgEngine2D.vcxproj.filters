@@ -81,6 +81,9 @@
     <ClCompile Include="hg2d\Sound\SoundSystem.cpp">
       <Filter>hg2d\Sound</Filter>
     </ClCompile>
+    <ClCompile Include="hg2d\Core\Node.cpp">
+      <Filter>hg2d\Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="hg2d\Core\BuildConfig.hpp">
@@ -136,6 +139,9 @@
     </ClInclude>
     <ClInclude Include="hg2d\Sound\SoundSystem.hpp">
       <Filter>hg2d\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="hg2d\Core\Node.hpp">
+      <Filter>hg2d\Core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

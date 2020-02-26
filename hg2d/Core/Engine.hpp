@@ -1,4 +1,5 @@
 #pragma once
+#include "Node.hpp"
 #include "hd/Core/FPSCounter.hpp"
 #include "hd/Window/Window.hpp"
 #include <memory>
@@ -42,6 +43,14 @@ public:
     void run();
     void close();
 
+    template<typename T, typename... Args>
+    void setRoot(Args &&...args) {
+        if (mRoot) {
+            LOG_F(FATAL, "Failed to set root node. The node already intialized");
+        }
+        mRoot = std::make_unique<T>(std::forward(args)...);
+    }
+
     bool isKeyDown(hd::KeyCode key) const;
     bool isKeyDown(hd::MouseButton button) const;
     const EngineCreateInfo &getCreateInfo() const;
@@ -53,6 +62,7 @@ private:
     EngineCreateInfo mCreateInfo;
     hd::Window mWindow;
     hd::FPSCounter mFPSCounter;
+    std::unique_ptr<Node> mRoot;
 };
 
 inline Engine &getEngine() {

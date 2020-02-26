@@ -38,6 +38,7 @@ void Engine::initialize(const EngineCreateInfo &createInfo) {
 }
 
 void Engine::shutdown() {
+    mRoot.reset();
     getSceneSystem().shutdown();
     getCacheSystem().shutdown();
     getGUISystem().shutdown();
@@ -51,30 +52,42 @@ void Engine::run() {
     const float UPDATES_COUNT_PER_SEC = 30.0f;
     const hd::Time UPDATE_TIME = hd::Time::fromMilliseconds(1000.0f / UPDATES_COUNT_PER_SEC);
 
-    hd::Time updateTimer;
+    if (mRoot) {
+        LOG_F(FATAL, "The root node must be initialized");
+    }
+
+    hd::Time updateTimer, deltaTimer;
     bool isExit = false;
     while (!isExit) {
+        float dt = hd::Time::getElapsedTime(deltaTimer).getMilliseconds();
+        deltaTimer = hd::Time::getCurrentTime();
+
         hd::WindowEvent event;
         while (mWindow.processEvent(event)) {
             if (event.type == hd::WindowEventType::Close) {
                 isExit = true;
             }
+
+            mRoot->onEvent(event);
             getGameStateSystem().onEvent(event);
             getRenderSystem().onEvent(event);
             getGUISystem().onEvent(event);
             getSceneSystem().onEvent(event);
         }
 
+        mRoot->onUpdate(dt);
         getGameStateSystem().onUpdate();
         getGUISystem().onUpdate();
         getSceneSystem().onUpdate();
         if (hd::Time::getElapsedTime(updateTimer) > UPDATE_TIME) {
+            mRoot->onFixedUpdate();
             getGameStateSystem().onFixedUpdate();
             getGUISystem().onFixedUpdate();
             getSceneSystem().onFixedUpdate();
             updateTimer = hd::Time::getCurrentTime();
         }
 
+        mRoot->onDraw();
         getGameStateSystem().onDraw();
         getGUISystem().onDraw();
         getSceneSystem().onDraw();

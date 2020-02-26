@@ -182,6 +182,7 @@
     <ClCompile Include="hg2d\Cache\CacheSystem.cpp" />
     <ClCompile Include="hg2d\Core\Engine.cpp" />
     <ClCompile Include="hg2d\Core\JSONObject.cpp" />
+    <ClCompile Include="hg2d\Core\Node.cpp" />
     <ClCompile Include="hg2d\GameState\AGameState.cpp" />
     <ClCompile Include="hg2d\GameState\GameStateSystem.cpp" />
     <ClCompile Include="hg2d\GUI\AGUIWidget.cpp" />
@@ -203,6 +204,7 @@
     <ClInclude Include="hg2d\Core\BuildConfig.hpp" />
     <ClInclude Include="hg2d\Core\Engine.hpp" />
     <ClInclude Include="hg2d\Core\JSONObject.hpp" />
+    <ClInclude Include="hg2d\Core\Node.hpp" />
     <ClInclude Include="hg2d\GameState\AGameState.hpp" />
     <ClInclude Include="hg2d\GameState\GameStateSystem.hpp" />
     <ClInclude Include="hg2d\GUI\AGUIWidget.hpp" />
