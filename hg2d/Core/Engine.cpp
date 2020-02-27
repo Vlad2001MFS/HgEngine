@@ -20,9 +20,9 @@ void Engine::initialize(const EngineCreateInfo &createInfo) {
     mWindow.create(createInfo.window.title, createInfo.window.size, flags);
 #elif defined(HG2D_RENDERER_OPENGL4)
 #ifdef HD_BUILDMODE_DEBUG
-    mWindow.create(createInfo.window.title, createInfo.window.size, flags, hd::OpenGLContextSettings(4, 5, 0, 0, 0, true, true));
+    mWindow.create(createInfo.window.title, createInfo.window.size, flags, hd::OpenGLContextSettings(4, 5, 0, 0, 0, false, true));
 #else
-    mWindow.create(createInfo.window.title, createInfo.window.size, flags, hd::OpenGLContextSettings(4, 5, 0, 0, 0, true, false));
+    mWindow.create(createInfo.window.title, createInfo.window.size, flags, hd::OpenGLContextSettings(4, 5, 0, 0, 0, false, false));
 #endif
 #else
 #   pragma error("Cannot determine which RenderSystem to use")
