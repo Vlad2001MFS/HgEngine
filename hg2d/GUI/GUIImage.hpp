@@ -1,14 +1,13 @@
 #pragma once
-#include "AGUIWidget.hpp"
+#include "GUIWidget.hpp"
 
 namespace hg2d {
 
 struct Texture;
 
-class GUIImage : public AGUIWidget {
+class GUIImage : public GUIWidget {
 public:
     GUIImage();
-    virtual ~GUIImage() = default;
 
     void setTexture(const Texture *texture);
     const Texture *getTexture() const;

@@ -1,5 +1,5 @@
 #pragma once
-#include "AGUIWidget.hpp"
+#include "GUIWidget.hpp"
 #include "Font.hpp"
 #include "hd/Window/WindowEvent.hpp"
 #include <map>
@@ -16,33 +16,16 @@ struct GUISkin {
 
 class GUISystem final : public hd::Singleton<GUISystem> {
 public:
-    GUISystem();
-
     void initialize();
     void shutdown();
-
-    void onEvent(const hd::WindowEvent &event);
-    void onFixedUpdate();
-    void onUpdate();
-    void onDraw();
 
     Font *createFontFromFile(const std::string &filename, uint32_t size);
     void destroyFont(Font *&font);
     const GUISkin &getSkin() const { return mSkin; }
 
-    template<typename T, typename ...Args>
-    T *createFrame(const std::string &name, Args &&...args) { T *frame = new T(args...); mAddFrame(frame, name); return frame; }
-    void destroyFrame(const std::string &name);
-    void setFrame(const std::string &name);
-
 private:
-    void mAddFrame(AGUIWidget *frame, const std::string &name);
-    void mDestroyFrame(AGUIWidget *&frame);
-
     GUISkin mSkin;
     std::vector<Font*> mCreatedFonts;
-    std::map<std::string, AGUIWidget*> mFrames;
-    AGUIWidget *mCurrentFrame;
 };
 
 inline GUISystem &getGUISystem() {

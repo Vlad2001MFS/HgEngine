@@ -57,6 +57,7 @@ public:
     hd::Window &getWindow();
     uint32_t getFps() const;
     float getFrameTime() const;
+    Node *getRoot();
 
 private:
     EngineCreateInfo mCreateInfo;

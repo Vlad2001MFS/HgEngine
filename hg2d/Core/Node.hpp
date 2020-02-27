@@ -47,11 +47,15 @@ public:
     }
     void destroyChild(const std::string &name);
 
+    void translate(float x, float y);
     void translate(const glm::vec2 &offset);
+    void scale(float x, float y);
     void scale(const glm::vec2 &size);
     void rotate(float angle);
 
+    void setPosition(float x, float y);
     void setPosition(const glm::vec2 &pos);
+    void setSize(float x, float y);
     void setSize(const glm::vec2 &size);
     void setAngle(float angle);
     void setActive(bool active);

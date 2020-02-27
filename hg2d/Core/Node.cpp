@@ -68,24 +68,42 @@ void Node::destroyChild(const std::string &name) {
     }
 }
 
+void Node::translate(float x, float y) {
+    setPosition(mPos.x + x, mPos.y + y);
+}
+
 void Node::translate(const glm::vec2 &offset) {
-    mPos += offset;
+    translate(offset.x, offset.y);
+}
+
+void Node::scale(float x, float y) {
+    setSize(mSize.x + x, mSize.y + y);
 }
 
 void Node::scale(const glm::vec2 &size) {
-    mSize += size;
+    scale(size.x, size.y);
 }
 
 void Node::rotate(float angle) {
-    mAngle += angle;
+    setAngle(mAngle + angle);
+}
+
+void Node::setPosition(float x, float y) {
+    mPos.x = x;
+    mPos.y = y;
 }
 
 void Node::setPosition(const glm::vec2 &pos) {
-    mPos = pos;
+    setPosition(pos.x, pos.y);
+}
+
+void Node::setSize(float x, float y) {
+    mSize.x = x;
+    mSize.y = y;
 }
 
 void Node::setSize(const glm::vec2 &size) {
-    mSize = size;
+    setSize(size.x, size.y);
 }
 
 void Node::setAngle(float angle) {

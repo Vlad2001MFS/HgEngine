@@ -1,25 +1,22 @@
 #pragma once
-#include "AGUIWidget.hpp"
+#include "GUIWidget.hpp"
 #include "hd/Core/Color.hpp"
 
 namespace hg2d {
 
 struct Texture;
 
-class GUILabel : public AGUIWidget {
+class GUILabel : public GUIWidget {
 public:
-   GUILabel();
+    GUILabel();
     virtual ~GUILabel();
 
-    void setText(const std::string &text);
+    void setText(const std::string &text, bool updateSize);
     const std::string &getText() const;
     void setColor(const hd::Color4 &color);
     const hd::Color4 &getColor() const;
 
     virtual void onDraw() override;
-
-    virtual void setSize(int x, int y) override;
-    virtual void setSize(const glm::ivec2 &size) override;
 
 private:
     void mUpdateTexture();
@@ -27,7 +24,6 @@ private:
     Texture *mTexture;
     std::string mText;
     hd::Color4 mColor;
-    glm::bvec2 mIsUserSize;
 };
 
 }

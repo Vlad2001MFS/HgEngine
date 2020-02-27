@@ -6,10 +6,6 @@
 
 namespace hg2d {
 
-GUISystem::GUISystem() {
-    mCurrentFrame = nullptr;
-}
-
 void GUISystem::initialize() {
     mSkin.font = createFontFromFile(getEngine().getCreateInfo().gui.fontPath, getEngine().getCreateInfo().gui.fontSize);
     mSkin.font->setHinting(FontHinting::Mono);
@@ -27,9 +23,6 @@ void GUISystem::shutdown() {
     getRenderSystem().destroyTexture(mSkin.buttonTexture);
     for (auto &it : mCreatedFonts) {
         HD_DELETE(it);
-    }
-    for (auto &it : mFrames) {
-        mDestroyFrame(it.second);
     }
 }
 
@@ -59,87 +52,6 @@ void GUISystem::destroyFont(Font *&font) {
         else {
             LOG_F(WARNING, "Failed to destroy Font. The Font wasn't created by GUISystem");
         }
-    }
-}
-
-void GUISystem::destroyFrame(const std::string &name) {
-    auto it = mFrames.find(name);
-    if (it != mFrames.end()) {
-        mDestroyFrame(it->second);
-        mFrames.erase(name);
-    }
-    else {
-        LOG_F(WARNING, "Failed to destroy GUIFrame. The GUIFrame '{}' not registered at GUISystem", name.data());
-    }
-}
-
-void GUISystem::setFrame(const std::string& name) {
-    if (name.empty()) {
-        mCurrentFrame = nullptr;
-    }
-    else {
-        auto it = mFrames.find(name);
-        if (it != mFrames.end()) {
-            if (mCurrentFrame != it->second) {
-                mCurrentFrame = it->second;
-            }
-            else {
-                LOG_F(WARNING, "Failed to set GUIFrame. The GUIFrame '{}' already current frame", name.data());
-            }
-        }
-        else {
-            LOG_F(WARNING, "Failed to set GUIFrame. The GUIFrame '{}' not registered at GUISystem", name.data());
-        }
-    }
-}
-
-void GUISystem::onEvent(const hd::WindowEvent &event) {
-    if (event.type == hd::WindowEventType::Resize) {
-        for (auto &frame : mFrames) {
-            frame.second->setSize(event.resize.width, event.resize.height);
-        }
-    }
-    if (mCurrentFrame) {
-        mCurrentFrame->_onEvent(event);
-    }
-}
-
-void GUISystem::onFixedUpdate() {
-    if (mCurrentFrame) {
-        mCurrentFrame->_onFixedUpdate();
-    }
-}
-
-void GUISystem::onUpdate() {
-    if (mCurrentFrame) {
-        mCurrentFrame->_onUpdate();
-    }
-}
-
-void GUISystem::onDraw() {
-    if (mCurrentFrame) {
-        mCurrentFrame->_onDraw();
-    }
-}
-
-void GUISystem::mDestroyFrame(AGUIWidget *&frame) {
-    frame->_onShutdown();
-    HD_DELETE(frame);
-}
-
-void GUISystem::mAddFrame(AGUIWidget *frame, const std::string &name) {
-    if (!name.empty()) {
-        auto it = mFrames.find(name);
-        if (it == mFrames.end()) {
-            mFrames.insert(std::make_pair(name, frame));
-            frame->_onInitialize();
-        }
-        else {
-            LOG_F(WARNING, "Failed to add GUIFrame. The GUIFrame '{}' already registered at GUISystem", name.data());
-        }
-    }
-    else {
-        LOG_F(WARNING, "Failed to add GUIFrame without name");
     }
 }
 

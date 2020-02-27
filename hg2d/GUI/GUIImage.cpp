@@ -25,6 +25,8 @@ void GUIImage::onDraw() {
         rop.size = getSize();
         getRenderSystem().addRenderOp(rop, true);
     }
+
+    GUIWidget::onDraw();
 }
     
 }

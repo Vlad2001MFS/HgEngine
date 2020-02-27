@@ -1,6 +1,5 @@
 #include "Engine.hpp"
 #include "BuildConfig.hpp"
-#include "../GameState/GameStateSystem.hpp"
 #include "../Renderer/RenderSystem.hpp"
 #include "../Sound/SoundSystem.hpp"
 #include "../GUI/GUISystem.hpp"
@@ -29,7 +28,6 @@ void Engine::initialize(const EngineCreateInfo &createInfo) {
 #   pragma error("Cannot determine which RenderSystem to use")
 #endif
 
-    getGameStateSystem().initialize();
     getRenderSystem().initialize();
     getSoundSystem().initialize();
     getGUISystem().initialize();
@@ -44,7 +42,6 @@ void Engine::shutdown() {
     getGUISystem().shutdown();
     getSoundSystem().shutdown();
     getRenderSystem().shutdown();
-    getGameStateSystem().shutdown();
     mWindow.destroy();
 }
 
@@ -52,7 +49,7 @@ void Engine::run() {
     const float UPDATES_COUNT_PER_SEC = 30.0f;
     const hd::Time UPDATE_TIME = hd::Time::fromMilliseconds(1000.0f / UPDATES_COUNT_PER_SEC);
 
-    if (mRoot) {
+    if (!mRoot) {
         LOG_F(FATAL, "The root node must be initialized");
     }
 
@@ -69,27 +66,19 @@ void Engine::run() {
             }
 
             mRoot->onEvent(event);
-            getGameStateSystem().onEvent(event);
             getRenderSystem().onEvent(event);
-            getGUISystem().onEvent(event);
             getSceneSystem().onEvent(event);
         }
 
         mRoot->onUpdate(dt);
-        getGameStateSystem().onUpdate();
-        getGUISystem().onUpdate();
         getSceneSystem().onUpdate();
         if (hd::Time::getElapsedTime(updateTimer) > UPDATE_TIME) {
             mRoot->onFixedUpdate();
-            getGameStateSystem().onFixedUpdate();
-            getGUISystem().onFixedUpdate();
             getSceneSystem().onFixedUpdate();
             updateTimer = hd::Time::getCurrentTime();
         }
 
         mRoot->onDraw();
-        getGameStateSystem().onDraw();
-        getGUISystem().onDraw();
         getSceneSystem().onDraw();
         getRenderSystem().onDraw();
 
@@ -123,6 +112,10 @@ uint32_t Engine::getFps() const {
 
 float Engine::getFrameTime() const {
     return mFPSCounter.getFrameTime();
+}
+
+Node *Engine::getRoot() {
+    return mRoot.get();
 }
 
 }

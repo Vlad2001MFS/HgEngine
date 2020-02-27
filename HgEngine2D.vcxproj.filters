@@ -13,9 +13,6 @@
     <Filter Include="hg2d\GUI">
       <UniqueIdentifier>{4add1e69-6f3e-4547-9dc2-d62e5bbe7078}</UniqueIdentifier>
     </Filter>
-    <Filter Include="hg2d\GameState">
-      <UniqueIdentifier>{04c6b775-7b6d-41a4-91b0-9bb13361d58b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="hg2d\Renderer">
       <UniqueIdentifier>{1d4047a9-4fe0-4c01-a53c-d693814cad49}</UniqueIdentifier>
     </Filter>
@@ -35,15 +32,6 @@
     </ClCompile>
     <ClCompile Include="hg2d\Cache\CacheSystem.cpp">
       <Filter>hg2d\Cache</Filter>
-    </ClCompile>
-    <ClCompile Include="hg2d\GameState\AGameState.cpp">
-      <Filter>hg2d\GameState</Filter>
-    </ClCompile>
-    <ClCompile Include="hg2d\GameState\GameStateSystem.cpp">
-      <Filter>hg2d\GameState</Filter>
-    </ClCompile>
-    <ClCompile Include="hg2d\GUI\AGUIWidget.cpp">
-      <Filter>hg2d\GUI</Filter>
     </ClCompile>
     <ClCompile Include="hg2d\GUI\Font.cpp">
       <Filter>hg2d\GUI</Filter>
@@ -84,6 +72,9 @@
     <ClCompile Include="hg2d\Core\Node.cpp">
       <Filter>hg2d\Core</Filter>
     </ClCompile>
+    <ClCompile Include="hg2d\GUI\GUIWidget.cpp">
+      <Filter>hg2d\GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="hg2d\Core\BuildConfig.hpp">
@@ -97,15 +88,6 @@
     </ClInclude>
     <ClInclude Include="hg2d\Cache\CacheSystem.hpp">
       <Filter>hg2d\Cache</Filter>
-    </ClInclude>
-    <ClInclude Include="hg2d\GameState\AGameState.hpp">
-      <Filter>hg2d\GameState</Filter>
-    </ClInclude>
-    <ClInclude Include="hg2d\GameState\GameStateSystem.hpp">
-      <Filter>hg2d\GameState</Filter>
-    </ClInclude>
-    <ClInclude Include="hg2d\GUI\AGUIWidget.hpp">
-      <Filter>hg2d\GUI</Filter>
     </ClInclude>
     <ClInclude Include="hg2d\GUI\Font.hpp">
       <Filter>hg2d\GUI</Filter>
@@ -142,6 +124,9 @@
     </ClInclude>
     <ClInclude Include="hg2d\Core\Node.hpp">
       <Filter>hg2d\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="hg2d\GUI\GUIWidget.hpp">
+      <Filter>hg2d\GUI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
