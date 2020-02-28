@@ -18,4 +18,6 @@ private:
     const Texture *mTexture;
 };
 
+HG2D_REGISTER_OBJECT("GUIImage", GUIImage);
+
 }

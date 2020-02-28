@@ -181,6 +181,7 @@
   <ItemGroup>
     <ClCompile Include="hg2d\Cache\CacheSystem.cpp" />
     <ClCompile Include="hg2d\Core\Engine.cpp" />
+    <ClCompile Include="hg2d\Core\Factory.cpp" />
     <ClCompile Include="hg2d\Core\JSONObject.cpp" />
     <ClCompile Include="hg2d\Core\Node.cpp" />
     <ClCompile Include="hg2d\GUI\GUIWidget.cpp" />
@@ -201,6 +202,7 @@
     <ClInclude Include="hg2d\Cache\CacheSystem.hpp" />
     <ClInclude Include="hg2d\Core\BuildConfig.hpp" />
     <ClInclude Include="hg2d\Core\Engine.hpp" />
+    <ClInclude Include="hg2d\Core\Factory.hpp" />
     <ClInclude Include="hg2d\Core\JSONObject.hpp" />
     <ClInclude Include="hg2d\Core\Node.hpp" />
     <ClInclude Include="hg2d\GUI\GUIWidget.hpp" />

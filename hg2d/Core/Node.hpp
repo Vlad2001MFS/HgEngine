@@ -1,4 +1,5 @@
 #pragma once
+#include "Factory.hpp"
 #include "hd/Core/Common.hpp"
 #include "hd/Core/Log.hpp"
 #include "hd/Core/StringUtils.hpp"
@@ -31,20 +32,20 @@ public:
         return ptr;
     }
 
-    template<typename T, typename... Args>
-    T *createChild(const std::string &name, Args &&...args) {
-        uint64_t nameHash = hd::StringUtils::getHash(name);
-        if (!name.empty() && mChildrenByNames.count(nameHash) != 0) {
-            LOG_F(FATAL, "Failed to create child '{}'", name);
-        }
-        T *node = new T(std::forward(args)...);
-        mChildren.push_back(node);
-        node->mParent = this;
-        if (!name.empty()) {
-            mChildrenByNames.insert(std::make_pair(nameHash, node));
-        }
+    template<typename T>
+    T *createChild(const std::string &name) {
+        T *node = new T();
+        mAddChild(node, name);
         return node;
     }
+
+    template<typename T = Node>
+    T *createChild(const std::string &name, const std::string &typeName) {
+        T *node = static_cast<T*>(Factory::get().createObject(typeName));
+        mAddChild(node, name);
+        return node;
+    }
+
     void destroyChild(const std::string &name);
 
     void translate(float x, float y);
@@ -70,6 +71,8 @@ public:
     glm::vec2 getAbsolutePosition() const;
 
 private:
+    void mAddChild(Node *node, const std::string &name);
+
     Node *mParent;
     std::vector<Node*> mChildren;
     std::unordered_map<uint64_t, Node*> mChildrenByNames;
@@ -77,5 +80,7 @@ private:
     float mAngle;
     bool mIsActive;
 };
+
+HG2D_REGISTER_OBJECT("Node", Node);
 
 }

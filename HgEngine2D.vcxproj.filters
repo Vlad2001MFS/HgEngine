@@ -75,6 +75,9 @@
     <ClCompile Include="hg2d\GUI\GUIWidget.cpp">
       <Filter>hg2d\GUI</Filter>
     </ClCompile>
+    <ClCompile Include="hg2d\Core\Factory.cpp">
+      <Filter>hg2d\Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="hg2d\Core\BuildConfig.hpp">
@@ -127,6 +130,9 @@
     </ClInclude>
     <ClInclude Include="hg2d\GUI\GUIWidget.hpp">
       <Filter>hg2d\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="hg2d\Core\Factory.hpp">
+      <Filter>hg2d\Core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

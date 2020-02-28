@@ -164,4 +164,16 @@ glm::vec2 Node::getAbsolutePosition() const {
     return pos;
 }
 
+void Node::mAddChild(Node *node, const std::string &name) {
+    uint64_t nameHash = hd::StringUtils::getHash(name);
+    if (!name.empty() && mChildrenByNames.count(nameHash) != 0) {
+        LOG_F(FATAL, "Failed to create child '{}'", name);
+    }
+    mChildren.push_back(node);
+    node->mParent = this;
+    if (!name.empty()) {
+        mChildrenByNames.insert(std::make_pair(nameHash, node));
+    }
+}
+
 }

@@ -26,4 +26,6 @@ private:
     hd::Color4 mColor;
 };
 
+HG2D_REGISTER_OBJECT("GUILabel", GUILabel);
+
 }

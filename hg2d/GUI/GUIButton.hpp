@@ -20,4 +20,6 @@ private:
     GUILabel *mLabel;
 };
 
+HG2D_REGISTER_OBJECT("GUIButton", GUIButton);
+
 }

@@ -45,4 +45,6 @@ private:
     GUIVAlign mVAlign;
 };
 
+HG2D_REGISTER_OBJECT("GUIWidget", GUIWidget);
+
 }
