@@ -3,6 +3,8 @@
 
 namespace hg2d {
 
+HG2D_REGISTER_OBJECT(GUIWidget);
+
 GUIWidget::GUIWidget() {
     mIsMouseHovered = false;
     mHAlign = GUIHAlign::None;
@@ -89,14 +91,14 @@ void GUIWidget::mApplyHAlign() {
     for (size_t i = 0; i < childrenCount; i++) {
         GUIWidget *child = static_cast<GUIWidget*>(getChildren()[i]);
         GUIWidget *invChild = static_cast<GUIWidget*>(getChildren()[childrenCount - i - 1]);
-        if (child->getHAlign() == GUIHAlign::Left) {
+        if (child->isActive() && child->getHAlign() == GUIHAlign::Left) {
             child->setPosition(glm::vec2(getGUISystem().getSkin().alignSpaceX, getGUISystem().getSkin().alignSpaceY));
         }
-        if (invChild->getHAlign() == GUIHAlign::Right) {
+        if (invChild->isActive() && invChild->getHAlign() == GUIHAlign::Right) {
             int x = getSize().x - invChild->getSize().x - getGUISystem().getSkin().alignSpaceX;
             invChild->setPosition(glm::vec2(x, invChild->getPosition().y));
         }
-        if (child->getHAlign() == GUIHAlign::Center) {
+        if (child->isActive() && child->getHAlign() == GUIHAlign::Center) {
             int x = getSize().x / 2 - child->getSize().x / 2;
             child->setPosition(glm::vec2(x, child->getPosition().y));
         }
@@ -121,15 +123,15 @@ void GUIWidget::mApplyVAlign() {
     for (size_t i = 0; i < childrenCount; i++) {
         GUIWidget *child = static_cast<GUIWidget*>(getChildren()[i]);
         GUIWidget *invChild = static_cast<GUIWidget*>(getChildren()[childrenCount - i - 1]);
-        if (child->getVAlign() == GUIVAlign::Top) {
+        if (child->isActive() && child->getVAlign() == GUIVAlign::Top) {
             child->setPosition(glm::vec2(child->getPosition().x, topY[static_cast<size_t>(child->getHAlign())]));
             topY[static_cast<size_t>(child->getHAlign())] += child->getSize().y + getGUISystem().getSkin().alignSpaceY;
         }
-        if (invChild->getVAlign() == GUIVAlign::Bottom) {
+        if (invChild->isActive() && invChild->getVAlign() == GUIVAlign::Bottom) {
             invChild->setPosition(glm::vec2(invChild->getPosition().x, bottomY[static_cast<size_t>(invChild->getHAlign())] - invChild->getSize().y));
             bottomY[static_cast<size_t>(invChild->getHAlign())] -= invChild->getSize().y + getGUISystem().getSkin().alignSpaceY;
         }
-        if (child->getVAlign() == GUIVAlign::Center) {
+        if (child->isActive() && child->getVAlign() == GUIVAlign::Center) {
             centerHeight += child->getSize().y + getGUISystem().getSkin().alignSpaceY;
         }
     }
@@ -138,7 +140,7 @@ void GUIWidget::mApplyVAlign() {
     int centerY = getSize().y / 2 - centerHeight / 2;
     for (size_t i = 0; i < childrenCount; i++) {
         GUIWidget *child = static_cast<GUIWidget*>(getChildren()[i]);
-        if (child->getVAlign() == GUIVAlign::Center) {
+        if (child->isActive() && child->getVAlign() == GUIVAlign::Center) {
             child->setPosition(glm::vec2(child->getPosition().x, centerY));
             centerY += child->getSize().y + getGUISystem().getSkin().alignSpaceY;
         }

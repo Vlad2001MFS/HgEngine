@@ -19,6 +19,7 @@ enum class GUIVAlign {
 };
 
 class GUIWidget : public Node {
+    HG2D_OBJECT(GUIWidget, Node);
 public:
     GUIWidget();
     
@@ -44,7 +45,5 @@ private:
     GUIHAlign mHAlign;
     GUIVAlign mVAlign;
 };
-
-HG2D_REGISTER_OBJECT("GUIWidget", GUIWidget);
 
 }

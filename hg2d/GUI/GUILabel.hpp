@@ -7,6 +7,7 @@ namespace hg2d {
 struct Texture;
 
 class GUILabel : public GUIWidget {
+    HG2D_OBJECT(GUILabel, GUIWidget);
 public:
     GUILabel();
     virtual ~GUILabel();
@@ -25,7 +26,5 @@ private:
     std::string mText;
     hd::Color4 mColor;
 };
-
-HG2D_REGISTER_OBJECT("GUILabel", GUILabel);
 
 }

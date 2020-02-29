@@ -16,9 +16,6 @@
     <Filter Include="hg2d\Renderer">
       <UniqueIdentifier>{1d4047a9-4fe0-4c01-a53c-d693814cad49}</UniqueIdentifier>
     </Filter>
-    <Filter Include="hg2d\Scene">
-      <UniqueIdentifier>{2ee75b70-3a27-4616-b30f-c5ad7d6fa9ca}</UniqueIdentifier>
-    </Filter>
     <Filter Include="hg2d\Sound">
       <UniqueIdentifier>{7d7c013f-d937-48d9-859c-8ca8ece4a10b}</UniqueIdentifier>
     </Filter>
@@ -54,18 +51,6 @@
     <ClCompile Include="hg2d\Renderer\GL4RenderSystem.cpp">
       <Filter>hg2d\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="hg2d\Scene\BodySystem.cpp">
-      <Filter>hg2d\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="hg2d\Scene\SceneSystem.cpp">
-      <Filter>hg2d\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="hg2d\Scene\SpriteSystem.cpp">
-      <Filter>hg2d\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="hg2d\Scene\TransformComponent.cpp">
-      <Filter>hg2d\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="hg2d\Sound\SoundSystem.cpp">
       <Filter>hg2d\Sound</Filter>
     </ClCompile>
@@ -75,7 +60,7 @@
     <ClCompile Include="hg2d\GUI\GUIWidget.cpp">
       <Filter>hg2d\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="hg2d\Core\Factory.cpp">
+    <ClCompile Include="hg2d\Core\Object.cpp">
       <Filter>hg2d\Core</Filter>
     </ClCompile>
   </ItemGroup>
@@ -110,18 +95,6 @@
     <ClInclude Include="hg2d\Renderer\RenderSystem.hpp">
       <Filter>hg2d\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="hg2d\Scene\BodySystem.hpp">
-      <Filter>hg2d\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="hg2d\Scene\SceneSystem.hpp">
-      <Filter>hg2d\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="hg2d\Scene\SpriteSystem.hpp">
-      <Filter>hg2d\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="hg2d\Scene\TransformComponent.hpp">
-      <Filter>hg2d\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="hg2d\Sound\SoundSystem.hpp">
       <Filter>hg2d\Sound</Filter>
     </ClInclude>
@@ -131,7 +104,7 @@
     <ClInclude Include="hg2d\GUI\GUIWidget.hpp">
       <Filter>hg2d\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="hg2d\Core\Factory.hpp">
+    <ClInclude Include="hg2d\Core\Object.hpp">
       <Filter>hg2d\Core</Filter>
     </ClInclude>
   </ItemGroup>

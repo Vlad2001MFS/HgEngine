@@ -6,6 +6,7 @@ namespace hg2d {
 struct Texture;
 
 class GUIImage : public GUIWidget {
+    HG2D_OBJECT(GUIImage, GUIWidget);
 public:
     GUIImage();
 
@@ -17,7 +18,5 @@ public:
 private:
     const Texture *mTexture;
 };
-
-HG2D_REGISTER_OBJECT("GUIImage", GUIImage);
 
 }

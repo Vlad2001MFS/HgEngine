@@ -3,6 +3,8 @@
 
 namespace hg2d {
 
+HG2D_REGISTER_OBJECT(GUIImage);
+
 GUIImage::GUIImage() {
     mTexture = nullptr;
 }

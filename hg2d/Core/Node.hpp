@@ -1,8 +1,8 @@
 #pragma once
-#include "Factory.hpp"
+#include "Object.hpp"
 #include "hd/Core/Common.hpp"
 #include "hd/Core/Log.hpp"
-#include "hd/Core/StringUtils.hpp"
+#include "hd/Core/StringHash.hpp"
 #include "hd/Window/WindowEvent.hpp"
 #include "glm/glm.hpp"
 #include "nameof/nameof.hpp"
@@ -11,10 +11,11 @@
 
 namespace hg2d {
 
-class Node : public hd::Noncopyable {
+class Node : public Object {
+    HG2D_OBJECT(Node, Object);
 public:
     Node();
-    virtual ~Node();
+    ~Node();
 
     virtual void onEvent(const hd::WindowEvent &event);
     virtual void onFixedUpdate();
@@ -22,12 +23,6 @@ public:
     virtual void onDraw();
 
     Node *findByName(const std::string &name);
-
-    template<typename T>
-    T *as() {
-        T *ptr = dynamic_cast<T*>(this);
-        return ptr;
-    }
 
     template<typename T>
     T *createChild(const std::string &name) {
@@ -38,7 +33,14 @@ public:
 
     template<typename T = Node>
     T *createChild(const std::string &name, const std::string &typeName) {
-        T *node = static_cast<T*>(Factory::get().createObject(typeName));
+        T *node = Factory::get().createObject(typeName)->as<T>();
+        mAddChild(node, name);
+        return node;
+    }
+
+    template<typename T = Node>
+    T *createChild(const std::string &name, const hd::StringHash &typeHash) {
+        T *node = Factory::get().createObject(typeHash)->as<T>();
         mAddChild(node, name);
         return node;
     }
@@ -60,7 +62,8 @@ public:
 
     Node *getParent() const;
     const std::vector<Node*> &getChildren() const;
-    const std::unordered_map<uint64_t, Node*> &getChildrenByNames() const;
+    const std::unordered_map<hd::StringHash, Node*> &getChildrenByNames() const;
+    const std::string &getName() const;
     const glm::vec2 &getPosition() const;
     const glm::vec2 &getSize() const;
     float getAngle() const;
@@ -72,12 +75,11 @@ private:
 
     Node *mParent;
     std::vector<Node*> mChildren;
-    std::unordered_map<uint64_t, Node*> mChildrenByNames;
+    std::unordered_map<hd::StringHash, Node*> mChildrenByNames;
+    std::string mName;
     glm::vec2 mPos, mSize;
     float mAngle;
     bool mIsActive;
 };
-
-HG2D_REGISTER_OBJECT("Node", Node);
 
 }

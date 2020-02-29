@@ -3,6 +3,8 @@
 
 namespace hg2d {
 
+HG2D_REGISTER_OBJECT(GUIButton);
+
 GUIButton::GUIButton() {
     setTexture(getGUISystem().getSkin().buttonTexture);
     mLabel = createChild<GUILabel>("");

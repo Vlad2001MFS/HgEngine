@@ -4,6 +4,8 @@
 
 namespace hg2d {
 
+HG2D_REGISTER_OBJECT(GUILabel);
+
 GUILabel::GUILabel() : mColor(getGUISystem().getSkin().fontColor) {
     mTexture = nullptr;
 }

@@ -5,6 +5,7 @@
 namespace hg2d {
 
 class GUIButton : public GUIImage {
+    HG2D_OBJECT(GUIButton, GUIImage);
 public:
     GUIButton();
 
@@ -19,7 +20,5 @@ private:
 
     GUILabel *mLabel;
 };
-
-HG2D_REGISTER_OBJECT("GUIButton", GUIButton);
 
 }

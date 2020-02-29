@@ -2,6 +2,8 @@
 
 namespace hg2d {
 
+HG2D_REGISTER_OBJECT(Node);
+
 Node::Node() : mPos(0, 0), mSize(0, 0) {
     mParent = nullptr;
     mAngle = 0.0f;
@@ -51,8 +53,7 @@ Node *Node::findByName(const std::string &name) {
         HD_LOG_FATAL("Invalid name '{}'", name);
     }
 
-    uint64_t nameHash = hd::StringUtils::getHash(name);
-    auto it = mChildrenByNames.find(nameHash);
+    auto it = mChildrenByNames.find(hd::StringHash(name));
     if (it == mChildrenByNames.end()) {
         HD_LOG_FATAL("Node '{}' not found", name);
     }
@@ -63,7 +64,7 @@ void Node::destroyChild(const std::string &name) {
     Node *ptr = findByName(name);
     if (ptr) {
         mChildren.erase(std::remove(mChildren.begin(), mChildren.end(), ptr));
-        mChildrenByNames.erase(hd::StringUtils::getHash(name));
+        mChildrenByNames.erase(hd::StringHash(name));
         delete ptr;
     }
 }
@@ -122,8 +123,12 @@ const std::vector<Node*> &Node::getChildren() const {
     return mChildren;
 }
 
-const std::unordered_map<uint64_t, Node*> &Node::getChildrenByNames() const {
+const std::unordered_map<hd::StringHash, Node*> &Node::getChildrenByNames() const {
     return mChildrenByNames;
+}
+
+const std::string &Node::getName() const {
+    return mName;
 }
 
 const glm::vec2 &Node::getPosition() const {
@@ -165,12 +170,13 @@ glm::vec2 Node::getAbsolutePosition() const {
 }
 
 void Node::mAddChild(Node *node, const std::string &name) {
-    uint64_t nameHash = hd::StringUtils::getHash(name);
+    hd::StringHash nameHash = hd::StringHash(name);
     if (!name.empty() && mChildrenByNames.count(nameHash) != 0) {
         HD_LOG_FATAL("Failed to create child '{}'", name);
     }
     mChildren.push_back(node);
     node->mParent = this;
+    node->mName = name;
     if (!name.empty()) {
         mChildrenByNames.insert(std::make_pair(nameHash, node));
     }
