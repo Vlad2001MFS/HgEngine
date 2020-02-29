@@ -1,6 +1,7 @@
 #include "GUILabel.hpp"
 #include "../Renderer/RenderSystem.hpp"
 #include "../GUI/GUISystem.hpp"
+#include "../Cache/CacheSystem.hpp"
 
 namespace hg2d {
 
@@ -12,6 +13,33 @@ GUILabel::GUILabel() : mColor(getGUISystem().getSkin().fontColor) {
 
 GUILabel::~GUILabel() {
     getRenderSystem().destroyTexture(mTexture);
+}
+
+void GUILabel::onSaveLoad(JSONObject &data, bool isLoad) {
+    if (isLoad) {
+        mTexture = getCacheSystem().loadTexture(data["texture"].get<std::string>());
+        mText = data["text"].get<std::string>();
+        mColor = data["color"].get<hd::Color4>();
+    }
+    else {
+        data["texture"] = getRenderSystem().getTexturePath(mTexture);
+        data["text"] = mText;
+        data["color"] = mColor;
+    }
+
+    BaseClassName::onSaveLoad(data, isLoad);
+}
+
+void GUILabel::onDraw() {
+    if (!mText.empty() && mTexture) {
+        RenderOp rop;
+        rop.texture = mTexture;
+        rop.pos = getAbsolutePosition();
+        rop.size = getSize();
+        getRenderSystem().addRenderOp(rop, true);
+    }
+
+    BaseClassName::onDraw();
 }
 
 void GUILabel::setText(const std::string &text, bool updateSize) {
@@ -37,18 +65,6 @@ void GUILabel::setColor(const hd::Color4 &color) {
 
 const hd::Color4& GUILabel::getColor() const {
     return mColor;
-}
-
-void GUILabel::onDraw() {
-    if (!mText.empty() && mTexture) {
-        RenderOp rop;
-        rop.texture = mTexture;
-        rop.pos = getAbsolutePosition();
-        rop.size = getSize();
-        getRenderSystem().addRenderOp(rop, true);
-    }
-
-    GUIWidget::onDraw();
 }
 
 void GUILabel::mUpdateTexture() {

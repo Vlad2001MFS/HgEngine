@@ -355,7 +355,8 @@ const glm::ivec2 &RenderSystem::getTextureSize(const Texture *texture) const {
 
 const std::string &RenderSystem::getTexturePath(const Texture *texture) const {
     if (!texture) {
-        HD_LOG_FATAL("texture is nullptr");
+        HD_LOG_WARNING("texture is nullptr");
+        return hd::StringUtils::getEmpty();
     }
     return texture->path;
 }

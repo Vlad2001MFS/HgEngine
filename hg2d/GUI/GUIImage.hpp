@@ -10,10 +10,11 @@ class GUIImage : public GUIWidget {
 public:
     GUIImage();
 
+    virtual void onSaveLoad(JSONObject &data, bool isLoad) override;
+    virtual void onDraw() override;
+
     void setTexture(const Texture *texture);
     const Texture *getTexture() const;
-
-    virtual void onDraw() override;
 
 private:
     const Texture *mTexture;

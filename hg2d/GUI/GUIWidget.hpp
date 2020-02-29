@@ -22,7 +22,8 @@ class GUIWidget : public Node {
     HG2D_OBJECT(GUIWidget, Node);
 public:
     GUIWidget();
-    
+
+    virtual void onSaveLoad(JSONObject &data, bool isLoad) override;
     virtual void onEvent(const hd::WindowEvent &event) override;
     virtual void onFixedUpdate() override;
 

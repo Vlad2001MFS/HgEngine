@@ -1,4 +1,5 @@
 #pragma once
+#include "JSONObject.hpp"
 #include "Object.hpp"
 #include "hd/Core/Common.hpp"
 #include "hd/Core/Log.hpp"
@@ -17,6 +18,7 @@ public:
     Node();
     ~Node();
 
+    virtual void onSaveLoad(JSONObject &data, bool isLoad);
     virtual void onEvent(const hd::WindowEvent &event);
     virtual void onFixedUpdate();
     virtual void onUpdate(float dt);

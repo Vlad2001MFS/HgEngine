@@ -1,5 +1,6 @@
 #include "GUIWidget.hpp"
 #include "GUISystem.hpp"
+#include "magic_enum/magic_enum.hpp"
 
 namespace hg2d {
 
@@ -9,6 +10,28 @@ GUIWidget::GUIWidget() {
     mIsMouseHovered = false;
     mHAlign = GUIHAlign::None;
     mVAlign = GUIVAlign::None;
+}
+
+void GUIWidget::onSaveLoad(JSONObject &data, bool isLoad) {
+    if (isLoad) {
+        auto hAlign = magic_enum::enum_cast<GUIHAlign>(data["hAlign"].get<std::string>());
+        mHAlign = hAlign.value_or(GUIHAlign::None);
+        if (!hAlign) {
+            HD_LOG_WARNING("Invalid value '{}' of GUIHAlign enum", data["hAlign"].get<std::string>());
+        }
+
+        auto vAlign = magic_enum::enum_cast<GUIVAlign>(data["vAlign"].get<std::string>());
+        mVAlign = vAlign.value_or(GUIVAlign::None);
+        if (!vAlign) {
+            HD_LOG_WARNING("Invalid value '{}' of GUIVAlign enum", data["vAlign"].get<std::string>());
+        }
+    }
+    else {
+        data["hAlign"] = magic_enum::enum_name(mHAlign);
+        data["vAlign"] = magic_enum::enum_name(mVAlign);
+    }
+
+    BaseClassName::onSaveLoad(data, isLoad);
 }
 
 void GUIWidget::onEvent(const hd::WindowEvent &event) {
@@ -51,14 +74,14 @@ void GUIWidget::onEvent(const hd::WindowEvent &event) {
         }
     }
 
-    Node::onEvent(event);
+    BaseClassName::onEvent(event);
 }
 
 void GUIWidget::onFixedUpdate() {
     mApplyHAlign();
     mApplyVAlign();
 
-    Node::onFixedUpdate();
+    BaseClassName::onFixedUpdate();
 }
 
 void GUIWidget::setHAlign(GUIHAlign align) {

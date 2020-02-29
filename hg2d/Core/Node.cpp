@@ -11,8 +11,42 @@ Node::Node() : mPos(0, 0), mSize(0, 0) {
 }
 
 Node::~Node() {
-    for (const auto &it : mChildren) {
-        delete it;
+    for (auto &it : mChildren) {
+        HD_DELETE(it);
+    }
+}
+
+void Node::onSaveLoad(JSONObject &data, bool isLoad) {
+    if (isLoad) {
+        mName = data["name"];
+        setPosition(data["position"]);
+        setSize(data["size"]);
+        setAngle(data["angle"]);
+        setActive(data["isActive"]);
+        
+        JSONObject &children = data["children"];
+        for (auto &it : children) {
+            Node *child = createChild(it["name"].get<std::string>(), it["typeInfo"]["hash"].get<hd::StringHash>());
+            child->onSaveLoad(it, isLoad);
+        }
+    }
+    else {
+        data["name"] = getName();
+        data["position"] = getPosition();
+        data["size"] = getSize();
+        data["angle"] = getAngle();
+        data["isActive"] = isActive();
+        data["typeInfo"] = {
+            { "name", getTypeName() },
+            { "hash", getTypeHash() }
+        };
+
+        JSONObject &children = data["children"];
+        for (const auto &it : mChildren) {
+            JSONObject child;
+            it->onSaveLoad(child, isLoad);
+            children.push_back(child);
+        }
     }
 }
 
