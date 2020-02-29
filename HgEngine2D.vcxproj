@@ -192,10 +192,6 @@
     <ClCompile Include="hg2d\GUI\GUISystem.cpp" />
     <ClCompile Include="hg2d\Renderer\D3D11RenderSystem.cpp" />
     <ClCompile Include="hg2d\Renderer\GL4RenderSystem.cpp" />
-    <ClCompile Include="hg2d\Scene\BodySystem.cpp" />
-    <ClCompile Include="hg2d\Scene\SceneSystem.cpp" />
-    <ClCompile Include="hg2d\Scene\SpriteSystem.cpp" />
-    <ClCompile Include="hg2d\Scene\TransformComponent.cpp" />
     <ClCompile Include="hg2d\Sound\SoundSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -212,10 +208,6 @@
     <ClInclude Include="hg2d\GUI\GUILabel.hpp" />
     <ClInclude Include="hg2d\GUI\GUISystem.hpp" />
     <ClInclude Include="hg2d\Renderer\RenderSystem.hpp" />
-    <ClInclude Include="hg2d\Scene\BodySystem.hpp" />
-    <ClInclude Include="hg2d\Scene\SceneSystem.hpp" />
-    <ClInclude Include="hg2d\Scene\SpriteSystem.hpp" />
-    <ClInclude Include="hg2d\Scene\TransformComponent.hpp" />
     <ClInclude Include="hg2d\Sound\SoundSystem.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

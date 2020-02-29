@@ -4,7 +4,6 @@
 #include "../Sound/SoundSystem.hpp"
 #include "../GUI/GUISystem.hpp"
 #include "../Cache/CacheSystem.hpp"
-#include "../Scene/SceneSystem.hpp"
 #include "hd/Core/Time.hpp"
 
 namespace hg2d {
@@ -32,12 +31,10 @@ void Engine::initialize(const EngineCreateInfo &createInfo) {
     getSoundSystem().initialize();
     getGUISystem().initialize();
     getCacheSystem().initialize();
-    getSceneSystem().initialize();
 }
 
 void Engine::shutdown() {
     mRoot.reset();
-    getSceneSystem().shutdown();
     getCacheSystem().shutdown();
     getGUISystem().shutdown();
     getSoundSystem().shutdown();
@@ -67,19 +64,15 @@ void Engine::run() {
 
             mRoot->onEvent(event);
             getRenderSystem().onEvent(event);
-            getSceneSystem().onEvent(event);
         }
 
         mRoot->onUpdate(dt);
-        getSceneSystem().onUpdate();
         if (hd::Time::getElapsedTime(updateTimer) > UPDATE_TIME) {
             mRoot->onFixedUpdate();
-            getSceneSystem().onFixedUpdate();
             updateTimer = hd::Time::getCurrentTime();
         }
 
         mRoot->onDraw();
-        getSceneSystem().onDraw();
         getRenderSystem().onDraw();
 
         mFPSCounter.update();
