@@ -14,10 +14,10 @@
         using BaseClassName = baseTypeName; \
         virtual const hd::StringHash &getTypeHash() const override { return getTypeInfoStatic()->getTypeHash(); } \
         virtual const std::string &getTypeName() const override { return getTypeInfoStatic()->getTypeName(); } \
-        virtual const TypeInfo *getTypeInfo() const override { return getTypeInfoStatic(); } \
+        virtual const hg2d::TypeInfo *getTypeInfo() const override { return getTypeInfoStatic(); } \
         static const hd::StringHash &getTypeHashStatic() { return getTypeInfoStatic()->getTypeHash(); } \
         static const std::string &getTypeNameStatic() { return getTypeInfoStatic()->getTypeName(); } \
-        static const TypeInfo *getTypeInfoStatic() { static const TypeInfo typeInfoStatic(#typeName, BaseClassName::getTypeInfoStatic()); return &typeInfoStatic; } \
+        static const hg2d::TypeInfo *getTypeInfoStatic() { static const hg2d::TypeInfo typeInfoStatic(#typeName, BaseClassName::getTypeInfoStatic()); return &typeInfoStatic; } \
 
 namespace hg2d {
 
