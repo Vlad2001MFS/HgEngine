@@ -36,7 +36,7 @@ SoundBuffer *SoundSystem::createSoundFromFile(const std::string &filename) {
         return soundBuffer;
     }
     else {
-        LOG_F(FATAL, "Failed to create sound from file. Filename is empty");
+        HD_LOG_FATAL("Failed to create sound from file. Filename is empty");
         return nullptr;
     }
 }
@@ -50,14 +50,14 @@ MusicBuffer *SoundSystem::createMusicFromFile(const std::string &filename) {
         return musicBuffer;
     }
     else {
-        LOG_F(FATAL, "Failed to create music from file. Filename is empty");
+        HD_LOG_FATAL("Failed to create music from file. Filename is empty");
         return nullptr;
     }
 }
 
 void SoundSystem::destroySound(SoundBuffer *&soundBuffer) {
     if (!soundBuffer) {
-        LOG_F(WARNING, "soundBuffer is nullptr");
+        HD_LOG_WARNING("soundBuffer is nullptr");
     }
     else {
         auto it = std::find(mCreatedSoundBuffers.begin(), mCreatedSoundBuffers.end(), soundBuffer);
@@ -66,14 +66,14 @@ void SoundSystem::destroySound(SoundBuffer *&soundBuffer) {
             mDestroySound(soundBuffer);
         }
         else {
-            LOG_F(WARNING, "Failed to destroy sound. The sound wasn't created by SoundSystem");
+            HD_LOG_WARNING("Failed to destroy sound. The sound wasn't created by SoundSystem");
         }
     }
 }
 
 void SoundSystem::destroyMusic(MusicBuffer *&musicBuffer) {
     if (!musicBuffer) {
-        LOG_F(WARNING, "musicBuffer is nullptr");
+        HD_LOG_WARNING("musicBuffer is nullptr");
     }
     else {
         auto it = std::find(mCreatedMusicBuffers.begin(), mCreatedMusicBuffers.end(), musicBuffer);
@@ -82,7 +82,7 @@ void SoundSystem::destroyMusic(MusicBuffer *&musicBuffer) {
             mDestroyMusic(musicBuffer);
         }
         else {
-            LOG_F(WARNING, "Failed to destroy music. The music wasn't created by SoundSystem");
+            HD_LOG_WARNING("Failed to destroy music. The music wasn't created by SoundSystem");
         }
     }
 }

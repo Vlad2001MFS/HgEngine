@@ -40,7 +40,7 @@ Texture *CacheSystem::loadTexture(const std::string &filename) {
         }
     }
     else {
-        LOG_F(FATAL, "Failed to load texture. Filename is empty");
+        HD_LOG_FATAL("Failed to load texture. Filename is empty");
         return nullptr;
     }
 }
@@ -70,7 +70,7 @@ Font *CacheSystem::loadFont(const std::string &filename, uint32_t fontSize) {
         }
     }
     else {
-        LOG_F(FATAL, "Failed to load font. Filename is empty");
+        HD_LOG_FATAL("Failed to load font. Filename is empty");
         return nullptr;
     }
 }
@@ -87,7 +87,7 @@ SoundBuffer *CacheSystem::loadSound(const std::string &filename) {
         }
     }
     else {
-        LOG_F(FATAL, "Failed to load sound. Filename is empty");
+        HD_LOG_FATAL("Failed to load sound. Filename is empty");
         return nullptr;
     }
 }
@@ -104,7 +104,7 @@ MusicBuffer *CacheSystem::loadMusic(const std::string &filename) {
         }
     }
     else {
-        LOG_F(FATAL, "Failed to load music. Filename is empty");
+        HD_LOG_FATAL("Failed to load music. Filename is empty");
         return nullptr;
     }
 }

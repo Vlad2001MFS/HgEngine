@@ -46,7 +46,7 @@ public:
     template<typename T, typename... Args>
     void setRoot(Args &&...args) {
         if (mRoot) {
-            LOG_F(FATAL, "Failed to set root node. The node already intialized");
+            HD_LOG_FATAL("Failed to set root node. The node already intialized");
         }
         mRoot = std::make_unique<T>(std::forward(args)...);
     }

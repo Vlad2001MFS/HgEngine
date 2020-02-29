@@ -76,7 +76,7 @@ RenderSystem::~RenderSystem() {
 
 void RenderSystem::onInitialize() {
     if (mEngine.getWindow().hasOpenGLContext()) {
-        LOG_F(FATAL, "Failed to initialize D3D11RenderSystem. Engine window was created with OpenGL context");
+        HD_LOG_FATAL("Failed to initialize D3D11RenderSystem. Engine window was created with OpenGL context");
     }
 
     DXGI_SWAP_CHAIN_DESC sd;
@@ -330,7 +330,7 @@ Texture *RenderSystem::createTextureFromFile(const std::string &path) {
 
 void RenderSystem::destroyTexture(Texture *&texture) {
     if (!texture) {
-        LOG_F(WARNING, "Failed to destroy Texture. The texture is nullptr");
+        HD_LOG_WARNING("Failed to destroy Texture. The texture is nullptr");
     }
     else {
         auto it = std::find(impl->createdTextures.begin(), impl->createdTextures.end(), texture);
@@ -339,14 +339,14 @@ void RenderSystem::destroyTexture(Texture *&texture) {
             impl->destroyTexture(texture);
         }
         else {
-            LOG_F(WARNING, "Failed to destroy texture. The texture wasn't created by D3D11RenderSystem");
+            HD_LOG_WARNING("Failed to destroy texture. The texture wasn't created by D3D11RenderSystem");
         }
     }
 }
 
 const glm::ivec2 &RenderSystem::getTextureSize(const Texture *texture) const {
     if (!texture) {
-        LOG_F(FATAL, "texture is nullptr");
+        HD_LOG_FATAL("texture is nullptr");
     }
     return texture->size;
 }

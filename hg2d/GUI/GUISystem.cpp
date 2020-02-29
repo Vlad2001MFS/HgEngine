@@ -34,14 +34,14 @@ Font *GUISystem::createFontFromFile(const std::string &filename, uint32_t size) 
         return font;
     }
     else {
-        LOG_F(FATAL, "Failed to create font from file '{}' with size '{}'", filename.data(), size);
+        HD_LOG_FATAL("Failed to create font from file '{}' with size '{}'", filename.data(), size);
         return nullptr;
     }
 }
 
 void GUISystem::destroyFont(Font *&font) {
     if (!font) {
-        LOG_F(WARNING, "font is nullptr");
+        HD_LOG_WARNING("font is nullptr");
     }
     else {
         auto it = std::find(mCreatedFonts.begin(), mCreatedFonts.end(), font);
@@ -50,7 +50,7 @@ void GUISystem::destroyFont(Font *&font) {
             mCreatedFonts.erase(std::remove(mCreatedFonts.begin(), mCreatedFonts.end(), font), mCreatedFonts.end());
         }
         else {
-            LOG_F(WARNING, "Failed to destroy Font. The Font wasn't created by GUISystem");
+            HD_LOG_WARNING("Failed to destroy Font. The Font wasn't created by GUISystem");
         }
     }
 }

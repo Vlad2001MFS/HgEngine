@@ -48,13 +48,13 @@ void Node::onDraw() {
 
 Node *Node::findByName(const std::string &name) {
     if (name.empty()) {
-        LOG_F(FATAL, "Invalid name '{}'", name);
+        HD_LOG_FATAL("Invalid name '{}'", name);
     }
 
     uint64_t nameHash = hd::StringUtils::getHash(name);
     auto it = mChildrenByNames.find(nameHash);
     if (it == mChildrenByNames.end()) {
-        LOG_F(FATAL, "Node '{}' not found", name);
+        HD_LOG_FATAL("Node '{}' not found", name);
     }
     return it->second;
 }
@@ -167,7 +167,7 @@ glm::vec2 Node::getAbsolutePosition() const {
 void Node::mAddChild(Node *node, const std::string &name) {
     uint64_t nameHash = hd::StringUtils::getHash(name);
     if (!name.empty() && mChildrenByNames.count(nameHash) != 0) {
-        LOG_F(FATAL, "Failed to create child '{}'", name);
+        HD_LOG_FATAL("Failed to create child '{}'", name);
     }
     mChildren.push_back(node);
     node->mParent = this;

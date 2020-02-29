@@ -141,13 +141,13 @@ void debugCallback(uint32_t source, uint32_t type, uint32_t id, uint32_t severit
         }
     }
     if (type == GL_DEBUG_TYPE_ERROR_ARB) {
-        LOG_F(FATAL, "OpenGL Debug:\n\tSource: {}\n\tType: {}\n\tId: {}\n\tSeverity: {}\n\tMessage: {}", sourceStr, typeStr, id, severityStr, message);
+        HD_LOG_FATAL("OpenGL Debug:\n\tSource: {}\n\tType: {}\n\tId: {}\n\tSeverity: {}\n\tMessage: {}", sourceStr, typeStr, id, severityStr, message);
     }
     else if (type == GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR_ARB || type == GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR_ARB || type == GL_DEBUG_TYPE_PORTABILITY_ARB || type == GL_DEBUG_TYPE_PERFORMANCE_ARB) {
-        LOG_F(WARNING, "OpenGL Debug:\n\tSource: {}\n\tType: {}\n\tId: {}\n\tSeverity: {}\n\tMessage: {}", sourceStr, typeStr, id, severityStr, message);
+        HD_LOG_WARNING("OpenGL Debug:\n\tSource: {}\n\tType: {}\n\tId: {}\n\tSeverity: {}\n\tMessage: {}", sourceStr, typeStr, id, severityStr, message);
     }
     else {
-        LOG_F(INFO, "OpenGL Debug:\n\tSource: {}\n\tType: {}\n\tId: {}\n\tSeverity: {}\n\tMessage: {}", sourceStr, typeStr, id, severityStr, message);
+        HD_LOG_INFO("OpenGL Debug:\n\tSource: {}\n\tType: {}\n\tId: {}\n\tSeverity: {}\n\tMessage: {}", sourceStr, typeStr, id, severityStr, message);
     }
 }
 
@@ -162,7 +162,7 @@ void RenderSystem::initialize() {
     glewExperimental = true;
     GLenum glewResult = glewInit();
     if (glewInit() != GLEW_OK) {
-        LOG_F(FATAL, "Failed to initialize GLEW. Error: {}", glewGetErrorString(glewResult));
+        HD_LOG_FATAL("Failed to initialize GLEW. Error: {}", glewGetErrorString(glewResult));
     }
 
     if (getEngine().getWindow().getOpenGLContextSettings().isDebug) {
@@ -173,7 +173,7 @@ void RenderSystem::initialize() {
             glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, true);
         }
         else {
-            LOG_F(WARNING, "Failed to enable OpenGL debug output. Extension 'GLEW_ARB_debug_output' not supported");
+            HD_LOG_WARNING("Failed to enable OpenGL debug output. Extension 'GLEW_ARB_debug_output' not supported");
         }
     }
 
@@ -332,7 +332,7 @@ Texture *RenderSystem::createTextureFromColor(const hd::Color4 &color) {
 
 void RenderSystem::destroyTexture(Texture *&texture) {
     if (!texture) {
-        LOG_F(WARNING, "Failed to destroy Texture. The texture is nullptr");
+        HD_LOG_WARNING("Failed to destroy Texture. The texture is nullptr");
     }
     else {
         auto it = std::find(impl->createdTextures.begin(), impl->createdTextures.end(), texture);
@@ -341,21 +341,21 @@ void RenderSystem::destroyTexture(Texture *&texture) {
             impl->destroyTexture(texture);
         }
         else {
-            LOG_F(WARNING, "Failed to destroy texture. The texture wasn't created by D3D11RenderSystem");
+            HD_LOG_WARNING("Failed to destroy texture. The texture wasn't created by D3D11RenderSystem");
         }
     }
 }
 
 const glm::ivec2 &RenderSystem::getTextureSize(const Texture *texture) const {
     if (!texture) {
-        LOG_F(FATAL, "texture is nullptr");
+        HD_LOG_FATAL("texture is nullptr");
     }
     return texture->size;
 }
 
 const std::string &RenderSystem::getTexturePath(const Texture *texture) const {
     if (!texture) {
-        LOG_F(FATAL, "texture is nullptr");
+        HD_LOG_FATAL("texture is nullptr");
     }
     return texture->path;
 }

@@ -47,7 +47,7 @@ void Engine::run() {
     const hd::Time UPDATE_TIME = hd::Time::fromMilliseconds(1000.0f / UPDATES_COUNT_PER_SEC);
 
     if (!mRoot) {
-        LOG_F(FATAL, "The root node must be initialized");
+        HD_LOG_FATAL("The root node must be initialized");
     }
 
     hd::Time updateTimer, deltaTimer;

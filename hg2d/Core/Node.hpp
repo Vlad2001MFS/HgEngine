@@ -26,9 +26,6 @@ public:
     template<typename T>
     T *as() {
         T *ptr = dynamic_cast<T*>(this);
-        if (!ptr) {
-            LOG_F(WARNING, "Failed to cast node to '{}'", NAMEOF_TYPE(T));
-        }
         return ptr;
     }
 
