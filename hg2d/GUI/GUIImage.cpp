@@ -26,7 +26,7 @@ void GUIImage::onDraw() {
         RenderOp rop;
         rop.texture = mTexture;
         rop.pos = getAbsolutePosition();
-        rop.size = getSize();
+        rop.size = getAbsoluteSize();
         getRenderSystem().addRenderOp(rop, true);
     }
 
@@ -35,9 +35,6 @@ void GUIImage::onDraw() {
 
 void GUIImage::setTexture(const Texture *texture) {
     mTexture = texture;
-    if (getSize().x == 0 && getSize().y == 0) {
-        setSize(getRenderSystem().getTextureSize(mTexture));
-    }
 }
 
 const Texture *GUIImage::getTexture() const {

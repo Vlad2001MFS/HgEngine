@@ -30,10 +30,12 @@ public:
     void setHAlign(GUIHAlign align);
     void setVAlign(GUIVAlign align);
     void setAlign(GUIHAlign hAlign, GUIVAlign vAlign);
+    void setAbsoluteSize(const glm::vec2 &size);
 
     GUIHAlign getHAlign() const;
     GUIVAlign getVAlign() const;
     bool isMouseHovered() const;
+    glm::vec2 getAbsoluteSize() const;
 
     std::function<void()> onMouseButtonPressed, onMouseButtonReleased;
     std::function<void()> onMouseEnter, onMouseLeave;

@@ -10,8 +10,8 @@ struct GUISkin {
     Font *font = nullptr;
     hd::Color4 fontColor = hd::Color4::White;
     Texture *buttonTexture = nullptr, *hoveredButtonTexture = nullptr, *clickedButtonTexture = nullptr;
-    int alignSpaceX = 10;
-    int alignSpaceY = 10;
+    float alignSpaceX = 0.015625f;
+    float alignSpaceY = 0.020833f;
 };
 
 class GUISystem final : public hd::Singleton<GUISystem> {

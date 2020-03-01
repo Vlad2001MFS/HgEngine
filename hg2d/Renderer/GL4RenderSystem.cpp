@@ -54,6 +54,8 @@ struct RenderSystem::Impl {
     uint32_t vertexBuffer;
     uint32_t vertexBufferGUI;
     uint32_t constantBuffer;
+    uint32_t samplerState;
+    uint32_t samplerStateGUI;
 
     std::vector<Texture*> createdTextures;
     ConstantBuffer cbData;
@@ -241,6 +243,15 @@ void RenderSystem::initialize() {
 
     glCreateBuffers(1, &impl->constantBuffer);
     glNamedBufferData(impl->constantBuffer, sizeof(ConstantBuffer), nullptr, GL_DYNAMIC_DRAW);
+
+
+    glCreateSamplers(1, &impl->samplerState);
+    glSamplerParameteri(impl->samplerState, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glSamplerParameteri(impl->samplerState, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    glCreateSamplers(1, &impl->samplerStateGUI);
+    glSamplerParameteri(impl->samplerStateGUI, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glSamplerParameteri(impl->samplerStateGUI, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 }
 
 void RenderSystem::shutdown() {
@@ -248,6 +259,8 @@ void RenderSystem::shutdown() {
         impl->destroyTexture(it);
     }
 
+    glDeleteSamplers(1, &impl->samplerStateGUI);
+    glDeleteSamplers(1, &impl->samplerState);
     glDeleteBuffers(1, &impl->constantBuffer);
     glDeleteBuffers(1, &impl->vertexBufferGUI);
     glDeleteBuffers(1, &impl->vertexBuffer);
@@ -275,6 +288,7 @@ void RenderSystem::onDraw() {
     glBindBufferBase(GL_UNIFORM_BUFFER, 0, impl->constantBuffer);
 
     glBindVertexBuffer(0, impl->vertexBuffer, 0, sizeof(Vertex));
+    glBindSampler(0, impl->samplerState);
     impl->cbData.proj = impl->proj;
     for (const auto &rop : mRenderOps) {
         impl->cbData.view = glm::translate(-rop.camPos)*glm::rotate(-rop.camAngle, glm::vec3(0, 0, 1));
@@ -288,6 +302,7 @@ void RenderSystem::onDraw() {
     mRenderOps.clear();
 
     glBindVertexBuffer(0, impl->vertexBufferGUI, 0, sizeof(Vertex));
+    glBindSampler(0, impl->samplerStateGUI);
     impl->cbData.proj = impl->projGUI;
     impl->cbData.view = glm::mat4(1.0f);
     for (const auto &rop : mGUIRenderOps) {

@@ -35,7 +35,7 @@ void GUILabel::onDraw() {
         RenderOp rop;
         rop.texture = mTexture;
         rop.pos = getAbsolutePosition();
-        rop.size = getSize();
+        rop.size = getAbsoluteSize();
         getRenderSystem().addRenderOp(rop, true);
     }
 
@@ -47,7 +47,7 @@ void GUILabel::setText(const std::string &text, bool updateSize) {
         mText = text;
         mUpdateTexture();
         if (updateSize) {
-            setSize(getRenderSystem().getTextureSize(mTexture));
+            setAbsoluteSize(getRenderSystem().getTextureSize(mTexture));
         }
     }
 }
