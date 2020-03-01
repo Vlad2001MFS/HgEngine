@@ -19,6 +19,8 @@ public:
     void initialize();
     void shutdown();
 
+    void onEvent(const hd::WindowEvent &event);
+
     Font *createFontFromFile(const std::string &filename, uint32_t size);
     void destroyFont(Font *&font);
     const GUISkin &getSkin() const { return mSkin; }
@@ -26,6 +28,7 @@ public:
 private:
     GUISkin mSkin;
     std::vector<Font*> mCreatedFonts;
+    int mFontSize;
 };
 
 inline GUISystem &getGUISystem() {

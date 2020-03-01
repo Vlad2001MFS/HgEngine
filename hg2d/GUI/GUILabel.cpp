@@ -30,6 +30,14 @@ void GUILabel::onSaveLoad(JSONObject &data, bool isLoad) {
     BaseClassName::onSaveLoad(data, isLoad);
 }
 
+void GUILabel::onEvent(const hd::WindowEvent &event) {
+    if (event.type == hd::WindowEventType::Resize) {
+        mUpdateTexture();
+    }
+
+    BaseClassName::onEvent(event);
+}
+
 void GUILabel::onDraw() {
     if (!mText.empty() && mTexture) {
         RenderOp rop;

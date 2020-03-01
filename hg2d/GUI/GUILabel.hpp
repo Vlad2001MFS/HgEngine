@@ -13,6 +13,7 @@ public:
     ~GUILabel();
 
     virtual void onSaveLoad(JSONObject &data, bool isLoad) override;
+    virtual void onEvent(const hd::WindowEvent &event) override;
     virtual void onDraw() override;
 
     void setText(const std::string &text, bool updateSize);

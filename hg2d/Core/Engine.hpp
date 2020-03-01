@@ -20,7 +20,6 @@ struct SoundSystemCreateInfo final {
 
 struct GUISystemCreateInfo final {
     std::string fontPath = "font.ttf";
-    uint32_t fontSize = 16;
     bool monospacedFont = true;
     hd::Color4 fontColor = hd::Color4::White;
     std::string buttonTexturePath = "gui/button.png";

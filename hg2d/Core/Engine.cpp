@@ -62,6 +62,7 @@ void Engine::run() {
                 isExit = true;
             }
 
+            getGUISystem().onEvent(event);
             mRoot->onEvent(event);
             getRenderSystem().onEvent(event);
         }
