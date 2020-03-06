@@ -50,7 +50,7 @@ void Node::onSaveLoad(JSONObject &data, bool isLoad) {
     }
 }
 
-void Node::onEvent(const hd::WindowEvent &event) {
+void Node::onEvent(const SDL_Event &event) {
     for (const auto &it : mChildren) {
         if (it->isActive()) {
             it->onEvent(event);

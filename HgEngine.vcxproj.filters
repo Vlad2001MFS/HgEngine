@@ -19,6 +19,9 @@
     <Filter Include="hg\Sound">
       <UniqueIdentifier>{7d7c013f-d937-48d9-859c-8ca8ece4a10b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="imgui">
+      <UniqueIdentifier>{a95cf443-da43-4940-af1c-f0a3d31bd556}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="hg\Core\Engine.cpp">
@@ -30,26 +33,8 @@
     <ClCompile Include="hg\Cache\CacheSystem.cpp">
       <Filter>hg\Cache</Filter>
     </ClCompile>
-    <ClCompile Include="hg\GUI\Font.cpp">
-      <Filter>hg\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="hg\GUI\GUIButton.cpp">
-      <Filter>hg\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="hg\GUI\GUIImage.cpp">
-      <Filter>hg\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="hg\GUI\GUILabel.cpp">
-      <Filter>hg\GUI</Filter>
-    </ClCompile>
     <ClCompile Include="hg\GUI\GUISystem.cpp">
       <Filter>hg\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="hg\Renderer\D3D11RenderSystem.cpp">
-      <Filter>hg\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="hg\Renderer\GL4RenderSystem.cpp">
-      <Filter>hg\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="hg\Sound\SoundSystem.cpp">
       <Filter>hg\Sound</Filter>
@@ -57,17 +42,32 @@
     <ClCompile Include="hg\Core\Node.cpp">
       <Filter>hg\Core</Filter>
     </ClCompile>
-    <ClCompile Include="hg\GUI\GUIWidget.cpp">
-      <Filter>hg\GUI</Filter>
-    </ClCompile>
     <ClCompile Include="hg\Core\Object.cpp">
       <Filter>hg\Core</Filter>
     </ClCompile>
+    <ClCompile Include="hg\Renderer\RenderSystem.cpp">
+      <Filter>hg\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_demo.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_draw.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_impl_opengl3.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_impl_sdl.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_widgets.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="hg\Core\BuildConfig.hpp">
-      <Filter>hg\Core</Filter>
-    </ClInclude>
     <ClInclude Include="hg\Core\Engine.hpp">
       <Filter>hg\Core</Filter>
     </ClInclude>
@@ -76,18 +76,6 @@
     </ClInclude>
     <ClInclude Include="hg\Cache\CacheSystem.hpp">
       <Filter>hg\Cache</Filter>
-    </ClInclude>
-    <ClInclude Include="hg\GUI\Font.hpp">
-      <Filter>hg\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="hg\GUI\GUIButton.hpp">
-      <Filter>hg\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="hg\GUI\GUIImage.hpp">
-      <Filter>hg\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="hg\GUI\GUILabel.hpp">
-      <Filter>hg\GUI</Filter>
     </ClInclude>
     <ClInclude Include="hg\GUI\GUISystem.hpp">
       <Filter>hg\GUI</Filter>
@@ -101,11 +89,32 @@
     <ClInclude Include="hg\Core\Node.hpp">
       <Filter>hg\Core</Filter>
     </ClInclude>
-    <ClInclude Include="hg\GUI\GUIWidget.hpp">
-      <Filter>hg\GUI</Filter>
-    </ClInclude>
     <ClInclude Include="hg\Core\Object.hpp">
       <Filter>hg\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imconfig.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_impl_opengl3.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_impl_sdl.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_internal.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imstb_rectpack.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imstb_textedit.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imstb_truetype.h">
+      <Filter>imgui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

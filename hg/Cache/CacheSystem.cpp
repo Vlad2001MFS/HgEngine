@@ -1,7 +1,6 @@
 #include "CacheSystem.hpp"
 #include "../Renderer/RenderSystem.hpp"
 #include "../Sound/SoundSystem.hpp"
-#include "../GUI/GUISystem.hpp"
 #include "hd/Core/StringUtils.hpp"
 #include "hd/Core/Log.hpp"
 
@@ -16,9 +15,6 @@ void CacheSystem::shutdown() {
     }
     for (auto &texture : mColorTextures) {
         getRenderSystem().destroyTexture(texture.second);
-    }
-    for (auto &font : mFonts) {
-        getGUISystem().destroyFont(font.second);
     }
     for (auto &soundBuffer : mSoundBuffers) {
         getSoundSystem().destroySound(soundBuffer.second);
@@ -54,24 +50,6 @@ Texture *CacheSystem::loadTexture(const hd::Color4 &color) {
     }
     else {
         return mColorTextures.at(key);
-    }
-}
-
-Font *CacheSystem::loadFont(const std::string &filename, uint32_t fontSize) {
-    if (!filename.empty()) {
-        std::string name = filename + "@" + std::to_string(fontSize);
-        if (mFonts.count(name) == 0) {
-            Font *font = getGUISystem().createFontFromFile(filename, fontSize);
-            mFonts.insert(std::make_pair(name, font));
-            return font;
-        }
-        else {
-            return mFonts.at(name);
-        }
-    }
-    else {
-        HD_LOG_FATAL("Failed to load font. Filename is empty");
-        return nullptr;
     }
 }
 

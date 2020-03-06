@@ -1,12 +1,15 @@
 #pragma once
-#include "hd/Sound/SoundContext.hpp"
+#include "hd/Core/Common.hpp"
+#include "hd/Core/Handle.hpp"
+#include <vector>
+#include <string>
 
 namespace hg {
 
 struct SoundBuffer;
 struct MusicBuffer;
 
-using SoundChannel = hd::HSoundChannel;
+using SoundChannel = hd::Handle<int, struct TAG_SoundChannel, -1>;
 
 class SoundSystem final : public hd::Singleton<SoundSystem> {
 public:
@@ -37,7 +40,6 @@ private:
     void mDestroySound(SoundBuffer *&buffer);
     void mDestroyMusic(MusicBuffer *&buffer);
 
-    hd::SoundContext mSoundContext;
     std::vector<SoundBuffer*> mCreatedSoundBuffers;
     std::vector<MusicBuffer*> mCreatedMusicBuffers;
 };

@@ -1,8 +1,4 @@
 #include "RenderSystem.hpp"
-#include "../Core/BuildConfig.hpp"
-
-#ifdef HG_RENDERER_OPENGL4
-
 #include "../Core/Engine.hpp"
 #include "hd/Core/StringUtils.hpp"
 #include "hd/Core/Log.hpp"
@@ -12,7 +8,6 @@
 #include "glm/ext.hpp"
 #include "GLEW/glew.h"
 #include <algorithm>
-#pragma comment(lib, "opengl32.lib")
 
 namespace hg {
 
@@ -167,16 +162,14 @@ void RenderSystem::initialize() {
         HD_LOG_FATAL("Failed to initialize GLEW. Error: {}", glewGetErrorString(glewResult));
     }
 
-    if (getEngine().getWindow().getOpenGLContextSettings().isDebug) {
-        if (GLEW_ARB_debug_output) {
-            glEnable(GL_DEBUG_OUTPUT);
-            glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-            glDebugMessageCallback(debugCallback, nullptr);
-            glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, true);
-        }
-        else {
-            HD_LOG_WARNING("Failed to enable OpenGL debug output. Extension 'GLEW_ARB_debug_output' not supported");
-        }
+    if (GLEW_ARB_debug_output) {
+        glEnable(GL_DEBUG_OUTPUT);
+        glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+        glDebugMessageCallback(debugCallback, nullptr);
+        glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, true);
+    }
+    else {
+        HD_LOG_WARNING("Failed to enable OpenGL debug output. Extension 'GLEW_ARB_debug_output' not supported");
     }
 
 
@@ -268,12 +261,12 @@ void RenderSystem::shutdown() {
     glDeleteProgram(impl->program);
 }
 
-void RenderSystem::onEvent(const hd::WindowEvent &event) {
-    if (event.type == hd::WindowEventType::Resize) {
-        glViewport(0, 0, event.resize.width, event.resize.height);
+void RenderSystem::onEvent(const SDL_Event &event) {
+    if (event.type == SDL_WINDOWEVENT && event.window.type == SDL_WINDOWEVENT_RESIZED) {
+        glViewport(0, 0, event.window.data1, event.window.data2);
 
-        impl->proj = glm::perspectiveLH(glm::pi<float>() / 4.0f, static_cast<float>(event.resize.width) / event.resize.height, 0.1f, 1000.0f);
-        impl->projGUI = hd::MathUtils::ortho2D(0, static_cast<float>(event.resize.width), static_cast<float>(event.resize.height), 0);
+        impl->proj = glm::perspectiveLH(glm::pi<float>() / 4.0f, static_cast<float>(event.window.data1) / event.window.data2, 0.1f, 1000.0f);
+        impl->projGUI = hd::MathUtils::ortho2D(0, static_cast<float>(event.window.data1), static_cast<float>(event.window.data2), 0);
     }
 }
 
@@ -314,8 +307,6 @@ void RenderSystem::onDraw() {
         glDrawArrays(GL_TRIANGLES, 0, 6);
     }
     mGUIRenderOps.clear();
-
-    getEngine().getWindow().swapBuffers();
 }
 
 Texture *RenderSystem::createTexture(const void *data, uint32_t w, uint32_t h) {
@@ -386,5 +377,3 @@ void RenderSystem::addRenderOp(const RenderOp &rop, bool isGUI) {
 }
 
 }
-
-#endif

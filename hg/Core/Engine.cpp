@@ -1,5 +1,4 @@
 #include "Engine.hpp"
-#include "BuildConfig.hpp"
 #include "../Renderer/RenderSystem.hpp"
 #include "../Sound/SoundSystem.hpp"
 #include "../GUI/GUISystem.hpp"
@@ -11,21 +10,39 @@ namespace hg {
 void Engine::initialize(const EngineCreateInfo &createInfo) {
     mCreateInfo = createInfo;
 
-    hd::WindowFlags flags = hd::WindowFlags::Resizable;
-    if (createInfo.window.fullscreen) {
-        flags |= hd::WindowFlags::Fullscreen;
+    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+        HD_LOG_ERROR("Failed to initialize SDL2. Error:\n{}", SDL_GetError());
     }
-#ifdef HG_RENDERER_D3D11
-    mWindow.create(createInfo.window.title, createInfo.window.size, flags);
-#elif defined(HG_RENDERER_OPENGL4)
-#ifdef HD_BUILDMODE_DEBUG
-    mWindow.create(createInfo.window.title, createInfo.window.size, flags, hd::OpenGLContextSettings(4, 5, 0, 0, 0, false, true));
-#else
-    mWindow.create(createInfo.window.title, createInfo.window.size, flags, hd::OpenGLContextSettings(4, 5, 0, 0, 0, false, false));
-#endif
-#else
-#   pragma error("Cannot determine which RenderSystem to use")
-#endif
+
+    uint8_t flags = SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
+    if (createInfo.window.fullscreen) {
+        flags |= SDL_WINDOW_FULLSCREEN;
+    }
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_COMPATIBILITY);
+    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 0);
+    SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 0);
+    SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, false);
+    SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 1);
+    mWindow = SDL_CreateWindow(createInfo.window.title.data(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+        createInfo.window.size.x, createInfo.window.size.y, flags);
+    if (!mWindow) {
+        HD_LOG_ERROR("Failed to create window. Error:\n{}", SDL_GetError());
+    }
+
+    mContext = SDL_GL_CreateContext(mWindow);
+    if (!mContext) {
+        HD_LOG_ERROR("Failed to create OpenGL context. Error:\n{}", SDL_GetError());
+    }
+
+    SDL_Event resizeEvent;
+    resizeEvent.type = SDL_WINDOWEVENT;
+    resizeEvent.window.event = SDL_WINDOWEVENT_RESIZED;
+    resizeEvent.window.data1 = createInfo.window.size.x;
+    resizeEvent.window.data2 = createInfo.window.size.y;
+    SDL_PushEvent(&resizeEvent);
 
     getRenderSystem().initialize();
     getSoundSystem().initialize();
@@ -39,7 +56,9 @@ void Engine::shutdown() {
     getGUISystem().shutdown();
     getSoundSystem().shutdown();
     getRenderSystem().shutdown();
-    mWindow.destroy();
+    SDL_GL_DeleteContext(mContext);
+    SDL_DestroyWindow(mWindow);
+    SDL_Quit();
 }
 
 void Engine::run() {
@@ -56,9 +75,9 @@ void Engine::run() {
         float dt = hd::Time::getElapsedTime(deltaTimer).getMilliseconds();
         deltaTimer = hd::Time::getCurrentTime();
 
-        hd::WindowEvent event;
-        while (mWindow.processEvent(event)) {
-            if (event.type == hd::WindowEventType::Close) {
+        SDL_Event event;
+        while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT) {
                 isExit = true;
             }
 
@@ -67,6 +86,7 @@ void Engine::run() {
             getRenderSystem().onEvent(event);
         }
 
+        getGUISystem().onUpdate(dt);
         mRoot->onUpdate(dt);
         if (hd::Time::getElapsedTime(updateTimer) > UPDATE_TIME) {
             mRoot->onFixedUpdate();
@@ -75,29 +95,34 @@ void Engine::run() {
 
         mRoot->onDraw();
         getRenderSystem().onDraw();
+        getGUISystem().onDraw();
+
+        SDL_GL_SwapWindow(mWindow);
 
         mFPSCounter.update();
     }
 }
 
 void Engine::close() {
-    mWindow.close();
+    SDL_Event event;
+    event.type = SDL_QUIT;
+    SDL_PushEvent(&event);
 }
 
-bool Engine::isKeyDown(hd::KeyCode key) const {
-    return mWindow.isKeyDown(key);
-}
-
-bool Engine::isKeyDown(hd::MouseButton button) const {
-    return mWindow.isKeyDown(button);
+bool Engine::isKeyDown(SDL_Scancode key) const {
+    return SDL_GetKeyboardState(nullptr)[key] != 0;
 }
 
 const EngineCreateInfo &Engine::getCreateInfo() const {
     return mCreateInfo;
 }
 
-hd::Window &Engine::getWindow() {
+SDL_Window *Engine::getWindow() const {
     return mWindow;
+}
+
+SDL_GLContext Engine::getGLContext() const {
+    return mContext;
 }
 
 uint32_t Engine::getFps() const {
@@ -110,6 +135,16 @@ float Engine::getFrameTime() const {
 
 Node *Engine::getRoot() {
     return mRoot.get();
+}
+
+glm::ivec2 Engine::getWindowSize() const {
+    glm::ivec2 v;
+    SDL_GetWindowSize(mWindow, &v.x, &v.y);
+    return v;
+}
+
+glm::ivec2 Engine::getWindowCenter() const {
+    return getWindowSize() / 2;
 }
 
 }

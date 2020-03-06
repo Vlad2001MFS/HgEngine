@@ -93,7 +93,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -104,7 +104,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>Box2D-$(Configuration).lib;HandyFramework.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>HandyFramework.lib;Box2D-$(Configuration).lib;opengl32.lib;glew32.lib;SDL2.lib;SDL2main.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
     <Lib>
       <AdditionalLibraryDirectories>../_deps/lib$(PlatformArchitecture);../_build/HandyFramework/$(Configuration)$(PlatformArchitecture);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -113,7 +113,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -124,7 +124,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>Box2D-$(Configuration).lib;HandyFramework.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>HandyFramework.lib;Box2D-$(Configuration).lib;opengl32.lib;glew32.lib;SDL2.lib;SDL2main.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
     <Lib>
       <AdditionalLibraryDirectories>../_deps/lib$(PlatformArchitecture);../_build/HandyFramework/$(Configuration)$(PlatformArchitecture);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -135,7 +135,7 @@
       <WarningLevel>Level3</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -148,7 +148,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>Box2D-$(Configuration).lib;HandyFramework.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>HandyFramework.lib;Box2D-$(Configuration).lib;opengl32.lib;glew32.lib;SDL2.lib;SDL2main.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
     <Lib>
       <AdditionalLibraryDirectories>../_deps/lib$(PlatformArchitecture);../_build/HandyFramework/$(Configuration)$(PlatformArchitecture);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -159,7 +159,7 @@
       <WarningLevel>Level3</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -172,7 +172,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>Box2D-$(Configuration).lib;HandyFramework.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>HandyFramework.lib;Box2D-$(Configuration).lib;opengl32.lib;glew32.lib;SDL2.lib;SDL2main.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
     <Lib>
       <AdditionalLibraryDirectories>../_deps/lib$(PlatformArchitecture);../_build/HandyFramework/$(Configuration)$(PlatformArchitecture);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -184,31 +184,33 @@
     <ClCompile Include="hg\Core\JSONObject.cpp" />
     <ClCompile Include="hg\Core\Node.cpp" />
     <ClCompile Include="hg\Core\Object.cpp" />
-    <ClCompile Include="hg\GUI\GUIWidget.cpp" />
-    <ClCompile Include="hg\GUI\Font.cpp" />
-    <ClCompile Include="hg\GUI\GUIButton.cpp" />
-    <ClCompile Include="hg\GUI\GUIImage.cpp" />
-    <ClCompile Include="hg\GUI\GUILabel.cpp" />
     <ClCompile Include="hg\GUI\GUISystem.cpp" />
-    <ClCompile Include="hg\Renderer\D3D11RenderSystem.cpp" />
-    <ClCompile Include="hg\Renderer\GL4RenderSystem.cpp" />
+    <ClCompile Include="hg\Renderer\RenderSystem.cpp" />
     <ClCompile Include="hg\Sound\SoundSystem.cpp" />
+    <ClCompile Include="imgui\imgui.cpp" />
+    <ClCompile Include="imgui\imgui_demo.cpp" />
+    <ClCompile Include="imgui\imgui_draw.cpp" />
+    <ClCompile Include="imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="imgui\imgui_impl_sdl.cpp" />
+    <ClCompile Include="imgui\imgui_widgets.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="hg\Cache\CacheSystem.hpp" />
-    <ClInclude Include="hg\Core\BuildConfig.hpp" />
     <ClInclude Include="hg\Core\Engine.hpp" />
     <ClInclude Include="hg\Core\JSONObject.hpp" />
     <ClInclude Include="hg\Core\Node.hpp" />
     <ClInclude Include="hg\Core\Object.hpp" />
-    <ClInclude Include="hg\GUI\GUIWidget.hpp" />
-    <ClInclude Include="hg\GUI\Font.hpp" />
-    <ClInclude Include="hg\GUI\GUIButton.hpp" />
-    <ClInclude Include="hg\GUI\GUIImage.hpp" />
-    <ClInclude Include="hg\GUI\GUILabel.hpp" />
     <ClInclude Include="hg\GUI\GUISystem.hpp" />
     <ClInclude Include="hg\Renderer\RenderSystem.hpp" />
     <ClInclude Include="hg\Sound\SoundSystem.hpp" />
+    <ClInclude Include="imgui\imconfig.h" />
+    <ClInclude Include="imgui\imgui.h" />
+    <ClInclude Include="imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="imgui\imgui_impl_sdl.h" />
+    <ClInclude Include="imgui\imgui_internal.h" />
+    <ClInclude Include="imgui\imstb_rectpack.h" />
+    <ClInclude Include="imgui\imstb_textedit.h" />
+    <ClInclude Include="imgui\imstb_truetype.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

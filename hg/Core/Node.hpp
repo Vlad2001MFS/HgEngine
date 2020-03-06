@@ -4,7 +4,7 @@
 #include "hd/Core/Common.hpp"
 #include "hd/Core/Log.hpp"
 #include "hd/Core/StringHash.hpp"
-#include "hd/Window/WindowEvent.hpp"
+#include "SDL2/SDL_events.h"
 #include "glm/glm.hpp"
 #include "nameof/nameof.hpp"
 #include <vector>
@@ -19,7 +19,7 @@ public:
     ~Node();
 
     virtual void onSaveLoad(JSONObject &data, bool isLoad);
-    virtual void onEvent(const hd::WindowEvent &event);
+    virtual void onEvent(const SDL_Event &event);
     virtual void onFixedUpdate();
     virtual void onUpdate(float dt);
     virtual void onDraw();

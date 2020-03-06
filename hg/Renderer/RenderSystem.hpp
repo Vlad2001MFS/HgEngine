@@ -1,7 +1,7 @@
 #pragma once
 #include "hd/IO/Image.hpp"
-#include "hd/Window/WindowEvent.hpp"
 #include "hd/Core/Color.hpp"
+#include "SDL2/SDL_events.h"
 #include "glm/glm.hpp"
 #include <memory>
 #include <string>
@@ -33,7 +33,7 @@ public:
     void initialize();
     void shutdown();
 
-    void onEvent(const hd::WindowEvent &event);
+    void onEvent(const SDL_Event &event);
     void onDraw();
 
     Texture *createTexture(const void *data, uint32_t w, uint32_t h);

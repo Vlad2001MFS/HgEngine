@@ -1,7 +1,7 @@
 #pragma once
 #include "Node.hpp"
 #include "hd/Core/FPSCounter.hpp"
-#include "hd/Window/Window.hpp"
+#include "SDL2/SDL.h"
 #include <memory>
 
 namespace hg {
@@ -18,21 +18,9 @@ struct SoundSystemCreateInfo final {
     bool isStereo = true;
 };
 
-struct GUISystemCreateInfo final {
-    std::string fontPath = "font.ttf";
-    bool monospacedFont = true;
-    hd::Color4 fontColor = hd::Color4::White;
-    std::string buttonTexturePath = "gui/button.png";
-    std::string hoveredButtonTexturePath = "gui/hoveredButton.png";
-    std::string clickedButtonTexturePath = "gui/clickedButton.png";
-    int alignSpaceX = 10;
-    int alignSpaceY = 10;
-};
-
 struct EngineCreateInfo final {
     WindowCreateInfo window;
     SoundSystemCreateInfo sound;
-    GUISystemCreateInfo gui;
 };
 
 class Engine final : public hd::Singleton<Engine> {
@@ -50,17 +38,20 @@ public:
         mRoot = std::make_unique<T>(std::forward(args)...);
     }
 
-    bool isKeyDown(hd::KeyCode key) const;
-    bool isKeyDown(hd::MouseButton button) const;
+    bool isKeyDown(SDL_Scancode key) const;
     const EngineCreateInfo &getCreateInfo() const;
-    hd::Window &getWindow();
+    SDL_Window *getWindow() const;
+    SDL_GLContext getGLContext() const;
     uint32_t getFps() const;
     float getFrameTime() const;
     Node *getRoot();
+    glm::ivec2 getWindowSize() const;
+    glm::ivec2 getWindowCenter() const;
 
 private:
     EngineCreateInfo mCreateInfo;
-    hd::Window mWindow;
+    SDL_Window *mWindow;
+    SDL_GLContext mContext;
     hd::FPSCounter mFPSCounter;
     std::unique_ptr<Node> mRoot;
 };

@@ -1,34 +1,19 @@
 #pragma once
-#include "GUIWidget.hpp"
-#include "Font.hpp"
-#include "hd/Window/WindowEvent.hpp"
+#include "hd/Core/Common.hpp"
+#include "../../imgui/imgui.h"
+#include "SDL2/SDL_events.h"
 #include <map>
 
 namespace hg {
-
-struct GUISkin {
-    Font *font = nullptr;
-    hd::Color4 fontColor = hd::Color4::White;
-    Texture *buttonTexture = nullptr, *hoveredButtonTexture = nullptr, *clickedButtonTexture = nullptr;
-    float alignSpaceX = 0.015625f;
-    float alignSpaceY = 0.020833f;
-};
 
 class GUISystem final : public hd::Singleton<GUISystem> {
 public:
     void initialize();
     void shutdown();
 
-    void onEvent(const hd::WindowEvent &event);
-
-    Font *createFontFromFile(const std::string &filename, uint32_t size);
-    void destroyFont(Font *&font);
-    const GUISkin &getSkin() const { return mSkin; }
-
-private:
-    GUISkin mSkin;
-    std::vector<Font*> mCreatedFonts;
-    int mFontSize;
+    void onEvent(const SDL_Event &event);
+    void onUpdate(float dt);
+    void onDraw();
 };
 
 inline GUISystem &getGUISystem() {
