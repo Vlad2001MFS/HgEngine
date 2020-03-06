@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="hg">
+      <UniqueIdentifier>{40125f74-c8ca-421b-9f06-b7020885d706}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hg\Core">
+      <UniqueIdentifier>{dfa79d3b-8a0a-479b-9d8a-c6ac383a4231}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hg\Cache">
+      <UniqueIdentifier>{f46ce904-19b1-4edd-84f8-d170c1f2b730}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hg\GUI">
+      <UniqueIdentifier>{4add1e69-6f3e-4547-9dc2-d62e5bbe7078}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hg\Renderer">
+      <UniqueIdentifier>{1d4047a9-4fe0-4c01-a53c-d693814cad49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hg\Sound">
+      <UniqueIdentifier>{7d7c013f-d937-48d9-859c-8ca8ece4a10b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="hg\Core\Engine.cpp">
+      <Filter>hg\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="hg\Core\JSONObject.cpp">
+      <Filter>hg\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="hg\Cache\CacheSystem.cpp">
+      <Filter>hg\Cache</Filter>
+    </ClCompile>
+    <ClCompile Include="hg\GUI\Font.cpp">
+      <Filter>hg\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="hg\GUI\GUIButton.cpp">
+      <Filter>hg\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="hg\GUI\GUIImage.cpp">
+      <Filter>hg\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="hg\GUI\GUILabel.cpp">
+      <Filter>hg\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="hg\GUI\GUISystem.cpp">
+      <Filter>hg\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="hg\Renderer\D3D11RenderSystem.cpp">
+      <Filter>hg\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="hg\Renderer\GL4RenderSystem.cpp">
+      <Filter>hg\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="hg\Sound\SoundSystem.cpp">
+      <Filter>hg\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="hg\Core\Node.cpp">
+      <Filter>hg\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="hg\GUI\GUIWidget.cpp">
+      <Filter>hg\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="hg\Core\Object.cpp">
+      <Filter>hg\Core</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="hg\Core\BuildConfig.hpp">
+      <Filter>hg\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="hg\Core\Engine.hpp">
+      <Filter>hg\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="hg\Core\JSONObject.hpp">
+      <Filter>hg\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="hg\Cache\CacheSystem.hpp">
+      <Filter>hg\Cache</Filter>
+    </ClInclude>
+    <ClInclude Include="hg\GUI\Font.hpp">
+      <Filter>hg\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="hg\GUI\GUIButton.hpp">
+      <Filter>hg\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="hg\GUI\GUIImage.hpp">
+      <Filter>hg\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="hg\GUI\GUILabel.hpp">
+      <Filter>hg\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="hg\GUI\GUISystem.hpp">
+      <Filter>hg\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="hg\Renderer\RenderSystem.hpp">
+      <Filter>hg\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="hg\Sound\SoundSystem.hpp">
+      <Filter>hg\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="hg\Core\Node.hpp">
+      <Filter>hg\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="hg\GUI\GUIWidget.hpp">
+      <Filter>hg\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="hg\Core\Object.hpp">
+      <Filter>hg\Core</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
