@@ -4,9 +4,8 @@ namespace hg {
 
 HG_REGISTER_OBJECT(Node);
 
-Node::Node() : mPos(0, 0), mSize(0, 0) {
+Node::Node() {
     mParent = nullptr;
-    mAngle = 0.0f;
     mIsActive = true;
 }
 
@@ -19,9 +18,6 @@ Node::~Node() {
 void Node::onSaveLoad(JSONObject &data, bool isLoad) {
     if (isLoad) {
         mName = data["name"];
-        setPosition(data["position"]);
-        setSize(data["size"]);
-        setAngle(data["angle"]);
         setActive(data["isActive"]);
         
         JSONObject &children = data["children"];
@@ -32,9 +28,6 @@ void Node::onSaveLoad(JSONObject &data, bool isLoad) {
     }
     else {
         data["name"] = getName();
-        data["position"] = getPosition();
-        data["size"] = getSize();
-        data["angle"] = getAngle();
         data["isActive"] = isActive();
         data["typeInfo"] = {
             { "name", getTypeName() },
@@ -103,48 +96,6 @@ void Node::destroyChild(const std::string &name) {
     }
 }
 
-void Node::translate(float x, float y) {
-    setPosition(mPos.x + x, mPos.y + y);
-}
-
-void Node::translate(const glm::vec2 &offset) {
-    translate(offset.x, offset.y);
-}
-
-void Node::scale(float x, float y) {
-    setSize(mSize.x + x, mSize.y + y);
-}
-
-void Node::scale(const glm::vec2 &size) {
-    scale(size.x, size.y);
-}
-
-void Node::rotate(float angle) {
-    setAngle(mAngle + angle);
-}
-
-void Node::setPosition(float x, float y) {
-    mPos.x = x;
-    mPos.y = y;
-}
-
-void Node::setPosition(const glm::vec2 &pos) {
-    setPosition(pos.x, pos.y);
-}
-
-void Node::setSize(float x, float y) {
-    mSize.x = x;
-    mSize.y = y;
-}
-
-void Node::setSize(const glm::vec2 &size) {
-    setSize(size.x, size.y);
-}
-
-void Node::setAngle(float angle) {
-    mAngle = angle;
-}
-
 void Node::setActive(bool active) {
     mIsActive = active;
 }
@@ -165,42 +116,8 @@ const std::string &Node::getName() const {
     return mName;
 }
 
-const glm::vec2 &Node::getPosition() const {
-    return mPos;
-}
-
-const glm::vec2 &Node::getSize() const {
-    return mSize;
-}
-
-float Node::getAngle() const {
-    return mAngle;
-}
-
 bool Node::isActive() const {
     return mIsActive;
-}
-
-glm::vec2 Node::getAbsolutePosition() const {
-    auto rotatedPos = [](const glm::vec2 &p, float a) {
-        return glm::vec2(
-            p.x*cosf(a) - p.y*sin(a),
-            p.y*cosf(a) + p.x*sin(a)
-        );
-    };
-
-    auto pos = glm::vec2(0, 0);
-    const Node *node = this;
-    while (node) {
-        if (node->getParent()) {
-            pos += rotatedPos(node->getPosition(), node->getParent()->getAngle());
-        }
-        else {
-            pos += node->getPosition();
-        }
-        node = node->getParent();
-    }
-    return pos;
 }
 
 void Node::mAddChild(Node *node, const std::string &name) {

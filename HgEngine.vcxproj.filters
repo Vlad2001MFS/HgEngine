@@ -39,9 +39,6 @@
     <ClCompile Include="hg\Sound\SoundSystem.cpp">
       <Filter>hg\Sound</Filter>
     </ClCompile>
-    <ClCompile Include="hg\Core\Node.cpp">
-      <Filter>hg\Core</Filter>
-    </ClCompile>
     <ClCompile Include="hg\Core\Object.cpp">
       <Filter>hg\Core</Filter>
     </ClCompile>
@@ -66,6 +63,12 @@
     <ClCompile Include="imgui\imgui_widgets.cpp">
       <Filter>imgui</Filter>
     </ClCompile>
+    <ClCompile Include="hg\Core\Node2D.cpp">
+      <Filter>hg\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="hg\Core\Node.cpp">
+      <Filter>hg\Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="hg\Core\Engine.hpp">
@@ -85,9 +88,6 @@
     </ClInclude>
     <ClInclude Include="hg\Sound\SoundSystem.hpp">
       <Filter>hg\Sound</Filter>
-    </ClInclude>
-    <ClInclude Include="hg\Core\Node.hpp">
-      <Filter>hg\Core</Filter>
     </ClInclude>
     <ClInclude Include="hg\Core\Object.hpp">
       <Filter>hg\Core</Filter>
@@ -115,6 +115,12 @@
     </ClInclude>
     <ClInclude Include="imgui\imstb_truetype.h">
       <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="hg\Core\Node2D.hpp">
+      <Filter>hg\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="hg\Core\Node.hpp">
+      <Filter>hg\Core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
