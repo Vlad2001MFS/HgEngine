@@ -59,97 +59,6 @@ struct RenderSystem2D::Impl {
     glm::mat4 proj, projGUI;
 };
 
-void debugCallback(uint32_t source, uint32_t type, uint32_t id, uint32_t severity, int length, const char *message, const void *userParam) {
-    const char *sourceStr = nullptr, *typeStr = nullptr, *severityStr = nullptr;
-    switch (source) {
-        case GL_DEBUG_SOURCE_API_ARB: {
-            sourceStr = "API";
-            break;
-        }
-        case GL_DEBUG_SOURCE_WINDOW_SYSTEM_ARB: {
-            sourceStr = "Window system";
-            break;
-        }
-        case GL_DEBUG_SOURCE_SHADER_COMPILER_ARB: {
-            sourceStr = "Shader compiler";
-            break;
-        }
-        case GL_DEBUG_SOURCE_THIRD_PARTY_ARB: {
-            sourceStr = "Third party";
-            break;
-        }
-        case GL_DEBUG_SOURCE_APPLICATION_ARB: {
-            sourceStr = "Application";
-            break;
-        }
-        case GL_DEBUG_SOURCE_OTHER_ARB: {
-            sourceStr = "Other";
-            break;
-        }
-        default: {
-            sourceStr = "Unknown";
-            break;
-        }
-    }
-    switch (type) {
-        case GL_DEBUG_TYPE_ERROR_ARB: {
-            typeStr = "Error";
-            break;
-        }
-        case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR_ARB: {
-            typeStr = "Deprecated behaviour";
-            break;
-        }
-        case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR_ARB: {
-            typeStr = "Undefined behaviour";
-            break;
-        }
-        case GL_DEBUG_TYPE_PORTABILITY_ARB: {
-            typeStr = "Portability";
-            break;
-        }
-        case GL_DEBUG_TYPE_PERFORMANCE_ARB: {
-            typeStr = "Performance";
-            break;
-        }
-        case GL_DEBUG_TYPE_OTHER_ARB: {
-            typeStr = "Other";
-            break;
-        }
-        default: {
-            typeStr = "Unknown";
-            break;
-        }
-    }
-    switch (severity) {
-        case GL_DEBUG_SEVERITY_HIGH_ARB: {
-            severityStr = "High";
-            break;
-        }
-        case GL_DEBUG_SEVERITY_MEDIUM_ARB: {
-            severityStr = "Medium";
-            break;
-        }
-        case GL_DEBUG_SEVERITY_LOW_ARB: {
-            severityStr = "Low";
-            break;
-        }
-        default: {
-            severityStr = "Unknown";
-            break;
-        }
-    }
-    if (type == GL_DEBUG_TYPE_ERROR_ARB) {
-        HD_LOG_FATAL("OpenGL Debug:\n\tSource: {}\n\tType: {}\n\tId: {}\n\tSeverity: {}\n\tMessage: {}", sourceStr, typeStr, id, severityStr, message);
-    }
-    else if (type == GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR_ARB || type == GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR_ARB || type == GL_DEBUG_TYPE_PORTABILITY_ARB || type == GL_DEBUG_TYPE_PERFORMANCE_ARB) {
-        HD_LOG_WARNING("OpenGL Debug:\n\tSource: {}\n\tType: {}\n\tId: {}\n\tSeverity: {}\n\tMessage: {}", sourceStr, typeStr, id, severityStr, message);
-    }
-    else {
-        HD_LOG_INFO("OpenGL Debug:\n\tSource: {}\n\tType: {}\n\tId: {}\n\tSeverity: {}\n\tMessage: {}", sourceStr, typeStr, id, severityStr, message);
-    }
-}
-
 RenderSystem2D::RenderSystem2D() : impl(new Impl()) {
 }
 
@@ -158,23 +67,6 @@ RenderSystem2D::~RenderSystem2D() {
 }
 
 void RenderSystem2D::initialize() {
-    glewExperimental = true;
-    GLenum glewResult = glewInit();
-    if (glewInit() != GLEW_OK) {
-        HD_LOG_FATAL("Failed to initialize GLEW. Error: {}", glewGetErrorString(glewResult));
-    }
-
-    if (GLEW_ARB_debug_output) {
-        glEnable(GL_DEBUG_OUTPUT);
-        glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-        glDebugMessageCallback(debugCallback, nullptr);
-        glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, true);
-    }
-    else {
-        HD_LOG_WARNING("Failed to enable OpenGL debug output. Extension 'GLEW_ARB_debug_output' not supported");
-    }
-
-
     uint32_t vertexShader = glCreateShader(GL_VERTEX_SHADER);
     std::string vsCode = hd::FileStream("data/shaders/simpleVS.glsl", hd::FileMode::Read).readAllText();
     const char *vsSources[] = { vsCode.data() };
@@ -265,8 +157,6 @@ void RenderSystem2D::shutdown() {
 
 void RenderSystem2D::onEvent(const SDL_Event &event) {
     if (event.type == SDL_WINDOWEVENT && event.window.type == SDL_WINDOWEVENT_RESIZED) {
-        glViewport(0, 0, event.window.data1, event.window.data2);
-
         impl->proj = glm::perspectiveLH(glm::pi<float>() / 4.0f, static_cast<float>(event.window.data1) / event.window.data2, 0.1f, 1000.0f);
         impl->projGUI = hd::MathUtils::ortho2D(0, static_cast<float>(event.window.data1), static_cast<float>(event.window.data2), 0);
     }
