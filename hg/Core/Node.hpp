@@ -1,12 +1,7 @@
 #pragma once
-#include "JSONObject.hpp"
 #include "Object.hpp"
-#include "hd/Core/Common.hpp"
-#include "hd/Core/Log.hpp"
-#include "hd/Core/StringHash.hpp"
+#include "JSONObject.hpp"
 #include "SDL2/SDL_events.h"
-#include "glm/glm.hpp"
-#include "nameof/nameof.hpp"
 #include <vector>
 #include <unordered_map>
 

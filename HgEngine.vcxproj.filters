@@ -42,9 +42,6 @@
     <ClCompile Include="hg\Core\Object.cpp">
       <Filter>hg\Core</Filter>
     </ClCompile>
-    <ClCompile Include="hg\Renderer\RenderSystem.cpp">
-      <Filter>hg\Renderer</Filter>
-    </ClCompile>
     <ClCompile Include="imgui\imgui.cpp">
       <Filter>imgui</Filter>
     </ClCompile>
@@ -69,6 +66,9 @@
     <ClCompile Include="hg\Core\Node.cpp">
       <Filter>hg\Core</Filter>
     </ClCompile>
+    <ClCompile Include="hg\Renderer\RenderSystem2D.cpp">
+      <Filter>hg\Renderer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="hg\Core\Engine.hpp">
@@ -82,9 +82,6 @@
     </ClInclude>
     <ClInclude Include="hg\GUI\GUISystem.hpp">
       <Filter>hg\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="hg\Renderer\RenderSystem.hpp">
-      <Filter>hg\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="hg\Sound\SoundSystem.hpp">
       <Filter>hg\Sound</Filter>
@@ -121,6 +118,9 @@
     </ClInclude>
     <ClInclude Include="hg\Core\Node.hpp">
       <Filter>hg\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="hg\Renderer\RenderSystem2D.hpp">
+      <Filter>hg\Renderer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

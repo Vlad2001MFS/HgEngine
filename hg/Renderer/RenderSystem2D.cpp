@@ -1,4 +1,4 @@
-#include "RenderSystem.hpp"
+#include "RenderSystem2D.hpp"
 #include "../Core/Engine.hpp"
 #include "hd/Core/StringUtils.hpp"
 #include "hd/Core/Log.hpp"
@@ -30,13 +30,15 @@ struct ConstantBuffer {
     glm::vec2 uvSize;
 };
 
-struct RenderSystem::Impl {
-    Impl() {
+struct RenderSystem2D::Impl {
+    Impl() : proj(1.0f), projGUI(1.0f) {
         this->program = 0;
         this->vertexFormat = 0;
         this->vertexBuffer = 0;
         this->vertexBufferGUI = 0;
         this->constantBuffer = 0;
+        this->samplerState = 0;
+        this->samplerStateGUI = 0;
     }
 
     void destroyTexture(Texture *&obj) {
@@ -148,14 +150,14 @@ void debugCallback(uint32_t source, uint32_t type, uint32_t id, uint32_t severit
     }
 }
 
-RenderSystem::RenderSystem() : impl(new Impl()) {
+RenderSystem2D::RenderSystem2D() : impl(new Impl()) {
 }
 
-RenderSystem::~RenderSystem() {
+RenderSystem2D::~RenderSystem2D() {
     HD_DELETE(impl);
 }
 
-void RenderSystem::initialize() {
+void RenderSystem2D::initialize() {
     glewExperimental = true;
     GLenum glewResult = glewInit();
     if (glewInit() != GLEW_OK) {
@@ -247,7 +249,7 @@ void RenderSystem::initialize() {
     glSamplerParameteri(impl->samplerStateGUI, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 }
 
-void RenderSystem::shutdown() {
+void RenderSystem2D::shutdown() {
     for (auto &it : impl->createdTextures) {
         impl->destroyTexture(it);
     }
@@ -261,7 +263,7 @@ void RenderSystem::shutdown() {
     glDeleteProgram(impl->program);
 }
 
-void RenderSystem::onEvent(const SDL_Event &event) {
+void RenderSystem2D::onEvent(const SDL_Event &event) {
     if (event.type == SDL_WINDOWEVENT && event.window.type == SDL_WINDOWEVENT_RESIZED) {
         glViewport(0, 0, event.window.data1, event.window.data2);
 
@@ -270,7 +272,7 @@ void RenderSystem::onEvent(const SDL_Event &event) {
     }
 }
 
-void RenderSystem::onDraw() {
+void RenderSystem2D::onDraw() {
     const float clearColor[] = { 0.0f, 0.0f, 0.0f, 1.0f };
     glClearBufferfv(GL_COLOR, 0, clearColor);
 
@@ -309,7 +311,7 @@ void RenderSystem::onDraw() {
     mGUIRenderOps.clear();
 }
 
-Texture *RenderSystem::createTexture(const void *data, uint32_t w, uint32_t h) {
+Texture *RenderSystem2D::createTexture(const void *data, uint32_t w, uint32_t h) {
     Texture *obj = new Texture();
     obj->size = glm::ivec2(w, h);
 
@@ -322,21 +324,21 @@ Texture *RenderSystem::createTexture(const void *data, uint32_t w, uint32_t h) {
     return obj;
 }
 
-Texture* RenderSystem::createTexture(const hd::Image& img) {
+Texture* RenderSystem2D::createTexture(const hd::Image& img) {
     Texture *texture = createTexture(img.getData(), img.getSize().x, img.getSize().y);
     texture->path = hd::StringUtils::replace(img.getPath(), "data/textures/", "");
     return texture;
 }
 
-Texture *RenderSystem::createTextureFromFile(const std::string &path) {
+Texture *RenderSystem2D::createTextureFromFile(const std::string &path) {
     return createTexture(hd::Image("data/textures/" + path));
 }
 
-Texture *RenderSystem::createTextureFromColor(const hd::Color4 &color) {
+Texture *RenderSystem2D::createTextureFromColor(const hd::Color4 &color) {
     return createTexture(&color, 1, 1);
 }
 
-void RenderSystem::destroyTexture(Texture *&texture) {
+void RenderSystem2D::destroyTexture(Texture *&texture) {
     if (!texture) {
         HD_LOG_WARNING("Failed to destroy Texture. The texture is nullptr");
     }
@@ -352,14 +354,14 @@ void RenderSystem::destroyTexture(Texture *&texture) {
     }
 }
 
-const glm::ivec2 &RenderSystem::getTextureSize(const Texture *texture) const {
+const glm::ivec2 &RenderSystem2D::getTextureSize(const Texture *texture) const {
     if (!texture) {
         HD_LOG_FATAL("texture is nullptr");
     }
     return texture->size;
 }
 
-const std::string &RenderSystem::getTexturePath(const Texture *texture) const {
+const std::string &RenderSystem2D::getTexturePath(const Texture *texture) const {
     if (!texture) {
         HD_LOG_WARNING("texture is nullptr");
         return hd::StringUtils::getEmpty();
@@ -367,7 +369,7 @@ const std::string &RenderSystem::getTexturePath(const Texture *texture) const {
     return texture->path;
 }
 
-void RenderSystem::addRenderOp(const RenderOp &rop, bool isGUI) {
+void RenderSystem2D::addRenderOp(const RenderOp2D &rop, bool isGUI) {
     if (isGUI) {
         mGUIRenderOps.push_back(rop);
     }

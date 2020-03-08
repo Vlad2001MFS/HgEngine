@@ -1,5 +1,5 @@
 #include "CacheSystem.hpp"
-#include "../Renderer/RenderSystem.hpp"
+#include "../Renderer/RenderSystem2D.hpp"
 #include "../Sound/SoundSystem.hpp"
 #include "hd/Core/StringUtils.hpp"
 #include "hd/Core/Log.hpp"
@@ -11,10 +11,10 @@ void CacheSystem::initialize() {
 
 void CacheSystem::shutdown() {
     for (auto &texture : mTextures) {
-        getRenderSystem().destroyTexture(texture.second);
+        getRenderSystem2D().destroyTexture(texture.second);
     }
     for (auto &texture : mColorTextures) {
-        getRenderSystem().destroyTexture(texture.second);
+        getRenderSystem2D().destroyTexture(texture.second);
     }
     for (auto &soundBuffer : mSoundBuffers) {
         getSoundSystem().destroySound(soundBuffer.second);
@@ -27,7 +27,7 @@ void CacheSystem::shutdown() {
 Texture *CacheSystem::loadTexture(const std::string &filename) {
     if (!filename.empty()) {
         if (mTextures.count(filename) == 0) {
-            Texture *texture = getRenderSystem().createTextureFromFile(filename);
+            Texture *texture = getRenderSystem2D().createTextureFromFile(filename);
             mTextures.insert(std::make_pair(filename, texture));
             return texture;
         }
@@ -44,7 +44,7 @@ Texture *CacheSystem::loadTexture(const std::string &filename) {
 Texture *CacheSystem::loadTexture(const hd::Color4 &color) {
     std::string key = fmt::format("{} {} {} {}", color.r, color.g, color.b, color.a);
     if (mColorTextures.count(key) == 0) {
-        Texture *texture = getRenderSystem().createTextureFromColor(color);
+        Texture *texture = getRenderSystem2D().createTextureFromColor(color);
         mColorTextures.insert(std::make_pair(key, texture));
         return texture;
     }

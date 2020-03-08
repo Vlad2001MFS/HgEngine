@@ -186,7 +186,7 @@
     <ClCompile Include="hg\Core\Node2D.cpp" />
     <ClCompile Include="hg\Core\Object.cpp" />
     <ClCompile Include="hg\GUI\GUISystem.cpp" />
-    <ClCompile Include="hg\Renderer\RenderSystem.cpp" />
+    <ClCompile Include="hg\Renderer\RenderSystem2D.cpp" />
     <ClCompile Include="hg\Sound\SoundSystem.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
@@ -203,7 +203,7 @@
     <ClInclude Include="hg\Core\Node2D.hpp" />
     <ClInclude Include="hg\Core\Object.hpp" />
     <ClInclude Include="hg\GUI\GUISystem.hpp" />
-    <ClInclude Include="hg\Renderer\RenderSystem.hpp" />
+    <ClInclude Include="hg\Renderer\RenderSystem2D.hpp" />
     <ClInclude Include="hg\Sound\SoundSystem.hpp" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />

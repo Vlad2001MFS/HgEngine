@@ -11,8 +11,8 @@ namespace hg {
 
 struct Texture;
 
-struct RenderOp {
-    RenderOp() : camPos(0, 0, 0), pos(0, 0), size(1, 1), uvOffset(0, 0), uvSize(1, 1) {
+struct RenderOp2D {
+    RenderOp2D() : camPos(0, 0, 0), pos(0, 0), size(1, 1), uvOffset(0, 0), uvSize(1, 1) {
         this->texture = nullptr;
         this->angle = 0.0f;
         this->camAngle = 0.0f;
@@ -25,10 +25,10 @@ struct RenderOp {
     float angle, camAngle;
 };
 
-class RenderSystem final : public hd::Singleton<RenderSystem> {
+class RenderSystem2D final : public hd::Singleton<RenderSystem2D> {
 public:
-    RenderSystem();
-    ~RenderSystem();
+    RenderSystem2D();
+    ~RenderSystem2D();
 
     void initialize();
     void shutdown();
@@ -44,17 +44,17 @@ public:
     const glm::ivec2 &getTextureSize(const Texture *texture) const;
     const std::string &getTexturePath(const Texture *texture) const;
 
-    void addRenderOp(const RenderOp &rop, bool isGUI);
+    void addRenderOp(const RenderOp2D &rop, bool isGUI);
 
 private:
-    std::vector<RenderOp> mRenderOps;
-    std::vector<RenderOp> mGUIRenderOps;
+    std::vector<RenderOp2D> mRenderOps;
+    std::vector<RenderOp2D> mGUIRenderOps;
     struct Impl;
     Impl *impl;
 };
 
-inline RenderSystem &getRenderSystem() {
-    return RenderSystem::get();
+inline RenderSystem2D &getRenderSystem2D() {
+    return RenderSystem2D::get();
 }
 
 }
