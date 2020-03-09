@@ -184,6 +184,7 @@
     <ClCompile Include="hg\Core\JSONObject.cpp" />
     <ClCompile Include="hg\Core\Node.cpp" />
     <ClCompile Include="hg\Core\Node2D.cpp" />
+    <ClCompile Include="hg\Core\Node3D.cpp" />
     <ClCompile Include="hg\Core\Object.cpp" />
     <ClCompile Include="hg\GUI\GUISystem.cpp" />
     <ClCompile Include="hg\Renderer\RenderDevice.cpp" />
@@ -202,6 +203,7 @@
     <ClInclude Include="hg\Core\JSONObject.hpp" />
     <ClInclude Include="hg\Core\Node.hpp" />
     <ClInclude Include="hg\Core\Node2D.hpp" />
+    <ClInclude Include="hg\Core\Node3D.hpp" />
     <ClInclude Include="hg\Core\Object.hpp" />
     <ClInclude Include="hg\GUI\GUISystem.hpp" />
     <ClInclude Include="hg\Renderer\RenderDevice.hpp" />

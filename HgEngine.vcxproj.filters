@@ -72,6 +72,9 @@
     <ClCompile Include="hg\Renderer\RenderDevice.cpp">
       <Filter>hg\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="hg\Core\Node3D.cpp">
+      <Filter>hg\Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="hg\Core\Engine.hpp">
@@ -127,6 +130,9 @@
     </ClInclude>
     <ClInclude Include="hg\Renderer\RenderDevice.hpp">
       <Filter>hg\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="hg\Core\Node3D.hpp">
+      <Filter>hg\Core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

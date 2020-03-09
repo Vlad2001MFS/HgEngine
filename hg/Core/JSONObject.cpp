@@ -38,6 +38,32 @@ void to_json(hg::JSONObject &json, const ivec2 &data) {
     json["y"] = data.y;
 }
 
+void to_json(hg::JSONObject &json, const vec3 &data) {
+    json["x"] = data.x;
+    json["y"] = data.y;
+    json["z"] = data.z;
+}
+
+void to_json(hg::JSONObject &json, const ivec3 &data) {
+    json["x"] = data.x;
+    json["y"] = data.y;
+    json["z"] = data.z;
+}
+
+void to_json(hg::JSONObject &json, const vec4 &data) {
+    json["x"] = data.x;
+    json["y"] = data.y;
+    json["z"] = data.z;
+    json["w"] = data.w;
+}
+
+void to_json(hg::JSONObject &json, const ivec4 &data) {
+    json["x"] = data.x;
+    json["y"] = data.y;
+    json["z"] = data.z;
+    json["w"] = data.w;
+}
+
 void from_json(const hg::JSONObject &json, vec2 &data) {
     data.x = json.at("x");
     data.y = json.at("y");
@@ -46,6 +72,32 @@ void from_json(const hg::JSONObject &json, vec2 &data) {
 void from_json(const hg::JSONObject &json, ivec2 &data) {
     data.x = json.at("x");
     data.y = json.at("y");
+}
+
+void from_json(const hg::JSONObject &json, vec3 &data) {
+    data.x = json.at("x");
+    data.y = json.at("y");
+    data.z = json.at("z");
+}
+
+void from_json(const hg::JSONObject &json, ivec3 &data) {
+    data.x = json.at("x");
+    data.y = json.at("y");
+    data.z = json.at("z");
+}
+
+void from_json(const hg::JSONObject &json, vec4 &data) {
+    data.x = json.at("x");
+    data.y = json.at("y");
+    data.z = json.at("z");
+    data.w = json.at("w");
+}
+
+void from_json(const hg::JSONObject &json, ivec4 &data) {
+    data.x = json.at("x");
+    data.y = json.at("y");
+    data.z = json.at("z");
+    data.w = json.at("w");
 }
 
 }

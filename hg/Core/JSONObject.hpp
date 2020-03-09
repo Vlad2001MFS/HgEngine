@@ -24,8 +24,16 @@ namespace glm {
 
 void to_json(hg::JSONObject &json, const vec2 &data);
 void to_json(hg::JSONObject &json, const ivec2 &data);
+void to_json(hg::JSONObject &json, const vec3 &data);
+void to_json(hg::JSONObject &json, const ivec3 &data);
+void to_json(hg::JSONObject &json, const vec4 &data);
+void to_json(hg::JSONObject &json, const ivec4 &data);
 
 void from_json(const hg::JSONObject &json, vec2 &data);
 void from_json(const hg::JSONObject &json, ivec2 &data);
+void from_json(const hg::JSONObject &json, vec3 &data);
+void from_json(const hg::JSONObject &json, ivec3 &data);
+void from_json(const hg::JSONObject &json, vec4 &data);
+void from_json(const hg::JSONObject &json, ivec4 &data);
 
 }
