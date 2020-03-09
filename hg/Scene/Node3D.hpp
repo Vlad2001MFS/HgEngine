@@ -1,5 +1,5 @@
 #pragma once
-#include "Node.hpp"
+#include "../Core/Node.hpp"
 #include "glm/glm.hpp"
 
 namespace hg {
