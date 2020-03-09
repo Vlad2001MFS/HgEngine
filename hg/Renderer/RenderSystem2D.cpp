@@ -68,14 +68,42 @@ RenderSystem2D::~RenderSystem2D() {
 
 void RenderSystem2D::initialize() {
     uint32_t vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    std::string vsCode = hd::FileStream("data/shaders/simpleVS.glsl", hd::FileMode::Read).readAllText();
+    std::string vsCode = R"(#version 450 core
+
+layout(location = 0) in vec3 vsPos;
+layout(location = 1) in vec2 vsTexCoord;
+
+out vec2 psTexCoord;
+
+layout(binding = 0, std140) uniform ConstantBuffer {
+	mat4 gWorldMat;
+	mat4 gViewMat;
+	mat4 gProjMat;
+	vec2 gUvOffset;
+	vec2 gUvSize;
+};
+
+void main() {
+	gl_Position = gProjMat*gViewMat*gWorldMat*vec4(vsPos, 1.0);
+	psTexCoord = vsTexCoord*gUvSize + gUvOffset;
+})";
     const char *vsSources[] = { vsCode.data() };
     const int vsLengths[] = { static_cast<int>(vsCode.size()) };
     glShaderSource(vertexShader, 1, vsSources, vsLengths);
     glCompileShader(vertexShader);
 
     uint32_t pixelShader = glCreateShader(GL_FRAGMENT_SHADER);
-    std::string psCode = hd::FileStream("data/shaders/simplePS.glsl", hd::FileMode::Read).readAllText();
+    std::string psCode = R"(#version 450 core
+
+in vec2 psTexCoord;
+
+out vec4 resultColor;
+
+layout(binding = 0) uniform sampler2D gDiffuseMap;
+
+void main() {
+	resultColor = texture2D(gDiffuseMap, psTexCoord);
+})";
     const char *psSources[] = { psCode.data() };
     const int psLengths[] = { static_cast<int>(psCode.size()) };
     glShaderSource(pixelShader, 1, psSources, psLengths);
