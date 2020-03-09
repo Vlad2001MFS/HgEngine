@@ -1,4 +1,5 @@
 #include "RenderDevice.hpp"
+#include "../Core/Engine.hpp"
 #include "hd/IO/FileStream.hpp"
 #include "hd/IO/Image.hpp"
 #include "hd/Math/MathUtils.hpp"
@@ -384,7 +385,7 @@ StencilTestDesc::StencilTestDesc() {
 
 StencilTestDesc::StencilTestDesc(CompareFunc frontFunc, StencilOp frontFail, StencilOp frontDepthFail, StencilOp frontPass,
                                  CompareFunc backFunc, StencilOp backFail, StencilOp backDepthFail, StencilOp backPass,
-                                 uint32_t stencilReadMask, uint32_t stencilWriteMask){
+                                 uint32_t readMask, uint32_t writeMask){
     this->frontFunc = frontFunc;
     this->frontFail = frontFail;
     this->frontDepthFail = frontDepthFail;
@@ -502,17 +503,6 @@ struct ProgramImpl {
     uint32_t id;
     std::string name, vsCode, psCode, defines;
 };
-
-/*struct RenderDevice::Impl {
-    std::vector<HVertexFormat> vertexFormats;
-    std::vector<HVertexBuffer> vertexBuffers;
-    std::vector<HIndexBuffer> indexBuffers;
-    std::vector<HConstantBuffer> constantBuffers;
-    std::vector<HTexture2D> textures2D;
-    std::vector<HTexture2DArray> texture2DArrays;
-    std::vector<HSamplerState> samplerStates;
-    std::vector<HProgram> programs;
-};*/
 
 RenderDevice::RenderDevice() {
 }
@@ -913,7 +903,7 @@ HTexture2D RenderDevice::createTexture2DFromStream(hd::Stream &stream) {
 }
 
 HTexture2D RenderDevice::createTexture2DFromFile(const std::string &filename) {
-    hd::FileStream fs(filename, hd::FileMode::Read);
+    hd::FileStream fs(getEngine().getCreateInfo().texturesDataPath + filename, hd::FileMode::Read);
     fs.setName(filename);
     return createTexture2DFromStream(fs);
 }
@@ -951,7 +941,7 @@ HTexture2DArray RenderDevice::createTexture2DArrayFromFiles(const std::vector<st
     std::vector<hd::Image> images;
     images.reserve(filenames.size());
     for (const auto &filename : filenames) {
-        images.emplace_back(filename);
+        images.emplace_back(getEngine().getCreateInfo().texturesDataPath + filename);
         if (images.size() > 1 && images[0].getSize().x != images[1].getSize().x && images[0].getSize().y != images[1].getSize().y) {
             HD_LOG_ERROR("Failed to create Texture2DArray from files:\n{}\nThe files has a different image sizes", hd::StringUtils::unite(filenames, "'", "'", "\n").data());
         }
@@ -1008,7 +998,7 @@ HSamplerState RenderDevice::createSamplerState(const SamplerStateDesc& desc) {
     samplerFilterToGL(desc.minFilter, minFilter, isMinAniso, isMinComp);
     samplerFilterToGL(desc.magFilter, magFilter, isMagAniso, isMagComp);
     samplerFilterToGL(desc.mipFilter, mipFilter, isMipAniso, isMipComp);
-    HD_ASSERT(isMinAniso == isMagAniso && isMagAniso == isMinAniso);
+    HD_ASSERT(isMinAniso == isMagAniso && isMagAniso == isMipAniso);
     HD_ASSERT(isMinComp == isMagComp && isMagComp == isMipComp);
 
     GLenum minMipFilter = 0;

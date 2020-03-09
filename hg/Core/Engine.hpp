@@ -6,21 +6,17 @@
 
 namespace hg {
 
-struct WindowCreateInfo final {
+struct EngineCreateInfo final {
     std::string title = "HgEngine Application";
     glm::ivec2 size = glm::ivec2(640, 480);
     bool fullscreen = false;
-};
 
-struct SoundSystemCreateInfo final {
     uint32_t freq = 22050;
     uint32_t chunkSize = 4096;
     bool isStereo = true;
-};
 
-struct EngineCreateInfo final {
-    WindowCreateInfo window;
-    SoundSystemCreateInfo sound;
+    std::string texturesDataPath = "../Data/textures/";
+    std::string soundsDataPath = "../Data/sounds/";
 };
 
 class Engine final : public hd::Singleton<Engine> {

@@ -23,8 +23,8 @@ void SoundSystem::initialize() {
     if (Mix_Init(0) != 0) {
         HD_LOG_ERROR("Failed to initialize SDL_Mixer. Errors: {}", Mix_GetError());
     }
-    if (Mix_OpenAudio(static_cast<int>(getEngine().getCreateInfo().sound.freq), AUDIO_S16SYS,
-        getEngine().getCreateInfo().sound.isStereo ? 2 : 1, static_cast<int>(getEngine().getCreateInfo().sound.chunkSize)) != 0
+    if (Mix_OpenAudio(static_cast<int>(getEngine().getCreateInfo().freq), AUDIO_S16SYS,
+        getEngine().getCreateInfo().isStereo ? 2 : 1, static_cast<int>(getEngine().getCreateInfo().chunkSize)) != 0
         ) {
         HD_LOG_ERROR("Failed to initialize SDL_Mixer audio device. Errors: {}", Mix_GetError());
     }
@@ -43,10 +43,9 @@ void SoundSystem::shutdown() {
 
 SoundBuffer *SoundSystem::createSoundFromFile(const std::string &filename) {
     if (!filename.empty()) {
-        std::string path = "data/sounds/" + filename;
         SoundBuffer *soundBuffer = new SoundBuffer();
         soundBuffer->name = filename;
-        soundBuffer->buf = hd::FileStream(filename, hd::FileMode::Read).readAllBuffer();
+        soundBuffer->buf = hd::FileStream(getEngine().getCreateInfo().soundsDataPath + filename, hd::FileMode::Read).readAllBuffer();
 
         SDL_RWops *rwops = SDL_RWFromConstMem(soundBuffer->buf.data(), static_cast<int>(soundBuffer->buf.size()));
         if (!rwops) {
@@ -54,7 +53,7 @@ SoundBuffer *SoundSystem::createSoundFromFile(const std::string &filename) {
         }
         soundBuffer->chunk = Mix_LoadWAV_RW(rwops, true);
         if (!soundBuffer->chunk) {
-            HD_LOG_ERROR("Failed to create sound from stream '{}'", filename);
+            HD_LOG_ERROR("Failed to create sound from file '{}'", filename);
         }
 
         mCreatedSoundBuffers.push_back(soundBuffer);
@@ -68,10 +67,9 @@ SoundBuffer *SoundSystem::createSoundFromFile(const std::string &filename) {
 
 MusicBuffer *SoundSystem::createMusicFromFile(const std::string &filename) {
     if (!filename.empty()) {
-        std::string path = "data/sounds/" + filename;
         MusicBuffer *musicBuffer = new MusicBuffer();
         musicBuffer->name = filename;
-        musicBuffer->buf = hd::FileStream(filename, hd::FileMode::Read).readAllBuffer();
+        musicBuffer->buf = hd::FileStream(getEngine().getCreateInfo().soundsDataPath + filename, hd::FileMode::Read).readAllBuffer();
 
         SDL_RWops *rwops = SDL_RWFromConstMem(musicBuffer->buf.data(), static_cast<int>(musicBuffer->buf.size()));
         if (!rwops) {
@@ -79,7 +77,7 @@ MusicBuffer *SoundSystem::createMusicFromFile(const std::string &filename) {
         }
         musicBuffer->music = Mix_LoadMUS_RW(rwops, true);
         if (!musicBuffer->music) {
-            HD_LOG_ERROR("Failed to create music from stream '{}'", filename);
+            HD_LOG_ERROR("Failed to create music from file '{}'", filename);
         }
 
         mCreatedMusicBuffers.push_back(musicBuffer);

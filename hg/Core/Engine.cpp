@@ -15,7 +15,7 @@ void Engine::initialize(const EngineCreateInfo &createInfo) {
     }
 
     uint8_t flags = SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
-    if (createInfo.window.fullscreen) {
+    if (createInfo.fullscreen) {
         flags |= SDL_WINDOW_FULLSCREEN;
     }
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
@@ -26,8 +26,7 @@ void Engine::initialize(const EngineCreateInfo &createInfo) {
     SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 0);
     SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, false);
     SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 1);
-    mWindow = SDL_CreateWindow(createInfo.window.title.data(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-        createInfo.window.size.x, createInfo.window.size.y, flags);
+    mWindow = SDL_CreateWindow(createInfo.title.data(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, createInfo.size.x, createInfo.size.y, flags);
     if (!mWindow) {
         HD_LOG_ERROR("Failed to create window. Error:\n{}", SDL_GetError());
     }
@@ -40,8 +39,8 @@ void Engine::initialize(const EngineCreateInfo &createInfo) {
     SDL_Event resizeEvent;
     resizeEvent.type = SDL_WINDOWEVENT;
     resizeEvent.window.event = SDL_WINDOWEVENT_RESIZED;
-    resizeEvent.window.data1 = createInfo.window.size.x;
-    resizeEvent.window.data2 = createInfo.window.size.y;
+    resizeEvent.window.data1 = createInfo.size.x;
+    resizeEvent.window.data2 = createInfo.size.y;
     SDL_PushEvent(&resizeEvent);
 
     getRenderDevice().initialize();
