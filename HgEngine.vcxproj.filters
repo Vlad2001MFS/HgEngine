@@ -66,9 +66,6 @@
     <ClCompile Include="hg\Core\Node.cpp">
       <Filter>hg\Core</Filter>
     </ClCompile>
-    <ClCompile Include="hg\Renderer\RenderSystem2D.cpp">
-      <Filter>hg\Renderer</Filter>
-    </ClCompile>
     <ClCompile Include="hg\Renderer\RenderDevice.cpp">
       <Filter>hg\Renderer</Filter>
     </ClCompile>
@@ -124,9 +121,6 @@
     </ClInclude>
     <ClInclude Include="hg\Core\Node.hpp">
       <Filter>hg\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="hg\Renderer\RenderSystem2D.hpp">
-      <Filter>hg\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="hg\Renderer\RenderDevice.hpp">
       <Filter>hg\Renderer</Filter>

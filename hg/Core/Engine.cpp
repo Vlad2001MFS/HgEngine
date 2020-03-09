@@ -1,6 +1,5 @@
 #include "Engine.hpp"
 #include "../Renderer/RenderDevice.hpp"
-#include "../Renderer/RenderSystem2D.hpp"
 #include "../Sound/SoundSystem.hpp"
 #include "../GUI/GUISystem.hpp"
 #include "../Cache/CacheSystem.hpp"
@@ -46,7 +45,6 @@ void Engine::initialize(const EngineCreateInfo &createInfo) {
     SDL_PushEvent(&resizeEvent);
 
     getRenderDevice().initialize();
-    getRenderSystem2D().initialize();
     getSoundSystem().initialize();
     getGUISystem().initialize();
     getCacheSystem().initialize();
@@ -57,7 +55,6 @@ void Engine::shutdown() {
     getCacheSystem().shutdown();
     getGUISystem().shutdown();
     getSoundSystem().shutdown();
-    getRenderSystem2D().shutdown();
     getRenderDevice().shutdown();
     SDL_GL_DeleteContext(mContext);
     SDL_DestroyWindow(mWindow);
@@ -87,7 +84,6 @@ void Engine::run() {
             getGUISystem().onEvent(event);
             mRoot->onEvent(event);
             getRenderDevice().onEvent(event);
-            getRenderSystem2D().onEvent(event);
         }
 
         getGUISystem().onUpdate(dt);
@@ -98,7 +94,6 @@ void Engine::run() {
         }
 
         mRoot->onDraw();
-        getRenderSystem2D().onDraw();
         getGUISystem().onDraw();
 
         SDL_GL_SwapWindow(mWindow);

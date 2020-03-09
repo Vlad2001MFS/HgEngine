@@ -1,12 +1,11 @@
 #pragma once
-#include "hd/Core/Common.hpp"
+#include "../Renderer/RenderDevice.hpp"
 #include "hd/Core/Color.hpp"
 #include <map>
 #include <string>
 
 namespace hg {
 
-struct Texture;
 struct SoundBuffer;
 struct MusicBuffer;
 
@@ -15,14 +14,14 @@ public:
     void initialize();
     void shutdown();
 
-    Texture *loadTexture(const std::string &filename);
-    Texture *loadTexture(const hd::Color4 &color);
-    SoundBuffer *loadSound(const std::string &filename);
-    MusicBuffer *loadMusic(const std::string &filename);
+    HTexture2D getTexture(const std::string &filename);
+    HTexture2D getTexture(const hd::Color4 &color);
+    SoundBuffer *getSound(const std::string &filename);
+    MusicBuffer *getMusic(const std::string &filename);
 
 private:
-    std::map<std::string, Texture*> mTextures;
-    std::map<std::string, Texture*> mColorTextures;
+    std::map<std::string, HTexture2D> mTextures;
+    std::map<std::string, HTexture2D> mColorTextures;
     std::map<std::string, SoundBuffer*> mSoundBuffers;
     std::map<std::string, MusicBuffer*> mMusicBuffers;
 };
