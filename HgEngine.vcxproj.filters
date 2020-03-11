@@ -75,6 +75,9 @@
     <ClCompile Include="hg\Scene\Node3D.cpp">
       <Filter>hg\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="hg\Core\Component.cpp">
+      <Filter>hg\Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="hg\Core\Engine.hpp">
@@ -130,6 +133,9 @@
     </ClInclude>
     <ClInclude Include="hg\Scene\Node3D.hpp">
       <Filter>hg\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="hg\Core\Component.hpp">
+      <Filter>hg\Core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

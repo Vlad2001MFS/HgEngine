@@ -10,6 +10,9 @@ Node::Node() {
 }
 
 Node::~Node() {
+    for (auto &it : mComponents) {
+        HD_DELETE(it);
+    }
     for (auto &it : mChildren) {
         HD_DELETE(it);
     }
@@ -19,6 +22,12 @@ void Node::onSaveLoad(JSONObject &data, bool isLoad) {
     if (isLoad) {
         mName = data["name"];
         setActive(data["isActive"]);
+
+        JSONObject &components = data["components"];
+        for (auto &it : components) {
+            Component *comp = createComponent(it["typeInfo"]["hash"].get<hd::StringHash>());
+            comp->onSaveLoad(it, isLoad);
+        }
         
         JSONObject &children = data["children"];
         for (auto &it : children) {
@@ -34,6 +43,13 @@ void Node::onSaveLoad(JSONObject &data, bool isLoad) {
             { "hash", getTypeHash() }
         };
 
+        JSONObject &components = data["components"];
+        for (const auto &it : mComponents) {
+            JSONObject comp;
+            it->onSaveLoad(comp, isLoad);
+            components.push_back(comp);
+        }
+
         JSONObject &children = data["children"];
         for (const auto &it : mChildren) {
             JSONObject child;
@@ -44,6 +60,10 @@ void Node::onSaveLoad(JSONObject &data, bool isLoad) {
 }
 
 void Node::onEvent(const SDL_Event &event) {
+    for (auto &it : mComponents) {
+        it->onEvent(event);
+    }
+
     for (const auto &it : mChildren) {
         if (it->isActive()) {
             it->onEvent(event);
@@ -52,6 +72,10 @@ void Node::onEvent(const SDL_Event &event) {
 }
 
 void Node::onFixedUpdate() {
+    for (auto &it : mComponents) {
+        it->onFixedUpdate();
+    }
+
     for (const auto &it : mChildren) {
         if (it->isActive()) {
             it->onFixedUpdate();
@@ -60,6 +84,10 @@ void Node::onFixedUpdate() {
 }
 
 void Node::onUpdate(float dt) {
+    for (auto &it : mComponents) {
+        it->onUpdate(dt);
+    }
+
     for (const auto &it : mChildren) {
         if (it->isActive()) {
             it->onUpdate(dt);
@@ -68,6 +96,10 @@ void Node::onUpdate(float dt) {
 }
 
 void Node::onDraw() {
+    for (auto &it : mComponents) {
+        it->onDraw();
+    }
+
     for (const auto &it : mChildren) {
         if (it->isActive()) {
             it->onDraw();
@@ -130,6 +162,17 @@ void Node::mAddChild(Node *node, const std::string &name) {
     node->mName = name;
     if (!name.empty()) {
         mChildrenByNames.insert(std::make_pair(nameHash, node));
+    }
+}
+
+void Node::mAddComponent(Component *component) {
+    if (!mComponentsByType.count(component->getTypeHash())) {
+        component->mOwner = this;
+        mComponents.push_back(component);
+        mComponentsByType.insert(std::make_pair(component->getTypeHash(), component));
+    }
+    else {
+        HD_LOG_ERROR("Failed to add component '{}'", component->getTypeName());
     }
 }
 

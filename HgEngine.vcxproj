@@ -180,6 +180,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="hg\Cache\CacheSystem.cpp" />
+    <ClCompile Include="hg\Core\Component.cpp" />
     <ClCompile Include="hg\Core\Engine.cpp" />
     <ClCompile Include="hg\Core\JSONObject.cpp" />
     <ClCompile Include="hg\Core\Node.cpp" />
@@ -198,6 +199,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="hg\Cache\CacheSystem.hpp" />
+    <ClInclude Include="hg\Core\Component.hpp" />
     <ClInclude Include="hg\Core\Engine.hpp" />
     <ClInclude Include="hg\Core\JSONObject.hpp" />
     <ClInclude Include="hg\Core\Node.hpp" />
