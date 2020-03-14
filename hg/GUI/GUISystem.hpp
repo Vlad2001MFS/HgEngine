@@ -13,7 +13,6 @@ public:
 
     void onEvent(const SDL_Event &event);
     void onUpdate(float dt);
-    void onDraw();
 };
 
 inline GUISystem &getGUISystem() {

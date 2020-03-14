@@ -95,18 +95,6 @@ void Node::onUpdate(float dt) {
     }
 }
 
-void Node::onDraw() {
-    for (auto &it : mComponents) {
-        it->onDraw();
-    }
-
-    for (const auto &it : mChildren) {
-        if (it->isActive()) {
-            it->onDraw();
-        }
-    }
-}
-
 Node *Node::findByName(const std::string &name) {
     if (name.empty()) {
         HD_LOG_FATAL("Invalid name '{}'", name);

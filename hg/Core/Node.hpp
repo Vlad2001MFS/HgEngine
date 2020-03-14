@@ -15,7 +15,6 @@ public:
     virtual void onEvent(const SDL_Event &event);
     virtual void onFixedUpdate();
     virtual void onUpdate(float dt);
-    virtual void onDraw();
 
     Node *findByName(const std::string &name);
 

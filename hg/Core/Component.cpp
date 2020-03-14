@@ -18,9 +18,6 @@ void Component::onFixedUpdate() {
 void Component::onUpdate(float dt) {
 }
 
-void Component::onDraw() {
-}
-
 Node *Component::getOwner() const {
     return mOwner;
 }

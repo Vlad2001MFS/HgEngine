@@ -18,7 +18,6 @@ public:
     virtual void onEvent(const SDL_Event &event);
     virtual void onFixedUpdate();
     virtual void onUpdate(float dt);
-    virtual void onDraw();
 
     Node *getOwner() const;
 

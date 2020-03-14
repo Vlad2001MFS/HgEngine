@@ -31,9 +31,7 @@ void GUISystem::onUpdate(float dt) {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplSDL2_NewFrame(getEngine().getWindow());
     ImGui::NewFrame();
-}
 
-void GUISystem::onDraw() {
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }

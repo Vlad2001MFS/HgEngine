@@ -85,15 +85,13 @@ void Engine::run() {
             getRenderDevice().onEvent(event);
         }
 
-        getGUISystem().onUpdate(dt);
-        mRoot->onUpdate(dt);
         if (hd::Time::getElapsedTime(updateTimer) > UPDATE_TIME) {
             mRoot->onFixedUpdate();
             updateTimer = hd::Time::getCurrentTime();
         }
 
-        mRoot->onDraw();
-        getGUISystem().onDraw();
+        mRoot->onUpdate(dt);
+        getGUISystem().onUpdate(dt);
 
         SDL_GL_SwapWindow(mWindow);
 
