@@ -13,9 +13,6 @@
     <Filter Include="hg\GUI">
       <UniqueIdentifier>{4add1e69-6f3e-4547-9dc2-d62e5bbe7078}</UniqueIdentifier>
     </Filter>
-    <Filter Include="hg\Renderer">
-      <UniqueIdentifier>{1d4047a9-4fe0-4c01-a53c-d693814cad49}</UniqueIdentifier>
-    </Filter>
     <Filter Include="hg\Sound">
       <UniqueIdentifier>{7d7c013f-d937-48d9-859c-8ca8ece4a10b}</UniqueIdentifier>
     </Filter>
@@ -24,6 +21,9 @@
     </Filter>
     <Filter Include="hg\Scene">
       <UniqueIdentifier>{9ee238ed-a536-46ce-a1dc-e66344e65993}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hg\Graphics">
+      <UniqueIdentifier>{1d4047a9-4fe0-4c01-a53c-d693814cad49}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -66,9 +66,6 @@
     <ClCompile Include="hg\Core\Node.cpp">
       <Filter>hg\Core</Filter>
     </ClCompile>
-    <ClCompile Include="hg\Renderer\RenderDevice.cpp">
-      <Filter>hg\Renderer</Filter>
-    </ClCompile>
     <ClCompile Include="hg\Scene\Node2D.cpp">
       <Filter>hg\Scene</Filter>
     </ClCompile>
@@ -77,6 +74,42 @@
     </ClCompile>
     <ClCompile Include="hg\Core\Component.cpp">
       <Filter>hg\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="hg\Graphics\RenderDevice.cpp">
+      <Filter>hg\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="hg\Graphics\VertexShader.cpp">
+      <Filter>hg\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="hg\Graphics\PixelShader.cpp">
+      <Filter>hg\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="hg\Graphics\VertexFormat.cpp">
+      <Filter>hg\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="hg\Graphics\BlendState.cpp">
+      <Filter>hg\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="hg\Graphics\DepthStencilState.cpp">
+      <Filter>hg\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="hg\Graphics\RasterizerState.cpp">
+      <Filter>hg\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="hg\Graphics\Texture2D.cpp">
+      <Filter>hg\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="hg\Graphics\GraphicsDefs.cpp">
+      <Filter>hg\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="hg\Graphics\Buffer.cpp">
+      <Filter>hg\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="hg\Graphics\Texture.cpp">
+      <Filter>hg\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="hg\Graphics\Shader.cpp">
+      <Filter>hg\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -125,9 +158,6 @@
     <ClInclude Include="hg\Core\Node.hpp">
       <Filter>hg\Core</Filter>
     </ClInclude>
-    <ClInclude Include="hg\Renderer\RenderDevice.hpp">
-      <Filter>hg\Renderer</Filter>
-    </ClInclude>
     <ClInclude Include="hg\Scene\Node2D.hpp">
       <Filter>hg\Scene</Filter>
     </ClInclude>
@@ -136,6 +166,42 @@
     </ClInclude>
     <ClInclude Include="hg\Core\Component.hpp">
       <Filter>hg\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="hg\Graphics\RenderDevice.hpp">
+      <Filter>hg\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="hg\Graphics\GraphicsDefs.hpp">
+      <Filter>hg\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="hg\Graphics\VertexShader.hpp">
+      <Filter>hg\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="hg\Graphics\PixelShader.hpp">
+      <Filter>hg\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="hg\Graphics\VertexFormat.hpp">
+      <Filter>hg\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="hg\Graphics\BlendState.hpp">
+      <Filter>hg\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="hg\Graphics\DepthStencilState.hpp">
+      <Filter>hg\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="hg\Graphics\RasterizerState.hpp">
+      <Filter>hg\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="hg\Graphics\Texture2D.hpp">
+      <Filter>hg\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="hg\Graphics\Buffer.hpp">
+      <Filter>hg\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="hg\Graphics\Texture.hpp">
+      <Filter>hg\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="hg\Graphics\Shader.hpp">
+      <Filter>hg\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,5 +1,5 @@
 #include "Engine.hpp"
-#include "../Renderer/RenderDevice.hpp"
+#include "../Graphics/RenderDevice.hpp"
 #include "../Sound/SoundSystem.hpp"
 #include "../GUI/GUISystem.hpp"
 #include "../Cache/CacheSystem.hpp"
@@ -7,7 +7,15 @@
 
 namespace hg {
 
+Engine::Engine() : mLastCursorPos(0, 0), mCursorDelta(0, 0) {
+    mWindow = nullptr;
+    mContext = nullptr;
+    mDeltaTime = 0.0f;
+    mIsCenteredCursorMode = false;
+}
+
 void Engine::initialize(const EngineCreateInfo &createInfo) {
+    mTimer = hd::Time::getCurrentTime();
     mCreateInfo = createInfo;
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -21,8 +29,8 @@ void Engine::initialize(const EngineCreateInfo &createInfo) {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_COMPATIBILITY);
-    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 0);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
     SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 0);
     SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, false);
     SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 1);
@@ -42,6 +50,8 @@ void Engine::initialize(const EngineCreateInfo &createInfo) {
     resizeEvent.window.data1 = createInfo.size.x;
     resizeEvent.window.data2 = createInfo.size.y;
     SDL_PushEvent(&resizeEvent);
+
+    setCenteredCursorMode(false);
 
     getRenderDevice().initialize();
     getSoundSystem().initialize();
@@ -71,7 +81,14 @@ void Engine::run() {
     hd::Time updateTimer, deltaTimer;
     bool isExit = false;
     while (!isExit) {
-        float dt = hd::Time::getElapsedTime(deltaTimer).getMilliseconds();
+        if (mIsCenteredCursorMode) {
+            glm::ivec2 cursorPos = getCursorPos();
+            mCursorDelta = cursorPos - mLastCursorPos;
+            mLastCursorPos = cursorPos;
+            setCursorPos(getWindowSize() / 2);
+        }
+
+        mDeltaTime = hd::Time::getElapsedTime(deltaTimer).getSeconds();
         deltaTimer = hd::Time::getCurrentTime();
 
         SDL_Event event;
@@ -90,12 +107,14 @@ void Engine::run() {
             updateTimer = hd::Time::getCurrentTime();
         }
 
-        mRoot->onUpdate(dt);
-        getGUISystem().onUpdate(dt);
+        mRoot->onUpdate(mDeltaTime);
+        getGUISystem().onUpdate(mDeltaTime);
 
         SDL_GL_SwapWindow(mWindow);
 
-        mFPSCounter.update();
+        if (mFPSCounter.update()) {
+            SDL_SetWindowTitle(mWindow, fmt::format("{} | FPS: {:0>4} | FrameTime: {}", mCreateInfo.title, mFPSCounter.getFps(), mFPSCounter.getFrameTime()).data());
+        }
     }
 }
 
@@ -103,6 +122,22 @@ void Engine::close() {
     SDL_Event event;
     event.type = SDL_QUIT;
     SDL_PushEvent(&event);
+}
+
+void Engine::setCursorPos(const glm::ivec2 &pos) {
+    SDL_WarpMouseInWindow(mWindow, pos.x, pos.y);
+    mLastCursorPos = pos;
+}
+
+void Engine::setCenteredCursorMode(bool mode) {
+    mIsCenteredCursorMode = mode;
+    mLastCursorPos = getCursorPos();
+    mCursorDelta = glm::ivec2(0, 0);
+    setCursorVisible(!mode);
+}
+
+void Engine::setCursorVisible(bool mode) {
+    SDL_ShowCursor(mode ? SDL_ENABLE : SDL_DISABLE);
 }
 
 bool Engine::isKeyDown(SDL_Scancode key) const {
@@ -141,6 +176,46 @@ glm::ivec2 Engine::getWindowSize() const {
 
 glm::ivec2 Engine::getWindowCenter() const {
     return getWindowSize() / 2;
+}
+
+float Engine::getWindowAspectRatio() const {
+    return static_cast<float>(getWindowSize().x) / getWindowSize().y;
+}
+
+float Engine::getDeltaTime() const {
+    return mDeltaTime;
+}
+
+float Engine::getTime() const {
+    return hd::Time::getElapsedTime(mTimer).getSeconds();
+}
+
+glm::ivec2 Engine::getCursorPos() const {
+    glm::ivec2 pos;
+    SDL_GetMouseState(&pos.x, &pos.y);
+    return pos;
+}
+
+bool Engine::isCenteredCursorMode() const {
+    return mIsCenteredCursorMode;
+}
+
+bool Engine::isCursorVisible() const {
+    return SDL_ShowCursor(-1) == 1;
+}
+
+const glm::ivec2 &Engine::getCursorDelta() const {
+    return mCursorDelta;
+}
+
+glm::vec2 Engine::getCursorDir() const {
+    glm::ivec2 delta = getCursorDelta();
+    if (delta.x == 0 && delta.y == 0) {
+        return glm::vec2(0.0f, 0.0f);
+    }
+    else {
+        return glm::normalize(glm::vec2(delta));
+    }
 }
 
 }

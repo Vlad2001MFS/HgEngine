@@ -9,12 +9,6 @@ void CacheSystem::initialize() {
 }
 
 void CacheSystem::shutdown() {
-    for (auto &texture : mTextures) {
-        getRenderDevice().destroyTexture2D(texture.second);
-    }
-    for (auto &texture : mColorTextures) {
-        getRenderDevice().destroyTexture2D(texture.second);
-    }
     for (auto &soundBuffer : mSoundBuffers) {
         getSoundSystem().destroySound(soundBuffer.second);
     }
@@ -23,32 +17,32 @@ void CacheSystem::shutdown() {
     }
 }
 
-HTexture2D CacheSystem::getTexture(const std::string &filename) {
+Texture2DPtr CacheSystem::getTexture2D(const std::string &filename) {
     if (!filename.empty()) {
-        if (mTextures.count(filename) == 0) {
-            HTexture2D texture = getRenderDevice().createTexture2DFromFile(filename);
-            mTextures.insert(std::make_pair(filename, texture));
+        if (mTextures2D.count(filename) == 0) {
+            Texture2DPtr texture = Texture2D::createFromFile(filename);
+            mTextures2D.insert(std::make_pair(filename, texture));
             return texture;
         }
         else {
-            return mTextures.at(filename);
+            return mTextures2D.at(filename);
         }
     }
     else {
         HD_LOG_FATAL("Failed to load texture. Filename is empty");
-        return HTexture2D();
+        return Texture2DPtr();
     }
 }
 
-HTexture2D CacheSystem::getTexture(const hd::Color4 &color) {
+Texture2DPtr CacheSystem::getTexture2D(const hd::Color4 &color) {
     std::string key = fmt::format("{} {} {} {}", color.r, color.g, color.b, color.a);
-    if (mColorTextures.count(key) == 0) {
-        HTexture2D texture = getRenderDevice().createTexture2D(&color, glm::ivec2(1, 1), hg::TextureFormat::RGBA8);
-        mColorTextures.insert(std::make_pair(key, texture));
+    if (mColorTextures2D.count(key) == 0) {
+        Texture2DPtr texture = Texture2D::create(&color, glm::ivec2(1, 1), hg::TextureFormat::RGBA8);
+        mColorTextures2D.insert(std::make_pair(key, texture));
         return texture;
     }
     else {
-        return mColorTextures.at(key);
+        return mColorTextures2D.at(key);
     }
 }
 

@@ -21,6 +21,8 @@ struct EngineCreateInfo final {
 
 class Engine final : public hd::Singleton<Engine> {
 public:
+    Engine();
+
     void initialize(const EngineCreateInfo &createInfo);
     void shutdown();
     void run();
@@ -34,6 +36,10 @@ public:
         mRoot = std::make_unique<T>(std::forward(args)...);
     }
 
+    void setCursorPos(const glm::ivec2 &pos);
+    void setCenteredCursorMode(bool mode);
+    void setCursorVisible(bool mode);
+
     bool isKeyDown(SDL_Scancode key) const;
     const EngineCreateInfo &getCreateInfo() const;
     SDL_Window *getWindow() const;
@@ -43,6 +49,14 @@ public:
     Node *getRoot();
     glm::ivec2 getWindowSize() const;
     glm::ivec2 getWindowCenter() const;
+    float getWindowAspectRatio() const;
+    float getDeltaTime() const;
+    float getTime() const;
+    glm::ivec2 getCursorPos() const;
+    const glm::ivec2 &getCursorDelta() const;
+    glm::vec2 getCursorDir() const;
+    bool isCenteredCursorMode() const;
+    bool isCursorVisible() const;
 
 private:
     EngineCreateInfo mCreateInfo;
@@ -50,6 +64,10 @@ private:
     SDL_GLContext mContext;
     hd::FPSCounter mFPSCounter;
     std::unique_ptr<Node> mRoot;
+    float mDeltaTime;
+    hd::Time mTimer;
+    glm::ivec2 mLastCursorPos, mCursorDelta;
+    bool mIsCenteredCursorMode;
 };
 
 inline Engine &getEngine() {
