@@ -54,9 +54,7 @@ public:
     float getTime() const;
     glm::ivec2 getCursorPos() const;
     const glm::ivec2 &getCursorDelta() const;
-    glm::vec2 getCursorDir() const;
     bool isCenteredCursorMode() const;
-    bool isCursorVisible() const;
 
 private:
     EngineCreateInfo mCreateInfo;
@@ -66,7 +64,7 @@ private:
     std::unique_ptr<Node> mRoot;
     float mDeltaTime;
     hd::Time mTimer;
-    glm::ivec2 mLastCursorPos, mCursorDelta;
+    glm::ivec2 mCursorDelta;
     bool mIsCenteredCursorMode;
 };
 

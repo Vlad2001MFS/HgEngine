@@ -7,7 +7,7 @@
 
 namespace hg {
 
-Engine::Engine() : mLastCursorPos(0, 0), mCursorDelta(0, 0) {
+Engine::Engine() : mCursorDelta(0, 0) {
     mWindow = nullptr;
     mContext = nullptr;
     mDeltaTime = 0.0f;
@@ -81,13 +81,6 @@ void Engine::run() {
     hd::Time updateTimer, deltaTimer;
     bool isExit = false;
     while (!isExit) {
-        if (mIsCenteredCursorMode) {
-            glm::ivec2 cursorPos = getCursorPos();
-            mCursorDelta = cursorPos - mLastCursorPos;
-            mLastCursorPos = cursorPos;
-            setCursorPos(getWindowSize() / 2);
-        }
-
         mDeltaTime = hd::Time::getElapsedTime(deltaTimer).getSeconds();
         deltaTimer = hd::Time::getCurrentTime();
 
@@ -100,6 +93,10 @@ void Engine::run() {
             getGUISystem().onEvent(event);
             mRoot->onEvent(event);
             getRenderDevice().onEvent(event);
+        }
+
+        if (mIsCenteredCursorMode) {
+            SDL_GetRelativeMouseState(&mCursorDelta.x, &mCursorDelta.y);
         }
 
         if (hd::Time::getElapsedTime(updateTimer) > UPDATE_TIME) {
@@ -126,14 +123,12 @@ void Engine::close() {
 
 void Engine::setCursorPos(const glm::ivec2 &pos) {
     SDL_WarpMouseInWindow(mWindow, pos.x, pos.y);
-    mLastCursorPos = pos;
 }
 
 void Engine::setCenteredCursorMode(bool mode) {
     mIsCenteredCursorMode = mode;
-    mLastCursorPos = getCursorPos();
     mCursorDelta = glm::ivec2(0, 0);
-    setCursorVisible(!mode);
+    SDL_SetRelativeMouseMode(mode ? SDL_TRUE : SDL_FALSE);
 }
 
 void Engine::setCursorVisible(bool mode) {
@@ -200,22 +195,8 @@ bool Engine::isCenteredCursorMode() const {
     return mIsCenteredCursorMode;
 }
 
-bool Engine::isCursorVisible() const {
-    return SDL_ShowCursor(-1) == 1;
-}
-
 const glm::ivec2 &Engine::getCursorDelta() const {
     return mCursorDelta;
-}
-
-glm::vec2 Engine::getCursorDir() const {
-    glm::ivec2 delta = getCursorDelta();
-    if (delta.x == 0 && delta.y == 0) {
-        return glm::vec2(0.0f, 0.0f);
-    }
-    else {
-        return glm::normalize(glm::vec2(delta));
-    }
 }
 
 }
