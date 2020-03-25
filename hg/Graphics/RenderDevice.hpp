@@ -50,7 +50,7 @@ public:
     void onEvent(const SDL_Event &event);
 
     void clearRenderTarget(const glm::vec4 &rgba);
-    void clearDepthStencil(float depth);
+    void clearDepthStencil(float depth, uint8_t stencil);
     void draw(PrimitiveType primType, uint32_t vertexCount, uint32_t firstVertex);
     void drawInstanced(PrimitiveType primType, uint32_t vertexCountPerInstance, uint32_t firstVertex, uint32_t instanceCount);
     void drawIndexed(PrimitiveType primType, uint32_t indexCount, uint32_t firstIndex, IndexType indexType);

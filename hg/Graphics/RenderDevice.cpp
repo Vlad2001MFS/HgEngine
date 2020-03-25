@@ -149,9 +149,10 @@ void RenderDevice::clearRenderTarget(const glm::vec4 &rgba) {
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void RenderDevice::clearDepthStencil(float depth) {
+void RenderDevice::clearDepthStencil(float depth, uint8_t stencil) {
     glClearDepth(depth);
-    glClear(GL_DEPTH_BUFFER_BIT);
+    glClearStencil(stencil);
+    glClear(GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 }
 
 void RenderDevice::draw(PrimitiveType primType, uint32_t vertexCount, uint32_t firstVertex) {
