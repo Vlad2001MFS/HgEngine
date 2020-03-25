@@ -2,46 +2,47 @@
 
 namespace hg {
 
-ColorMask::ColorMask() {
-    this->r = true;
-    this->g = true;
-    this->b = true;
-    this->a = true;
-}
-
-ColorMask::ColorMask(bool rgba) {
-    this->r = rgba;
-    this->g = rgba;
-    this->b = rgba;
-    this->a = rgba;
-}
-
-ColorMask::ColorMask(bool r, bool g, bool b, bool a) {
-    this->r = r;
-    this->g = g;
-    this->b = b;
-    this->a = a;
-}
-
-BlendStateDesc::BlendStateDesc() : colorMask(true) {
-    this->enabled = false;
-    this->srcBlend = BlendFactor::One;
-    this->dstBlend = BlendFactor::One;
-    this->blendOp = BlendOp::Add;
-    this->srcBlendAlpha = BlendFactor::One;
-    this->dstBlendAlpha = BlendFactor::One;
-    this->blendOpAlpha = BlendOp::Add;
-}
-
-BlendStateDesc::BlendStateDesc(bool enabled, BlendFactor srcBlend, BlendFactor dstBlend, BlendOp blendOp, BlendFactor srcBlendAlpha, BlendFactor dstBlendAlpha, BlendOp blendOpAlpha, const ColorMask &colorMask) {
+BlendStateDesc &BlendStateDesc::setEnabled(bool enabled) {
     this->enabled = enabled;
+    return *this;
+}
+
+BlendStateDesc &BlendStateDesc::setSrcFactor(BlendFactor srcBlend) {
     this->srcBlend = srcBlend;
+    return *this;
+}
+
+BlendStateDesc &BlendStateDesc::setDstFactor(BlendFactor dstBlend) {
     this->dstBlend = dstBlend;
+    return *this;
+}
+
+BlendStateDesc &BlendStateDesc::setOp(BlendOp blendOp) {
     this->blendOp = blendOp;
+    return *this;
+}
+
+BlendStateDesc &BlendStateDesc::setSrcAlphaFactor(BlendFactor srcBlendAlpha) {
     this->srcBlendAlpha = srcBlendAlpha;
+    return *this;
+}
+
+BlendStateDesc &BlendStateDesc::setDstAlphaFactor(BlendFactor dstBlendAlpha) {
     this->dstBlendAlpha = dstBlendAlpha;
+    return *this;
+}
+
+BlendStateDesc &BlendStateDesc::setOpAlpha(BlendOp blendOpAlpha) {
     this->blendOpAlpha = blendOpAlpha;
-    this->colorMask = colorMask;
+    return *this;
+}
+
+BlendStateDesc &BlendStateDesc::setColorMask(bool r, bool g, bool b, bool a) {
+    this->colorMask.r = r;
+    this->colorMask.g = g;
+    this->colorMask.b = b;
+    this->colorMask.a = a;
+    return *this;
 }
 
 BlendState::BlendState(const BlendStateDesc &desc) : mDesc(desc) {

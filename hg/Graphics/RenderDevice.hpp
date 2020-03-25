@@ -10,7 +10,7 @@
 #include "hd/Core/Common.hpp"
 #include "SDL2/SDL_events.h"
 #include "glm/glm.hpp"
-#include "magic_enum/magic_enum.hpp"
+#include <unordered_map>
 
 namespace hg {
 
@@ -96,7 +96,7 @@ private:
     BlendStatePtr mCurrentBS;
     RasterizerStatePtr mCurrentRS;
 
-    BlendStatePtr mBlendStateModes[magic_enum::enum_count<BlendMode>()];
+    std::unordered_map<BlendMode, BlendStatePtr> mBlendStateModes;
     uint32_t mProgramPipeline;
     bool mProgramPipelineIsDirty;
 };

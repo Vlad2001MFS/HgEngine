@@ -2,28 +2,26 @@
 
 namespace hg {
 
-PolygonOffset::PolygonOffset() {
-    this->enabled = false;
-    this->factor = 0.0f;
-    this->units = 0.0f;
-}
-
-PolygonOffset::PolygonOffset(bool enabled, float factor, float units) {
-    this->enabled = enabled;
-    this->factor = factor;
-    this->units = units;
-}
-
-RasterizerStateDesc::RasterizerStateDesc() : polygonOffset() {
-    this->cullFace = CullFace::None;
-    this->fillMode = FillMode::Solid;
-    this->frontFace = FrontFace::CCW;
-}
-
-RasterizerStateDesc::RasterizerStateDesc(CullFace cullFace, FillMode fillMode, FrontFace frontFace, const PolygonOffset &polygonOffset) : polygonOffset(polygonOffset) {
+RasterizerStateDesc &RasterizerStateDesc::setCullFace(CullFace cullFace) {
     this->cullFace = cullFace;
+    return *this;
+}
+
+RasterizerStateDesc &RasterizerStateDesc::setFillMode(FillMode fillMode) {
     this->fillMode = fillMode;
+    return *this;
+}
+
+RasterizerStateDesc &RasterizerStateDesc::setFrontFace(FrontFace frontFace) {
     this->frontFace = frontFace;
+    return *this;
+}
+
+RasterizerStateDesc &RasterizerStateDesc::setPolygonOffset(bool enabled, float factor, float units) {
+    this->polygonOffset.enabled = enabled;
+    this->polygonOffset.factor = factor;
+    this->polygonOffset.units = units;
+    return *this;
 }
 
 RasterizerState::RasterizerState(const RasterizerStateDesc &desc) : mDesc(desc) {

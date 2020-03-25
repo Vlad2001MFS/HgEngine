@@ -27,24 +27,29 @@ enum class BlendOp {
 };
 
 struct ColorMask {
-    ColorMask();
-    explicit ColorMask(bool rgba);
-    ColorMask(bool r, bool g, bool b, bool a);
-
-    bool r, g, b, a;
+    bool r = true;
+    bool g = true;
+    bool b = true;
+    bool a = true;
 };
 
 struct BlendStateDesc {
-    BlendStateDesc();
-    BlendStateDesc(bool enabled, BlendFactor srcBlend, BlendFactor dstBlend, BlendOp blendOp, BlendFactor srcBlendAlpha, BlendFactor dstBlendAlpha, BlendOp blendOpAlpha, const ColorMask &colorMask);
+    BlendStateDesc &setEnabled(bool enabled);
+    BlendStateDesc &setSrcFactor(BlendFactor srcBlend);
+    BlendStateDesc &setDstFactor(BlendFactor dstBlend);
+    BlendStateDesc &setOp(BlendOp blendOp);
+    BlendStateDesc &setSrcAlphaFactor(BlendFactor srcBlendAlpha);
+    BlendStateDesc &setDstAlphaFactor(BlendFactor dstBlendAlpha);
+    BlendStateDesc &setOpAlpha(BlendOp blendOpAlpha);
+    BlendStateDesc &setColorMask(bool r, bool g, bool b, bool a);
 
-    bool enabled;
-    BlendFactor srcBlend;
-    BlendFactor dstBlend;
-    BlendOp blendOp;
-    BlendFactor srcBlendAlpha;
-    BlendFactor dstBlendAlpha;
-    BlendOp blendOpAlpha;
+    bool enabled = false;
+    BlendFactor srcBlend = BlendFactor::One;
+    BlendFactor dstBlend = BlendFactor::One;
+    BlendOp blendOp = BlendOp::Add;
+    BlendFactor srcBlendAlpha = BlendFactor::One;
+    BlendFactor dstBlendAlpha = BlendFactor::One;
+    BlendOp blendOpAlpha = BlendOp::Add;
     ColorMask colorMask;
 };
 

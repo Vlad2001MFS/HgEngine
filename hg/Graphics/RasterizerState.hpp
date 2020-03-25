@@ -22,20 +22,19 @@ enum class FrontFace {
 };
 
 struct PolygonOffset {
-    PolygonOffset();
-    PolygonOffset(bool enabled, float factor, float units);
-
-    bool enabled;
-    float factor, units;
+    bool enabled = false;
+    float factor = 0.0f, units = 0.0f;
 };
 
 struct RasterizerStateDesc {
-    RasterizerStateDesc();
-    RasterizerStateDesc(CullFace cullFace, FillMode fillMode, FrontFace frontFace, const PolygonOffset &polygonOffset);
+    RasterizerStateDesc &setCullFace(CullFace cullFace);
+    RasterizerStateDesc &setFillMode(FillMode fillMode);
+    RasterizerStateDesc &setFrontFace(FrontFace frontFace);
+    RasterizerStateDesc &setPolygonOffset(bool enabled, float factor, float units);
 
-    CullFace cullFace;
-    FillMode fillMode;
-    FrontFace frontFace;
+    CullFace cullFace = CullFace::None;
+    FillMode fillMode = FillMode::Solid;
+    FrontFace frontFace = FrontFace::CCW;
     PolygonOffset polygonOffset;
 };
 

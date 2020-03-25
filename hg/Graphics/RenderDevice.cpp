@@ -120,15 +120,15 @@ void RenderDevice::initialize() {
         HD_LOG_WARNING("Failed to enable OpenGL debug output. Extension 'GLEW_ARB_debug_output' not supported");
     }
 
-    mBlendStateModes[static_cast<size_t>(BlendMode::Replace      )] = BlendState::create(BlendStateDesc(false, BlendFactor::One         , BlendFactor::Zero       , BlendOp::Add        , BlendFactor::One         , BlendFactor::Zero       , BlendOp::Add        , ColorMask(true)));
-    mBlendStateModes[static_cast<size_t>(BlendMode::Add          )] = BlendState::create(BlendStateDesc(true,  BlendFactor::One         , BlendFactor::One        , BlendOp::Add        , BlendFactor::One         , BlendFactor::One        , BlendOp::Add        , ColorMask(true)));
-    mBlendStateModes[static_cast<size_t>(BlendMode::Multiply     )] = BlendState::create(BlendStateDesc(true,  BlendFactor::DestColor   , BlendFactor::Zero       , BlendOp::Add        , BlendFactor::One         , BlendFactor::Zero       , BlendOp::Add        , ColorMask(true)));
-    mBlendStateModes[static_cast<size_t>(BlendMode::Alpha        )] = BlendState::create(BlendStateDesc(true,  BlendFactor::SrcAlpha    , BlendFactor::InvSrcAlpha, BlendOp::Add        , BlendFactor::SrcAlpha    , BlendFactor::InvSrcAlpha, BlendOp::Add        , ColorMask(true)));
-    mBlendStateModes[static_cast<size_t>(BlendMode::AddAlpha     )] = BlendState::create(BlendStateDesc(true,  BlendFactor::SrcAlpha    , BlendFactor::One        , BlendOp::Add        , BlendFactor::SrcAlpha    , BlendFactor::One        , BlendOp::Add        , ColorMask(true)));
-    mBlendStateModes[static_cast<size_t>(BlendMode::PreMulAlpha  )] = BlendState::create(BlendStateDesc(true,  BlendFactor::One         , BlendFactor::InvSrcAlpha, BlendOp::Add        , BlendFactor::One         , BlendFactor::InvSrcAlpha, BlendOp::Add        , ColorMask(true)));
-    mBlendStateModes[static_cast<size_t>(BlendMode::InvDestAlpha )] = BlendState::create(BlendStateDesc(true,  BlendFactor::InvDestAlpha, BlendFactor::DestAlpha  , BlendOp::Add        , BlendFactor::InvDestAlpha, BlendFactor::DestAlpha  , BlendOp::Add        , ColorMask(true)));
-    mBlendStateModes[static_cast<size_t>(BlendMode::Subtract     )] = BlendState::create(BlendStateDesc(true,  BlendFactor::One         , BlendFactor::One        , BlendOp::RevSubtract, BlendFactor::One         , BlendFactor::One        , BlendOp::RevSubtract, ColorMask(true)));
-    mBlendStateModes[static_cast<size_t>(BlendMode::SubtractAlpha)] = BlendState::create(BlendStateDesc(true,  BlendFactor::SrcAlpha    , BlendFactor::One        , BlendOp::RevSubtract, BlendFactor::SrcAlpha    , BlendFactor::One        , BlendOp::RevSubtract, ColorMask(true)));
+    mBlendStateModes[BlendMode::Replace      ] = BlendState::create({false, BlendFactor::One         , BlendFactor::Zero       , BlendOp::Add        , BlendFactor::One         , BlendFactor::Zero       , BlendOp::Add        , {true, true, true, true}});
+    mBlendStateModes[BlendMode::Add          ] = BlendState::create({true,  BlendFactor::One         , BlendFactor::One        , BlendOp::Add        , BlendFactor::One         , BlendFactor::One        , BlendOp::Add        , {true, true, true, true}});
+    mBlendStateModes[BlendMode::Multiply     ] = BlendState::create({true,  BlendFactor::DestColor   , BlendFactor::Zero       , BlendOp::Add        , BlendFactor::One         , BlendFactor::Zero       , BlendOp::Add        , {true, true, true, true}});
+    mBlendStateModes[BlendMode::Alpha        ] = BlendState::create({true,  BlendFactor::SrcAlpha    , BlendFactor::InvSrcAlpha, BlendOp::Add        , BlendFactor::SrcAlpha    , BlendFactor::InvSrcAlpha, BlendOp::Add        , {true, true, true, true}});
+    mBlendStateModes[BlendMode::AddAlpha     ] = BlendState::create({true,  BlendFactor::SrcAlpha    , BlendFactor::One        , BlendOp::Add        , BlendFactor::SrcAlpha    , BlendFactor::One        , BlendOp::Add        , {true, true, true, true}});
+    mBlendStateModes[BlendMode::PreMulAlpha  ] = BlendState::create({true,  BlendFactor::One         , BlendFactor::InvSrcAlpha, BlendOp::Add        , BlendFactor::One         , BlendFactor::InvSrcAlpha, BlendOp::Add        , {true, true, true, true}});
+    mBlendStateModes[BlendMode::InvDestAlpha ] = BlendState::create({true,  BlendFactor::InvDestAlpha, BlendFactor::DestAlpha  , BlendOp::Add        , BlendFactor::InvDestAlpha, BlendFactor::DestAlpha  , BlendOp::Add        , {true, true, true, true}});
+    mBlendStateModes[BlendMode::Subtract     ] = BlendState::create({true,  BlendFactor::One         , BlendFactor::One        , BlendOp::RevSubtract, BlendFactor::One         , BlendFactor::One        , BlendOp::RevSubtract, {true, true, true, true}});
+    mBlendStateModes[BlendMode::SubtractAlpha] = BlendState::create({true,  BlendFactor::SrcAlpha    , BlendFactor::One        , BlendOp::RevSubtract, BlendFactor::SrcAlpha    , BlendFactor::One        , BlendOp::RevSubtract, {true, true, true, true}});
 
     glCreateProgramPipelines(1, &mProgramPipeline);
     glBindProgramPipeline(mProgramPipeline);
@@ -239,26 +239,26 @@ void RenderDevice::setTexture(const TexturePtr &obj, uint32_t slot) {
 void RenderDevice::setDepthStencilState(const DepthStencilStatePtr &obj) {
     if (mCurrentDSS != obj) {
         mCurrentDSS = obj;
-        if (obj->getDepthTestDesc().enabled) {
+        if (obj->getDesc().depth.enabled) {
             glEnable(GL_DEPTH_TEST);
-            glDepthFunc(static_cast<GLenum>(obj->getDepthTestDesc().compareFunc));
-            glDepthMask(obj->getDepthTestDesc().writeMask);
+            glDepthFunc(static_cast<GLenum>(obj->getDesc().depth.compareFunc));
+            glDepthMask(obj->getDesc().depth.writeMask);
         }
         else {
             glDisable(GL_DEPTH_TEST);
         }
 
-        if (obj->getStencilTestDesc().enabled) {
+        if (obj->getDesc().stencil.enabled) {
             glEnable(GL_STENCIL_TEST);
-            glStencilFuncSeparate(GL_FRONT, static_cast<GLenum>(obj->getStencilTestDesc().frontFunc),
-                obj->getStencilTestDesc().refValue, obj->getStencilTestDesc().readMask);
-            glStencilFuncSeparate(GL_BACK, static_cast<GLenum>(obj->getStencilTestDesc().backFunc),
-                obj->getStencilTestDesc().refValue, obj->getStencilTestDesc().readMask);
-            glStencilOpSeparate(GL_FRONT, static_cast<GLenum>(obj->getStencilTestDesc().frontFail),
-                static_cast<GLenum>(obj->getStencilTestDesc().frontDepthFail), static_cast<GLenum>(obj->getStencilTestDesc().frontPass));
-            glStencilOpSeparate(GL_BACK, static_cast<GLenum>(obj->getStencilTestDesc().backFail),
-                static_cast<GLenum>(obj->getStencilTestDesc().backDepthFail), static_cast<GLenum>(obj->getStencilTestDesc().backPass));
-            glStencilMask(obj->getStencilTestDesc().writeMask);
+            glStencilFuncSeparate(GL_FRONT, static_cast<GLenum>(obj->getDesc().stencil.frontFunc),
+                obj->getDesc().stencil.refValue, obj->getDesc().stencil.readMask);
+            glStencilFuncSeparate(GL_BACK, static_cast<GLenum>(obj->getDesc().stencil.backFunc),
+                obj->getDesc().stencil.refValue, obj->getDesc().stencil.readMask);
+            glStencilOpSeparate(GL_FRONT, static_cast<GLenum>(obj->getDesc().stencil.frontFail),
+                static_cast<GLenum>(obj->getDesc().stencil.frontDepthFail), static_cast<GLenum>(obj->getDesc().stencil.frontPass));
+            glStencilOpSeparate(GL_BACK, static_cast<GLenum>(obj->getDesc().stencil.backFail),
+                static_cast<GLenum>(obj->getDesc().stencil.backDepthFail), static_cast<GLenum>(obj->getDesc().stencil.backPass));
+            glStencilMask(obj->getDesc().stencil.writeMask);
         }
         else {
             glDisable(GL_STENCIL_TEST);
@@ -283,7 +283,7 @@ void RenderDevice::setBlendState(const BlendStatePtr &obj) {
 }
 
 void RenderDevice::setBlendState(BlendMode mode) {
-    setBlendState(mBlendStateModes[static_cast<size_t>(mode)]);
+    setBlendState(mBlendStateModes.at(mode));
 }
 
 void RenderDevice::setRasterizerState(const RasterizerStatePtr &obj) {

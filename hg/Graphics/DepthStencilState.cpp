@@ -2,63 +2,91 @@
 
 namespace hg {
 
-StencilTestDesc::StencilTestDesc() {
-    this->enabled = false;
-    this->frontFunc = CompareFunc::Always;
-    this->frontFail = StencilOp::Keep;
-    this->frontDepthFail = StencilOp::Keep;
-    this->frontPass = StencilOp::Keep;
-    this->backFunc = CompareFunc::Always;
-    this->backFail = StencilOp::Keep;
-    this->backDepthFail = StencilOp::Keep;
-    this->backPass = StencilOp::Keep;
-    this->readMask = 0xffffffff;
-    this->writeMask = 0xffffffff;
-    this->refValue = 0;
+DepthStencilTestDesc &DepthStencilTestDesc::setDepthEnabled(bool enabled) {
+    this->depth.enabled = enabled;
+    return *this;
 }
 
-StencilTestDesc::StencilTestDesc(bool enabled, CompareFunc frontFunc, StencilOp frontFail, StencilOp frontDepthFail, StencilOp frontPass,
-    CompareFunc backFunc, StencilOp backFail, StencilOp backDepthFail, StencilOp backPass, uint32_t readMask, uint32_t writeMask, int refValue) {
-    this->enabled = enabled;
-    this->frontFunc = frontFunc;
-    this->frontFail = frontFail;
-    this->frontDepthFail = frontDepthFail;
-    this->frontPass = frontPass;
-    this->backFunc = backFunc;
-    this->backFail = backFail;
-    this->backDepthFail = backDepthFail;
-    this->backPass = backPass;
-    this->readMask = readMask;
-    this->writeMask = writeMask;
-    this->refValue = refValue;
+DepthStencilTestDesc &DepthStencilTestDesc::setDepthCompareFunc(CompareFunc compareFunc) {
+    this->depth.compareFunc = compareFunc;
+    return *this;
 }
 
-DepthTestDesc::DepthTestDesc() {
-    this->enabled = false;
-    this->compareFunc = CompareFunc::Less;
-    this->writeMask = true;
+DepthStencilTestDesc &DepthStencilTestDesc::setDepthWriteMask(bool writeMask) {
+    this->depth.writeMask = writeMask;
+    return *this;
 }
 
-DepthTestDesc::DepthTestDesc(bool enabled, CompareFunc compareFunc, bool writeMask) {
-    this->enabled = enabled;
-    this->compareFunc = compareFunc;
-    this->writeMask = writeMask;
+DepthStencilTestDesc &DepthStencilTestDesc::setStencilEnabled(bool enabled) {
+    this->stencil.enabled = enabled;
+    return *this;
 }
 
-DepthStencilState::DepthStencilState(const DepthTestDesc &depthTestDesc, const StencilTestDesc &stencilTestDesc)
-    : mDepthTestDesc(depthTestDesc), mStencilTestDesc(stencilTestDesc) {
+DepthStencilTestDesc &DepthStencilTestDesc::setStencilFrontCompareFunc(CompareFunc frontFunc) {
+    this->stencil.frontFunc = frontFunc;
+    return *this;
 }
 
-const DepthTestDesc &DepthStencilState::getDepthTestDesc() const {
-    return mDepthTestDesc;
+DepthStencilTestDesc &DepthStencilTestDesc::setStencilFrontFailOp(StencilOp frontFail) {
+    this->stencil.frontFail = frontFail;
+    return *this;
 }
 
-const StencilTestDesc &DepthStencilState::getStencilTestDesc() const {
-    return mStencilTestDesc;
+DepthStencilTestDesc &DepthStencilTestDesc::setStencilFrontDepthFailOp(StencilOp frontDepthFail) {
+    this->stencil.frontDepthFail = frontDepthFail;
+    return *this;
 }
 
-DepthStencilStatePtr DepthStencilState::create(const DepthTestDesc &depthTestDesc, const StencilTestDesc &stencilTestDesc) {
-    return std::make_shared<DepthStencilState>(depthTestDesc, stencilTestDesc);
+DepthStencilTestDesc &DepthStencilTestDesc::setStencilFrontPassOp(StencilOp frontPass) {
+    this->stencil.frontPass = frontPass;
+    return *this;
+}
+
+DepthStencilTestDesc &DepthStencilTestDesc::setStencilBackCompareFunc(CompareFunc backFunc) {
+    this->stencil.backFunc = backFunc;
+    return *this;
+}
+
+DepthStencilTestDesc &DepthStencilTestDesc::setStencilBackFailOp(StencilOp backFail) {
+    this->stencil.backFail = backFail;
+    return *this;
+}
+
+DepthStencilTestDesc &DepthStencilTestDesc::setStencilBackDepthFailOp(StencilOp backDepthFail) {
+    this->stencil.backDepthFail = backDepthFail;
+    return *this;
+}
+
+DepthStencilTestDesc &DepthStencilTestDesc::setStencilBackPassOp(StencilOp backPass) {
+    this->stencil.backPass = backPass;
+    return *this;
+}
+
+DepthStencilTestDesc &DepthStencilTestDesc::setStencilReadMask(uint32_t readMask) {
+    this->stencil.readMask = readMask;
+    return *this;
+}
+
+DepthStencilTestDesc &DepthStencilTestDesc::setStencilWriteMask(uint32_t writeMask) {
+    this->stencil.writeMask = writeMask;
+    return *this;
+}
+
+DepthStencilTestDesc &DepthStencilTestDesc::setStencilRefValue(int refValue) {
+    this->stencil.refValue = refValue;
+    return *this;
+}
+
+DepthStencilState::DepthStencilState(const DepthStencilTestDesc &depthStencilTestDesc)
+    : mDepthStencilTestDesc(depthStencilTestDesc) {
+}
+
+const DepthStencilTestDesc &DepthStencilState::getDesc() const {
+    return mDepthStencilTestDesc;
+}
+
+DepthStencilStatePtr DepthStencilState::create(const DepthStencilTestDesc &depthStencilTestDesc) {
+    return std::make_shared<DepthStencilState>(depthStencilTestDesc);
 }
 
 }
