@@ -31,7 +31,7 @@ void Engine::initialize(const EngineCreateInfo &createInfo) {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
-    SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 0);
+    SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
     SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, false);
     SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 1);
     mWindow = SDL_CreateWindow(createInfo.title.data(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, createInfo.size.x, createInfo.size.y, flags);

@@ -5,14 +5,14 @@
 namespace hg {
 
 enum class StencilOp {
-    Keep,
-    Zero,
-    Replace,
-    IncrSat,
-    DecrSat,
-    Invert,
-    Incr,
-    Decr
+    Keep = GL_KEEP,
+    Zero = GL_ZERO,
+    Replace = GL_REPLACE,
+    IncrWrap = GL_INCR_WRAP,
+    DecrWrap = GL_DECR_WRAP,
+    Invert = GL_INVERT,
+    Incr = GL_INCR,
+    Decr = GL_DECR
 };
 
 struct DepthStencilTestDesc {
