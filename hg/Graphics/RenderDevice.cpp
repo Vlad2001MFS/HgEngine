@@ -172,7 +172,8 @@ void RenderDevice::drawIndexed(PrimitiveType primType, uint32_t indexCount, uint
 
 void RenderDevice::drawIndexedInstanced(PrimitiveType primType, uint32_t indexCountPerInstance, uint32_t firstIndex, IndexType indexType, uint32_t instanceCount) {
     mPrepareDraw();
-    glDrawElementsInstanced(static_cast<GLenum>(primType), indexCountPerInstance, static_cast<GLenum>(indexType), static_cast<uint32_t*>(nullptr) + firstIndex, instanceCount);
+    glDrawElementsInstanced(static_cast<GLenum>(primType), indexCountPerInstance, static_cast<GLenum>(indexType), 
+                            static_cast<uint32_t*>(nullptr) + firstIndex, instanceCount);
 }
 
 void RenderDevice::setViewport(int x, int y, int w, int h) {
@@ -239,26 +240,24 @@ void RenderDevice::setTexture(const TexturePtr &obj, uint32_t slot) {
 void RenderDevice::setDepthStencilState(const DepthStencilStatePtr &obj) {
     if (mCurrentDSS != obj) {
         mCurrentDSS = obj;
-        if (obj->getDesc().depth.enabled) {
+        auto depth = obj->getDesc().depth;
+        if (depth.enabled) {
             glEnable(GL_DEPTH_TEST);
-            glDepthFunc(static_cast<GLenum>(obj->getDesc().depth.compareFunc));
-            glDepthMask(obj->getDesc().depth.writeMask);
+            glDepthFunc(static_cast<GLenum>(depth.compareFunc));
+            glDepthMask(depth.writeMask);
         }
         else {
             glDisable(GL_DEPTH_TEST);
         }
 
-        if (obj->getDesc().stencil.enabled) {
+        auto stencil = obj->getDesc().stencil;
+        if (stencil.enabled) {
             glEnable(GL_STENCIL_TEST);
-            glStencilFuncSeparate(GL_FRONT, static_cast<GLenum>(obj->getDesc().stencil.frontFunc),
-                obj->getDesc().stencil.refValue, obj->getDesc().stencil.readMask);
-            glStencilFuncSeparate(GL_BACK, static_cast<GLenum>(obj->getDesc().stencil.backFunc),
-                obj->getDesc().stencil.refValue, obj->getDesc().stencil.readMask);
-            glStencilOpSeparate(GL_FRONT, static_cast<GLenum>(obj->getDesc().stencil.frontFail),
-                static_cast<GLenum>(obj->getDesc().stencil.frontDepthFail), static_cast<GLenum>(obj->getDesc().stencil.frontPass));
-            glStencilOpSeparate(GL_BACK, static_cast<GLenum>(obj->getDesc().stencil.backFail),
-                static_cast<GLenum>(obj->getDesc().stencil.backDepthFail), static_cast<GLenum>(obj->getDesc().stencil.backPass));
-            glStencilMask(obj->getDesc().stencil.writeMask);
+            glStencilFuncSeparate(GL_FRONT, static_cast<GLenum>(stencil.frontFunc), stencil.refValue, stencil.readMask);
+            glStencilFuncSeparate(GL_BACK, static_cast<GLenum>(stencil.backFunc), stencil.refValue, stencil.readMask);
+            glStencilOpSeparate(GL_FRONT, static_cast<GLenum>(stencil.frontFail), static_cast<GLenum>(stencil.frontDepthFail), static_cast<GLenum>(stencil.frontPass));
+            glStencilOpSeparate(GL_BACK, static_cast<GLenum>(stencil.backFail), static_cast<GLenum>(stencil.backDepthFail), static_cast<GLenum>(stencil.backPass));
+            glStencilMask(stencil.writeMask);
         }
         else {
             glDisable(GL_STENCIL_TEST);
@@ -269,16 +268,17 @@ void RenderDevice::setDepthStencilState(const DepthStencilStatePtr &obj) {
 void RenderDevice::setBlendState(const BlendStatePtr &obj) {
     if (mCurrentBS != obj) {
         mCurrentBS = obj;
-        if (obj->getDesc().enabled) {
+        auto desc = obj->getDesc();
+        if (desc.enabled) {
             glEnable(GL_BLEND);
-            glBlendFuncSeparate(static_cast<size_t>(obj->getDesc().srcFactor), static_cast<size_t>(obj->getDesc().dstFactor),
-                static_cast<size_t>(obj->getDesc().srcAlphaFactor), static_cast<size_t>(obj->getDesc().dstAlphaFactor));
-            glBlendEquationSeparate(static_cast<size_t>(obj->getDesc().op), static_cast<size_t>(obj->getDesc().opAlpha));
+            glBlendFuncSeparate(static_cast<GLenum>(desc.srcFactor), static_cast<GLenum>(desc.dstFactor), 
+                                static_cast<GLenum>(desc.srcAlphaFactor), static_cast<GLenum>(desc.dstAlphaFactor));
+            glBlendEquationSeparate(static_cast<GLenum>(desc.op), static_cast<GLenum>(desc.opAlpha));
         }
         else {
             glDisable(GL_BLEND);
         }
-        glColorMask(obj->getDesc().colorMask.r, obj->getDesc().colorMask.g, obj->getDesc().colorMask.b, obj->getDesc().colorMask.a);
+        glColorMask(desc.colorMask.r, desc.colorMask.g, desc.colorMask.b, desc.colorMask.a);
     }
 }
 
@@ -289,20 +289,21 @@ void RenderDevice::setBlendState(BlendMode mode) {
 void RenderDevice::setRasterizerState(const RasterizerStatePtr &obj) {
     if (mCurrentRS != obj) {
         mCurrentRS = obj;
-        if (obj->getDesc().cullFace != CullFace::None) {
+        auto desc = obj->getDesc();
+        if (desc.cullFace != CullFace::None) {
             glEnable(GL_CULL_FACE);
-            glCullFace(static_cast<size_t>(obj->getDesc().cullFace));
-            glFrontFace(static_cast<size_t>(obj->getDesc().frontFace));
+            glCullFace(static_cast<GLenum>(desc.cullFace));
+            glFrontFace(static_cast<GLenum>(desc.frontFace));
         }
         else {
             glDisable(GL_CULL_FACE);
         }
 
-        glPolygonMode(GL_FRONT_AND_BACK, static_cast<size_t>(obj->getDesc().fillMode));
+        glPolygonMode(GL_FRONT_AND_BACK, static_cast<GLenum>(desc.fillMode));
 
-        if (obj->getDesc().polygonOffset.enabled) {
+        if (desc.polygonOffset.enabled) {
             glEnable(GL_POLYGON_OFFSET_FILL);
-            glPolygonOffset(obj->getDesc().polygonOffset.factor, obj->getDesc().polygonOffset.units);
+            glPolygonOffset(desc.polygonOffset.factor, desc.polygonOffset.units);
         }
         else {
             glDisable(GL_POLYGON_OFFSET_FILL);
