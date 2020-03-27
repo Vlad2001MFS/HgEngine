@@ -7,33 +7,33 @@ BlendStateDesc &BlendStateDesc::setEnabled(bool enabled) {
     return *this;
 }
 
-BlendStateDesc &BlendStateDesc::setSrcFactor(BlendFactor srcBlend) {
-    this->srcBlend = srcBlend;
+BlendStateDesc &BlendStateDesc::setSrcFactor(BlendFactor srcFactor) {
+    this->srcFactor = srcFactor;
     return *this;
 }
 
-BlendStateDesc &BlendStateDesc::setDstFactor(BlendFactor dstBlend) {
-    this->dstBlend = dstBlend;
+BlendStateDesc &BlendStateDesc::setDstFactor(BlendFactor dstFactor) {
+    this->dstFactor = dstFactor;
     return *this;
 }
 
-BlendStateDesc &BlendStateDesc::setOp(BlendOp blendOp) {
-    this->blendOp = blendOp;
+BlendStateDesc &BlendStateDesc::setOp(BlendOp op) {
+    this->op = op;
     return *this;
 }
 
-BlendStateDesc &BlendStateDesc::setSrcAlphaFactor(BlendFactor srcBlendAlpha) {
-    this->srcBlendAlpha = srcBlendAlpha;
+BlendStateDesc &BlendStateDesc::setSrcAlphaFactor(BlendFactor srcAlphaFactor) {
+    this->srcAlphaFactor = srcAlphaFactor;
     return *this;
 }
 
-BlendStateDesc &BlendStateDesc::setDstAlphaFactor(BlendFactor dstBlendAlpha) {
-    this->dstBlendAlpha = dstBlendAlpha;
+BlendStateDesc &BlendStateDesc::setDstAlphaFactor(BlendFactor dstAlphaFactor) {
+    this->dstAlphaFactor = dstAlphaFactor;
     return *this;
 }
 
-BlendStateDesc &BlendStateDesc::setOpAlpha(BlendOp blendOpAlpha) {
-    this->blendOpAlpha = blendOpAlpha;
+BlendStateDesc &BlendStateDesc::setOpAlpha(BlendOp opAlpha) {
+    this->opAlpha = opAlpha;
     return *this;
 }
 

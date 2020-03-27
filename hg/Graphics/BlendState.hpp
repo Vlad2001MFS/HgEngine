@@ -35,21 +35,21 @@ struct ColorMask {
 
 struct BlendStateDesc {
     BlendStateDesc &setEnabled(bool enabled);
-    BlendStateDesc &setSrcFactor(BlendFactor srcBlend);
-    BlendStateDesc &setDstFactor(BlendFactor dstBlend);
-    BlendStateDesc &setOp(BlendOp blendOp);
-    BlendStateDesc &setSrcAlphaFactor(BlendFactor srcBlendAlpha);
-    BlendStateDesc &setDstAlphaFactor(BlendFactor dstBlendAlpha);
-    BlendStateDesc &setOpAlpha(BlendOp blendOpAlpha);
+    BlendStateDesc &setSrcFactor(BlendFactor srcFactor);
+    BlendStateDesc &setDstFactor(BlendFactor dstFactor);
+    BlendStateDesc &setOp(BlendOp op);
+    BlendStateDesc &setSrcAlphaFactor(BlendFactor srcAlphaFactor);
+    BlendStateDesc &setDstAlphaFactor(BlendFactor dstAlphaFactor);
+    BlendStateDesc &setOpAlpha(BlendOp opAlpha);
     BlendStateDesc &setColorMask(bool r, bool g, bool b, bool a);
 
     bool enabled = false;
-    BlendFactor srcBlend = BlendFactor::One;
-    BlendFactor dstBlend = BlendFactor::One;
-    BlendOp blendOp = BlendOp::Add;
-    BlendFactor srcBlendAlpha = BlendFactor::One;
-    BlendFactor dstBlendAlpha = BlendFactor::One;
-    BlendOp blendOpAlpha = BlendOp::Add;
+    BlendFactor srcFactor = BlendFactor::One;
+    BlendFactor dstFactor = BlendFactor::One;
+    BlendOp op = BlendOp::Add;
+    BlendFactor srcAlphaFactor = BlendFactor::One;
+    BlendFactor dstAlphaFactor = BlendFactor::One;
+    BlendOp opAlpha = BlendOp::Add;
     ColorMask colorMask;
 };
 

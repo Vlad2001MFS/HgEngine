@@ -271,9 +271,9 @@ void RenderDevice::setBlendState(const BlendStatePtr &obj) {
         mCurrentBS = obj;
         if (obj->getDesc().enabled) {
             glEnable(GL_BLEND);
-            glBlendFuncSeparate(static_cast<size_t>(obj->getDesc().srcBlend), static_cast<size_t>(obj->getDesc().dstBlend),
-                static_cast<size_t>(obj->getDesc().srcBlendAlpha), static_cast<size_t>(obj->getDesc().dstBlendAlpha));
-            glBlendEquationSeparate(static_cast<size_t>(obj->getDesc().blendOp), static_cast<size_t>(obj->getDesc().blendOpAlpha));
+            glBlendFuncSeparate(static_cast<size_t>(obj->getDesc().srcFactor), static_cast<size_t>(obj->getDesc().dstFactor),
+                static_cast<size_t>(obj->getDesc().srcAlphaFactor), static_cast<size_t>(obj->getDesc().dstAlphaFactor));
+            glBlendEquationSeparate(static_cast<size_t>(obj->getDesc().op), static_cast<size_t>(obj->getDesc().opAlpha));
         }
         else {
             glDisable(GL_BLEND);
