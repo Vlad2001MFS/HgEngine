@@ -1,26 +1,6 @@
 #include "Texture2D.hpp"
-#include "hd/Core/Log.hpp"
-#include "hd/IO/Image.hpp"
-#include "magic_enum/magic_enum.hpp"
 
 namespace hg {
-
-TextureFormat getTextureFormatFromImageFormat(hd::ImageFormat fmt) {
-    switch (fmt) {
-        case hd::ImageFormat::Grey: {
-            return TextureFormat::R8;
-        }
-        case hd::ImageFormat::RGB: {
-            return TextureFormat::RGB8;
-        }
-        case hd::ImageFormat::RGBA: {
-            return TextureFormat::RGBA8;
-        }
-        default: {
-            HD_LOG_FATAL("Invalid image format: {}({})", magic_enum::enum_name(fmt), fmt);
-        }
-    }
-}
 
 Texture2D::Texture2D(uint32_t id, const glm::ivec2 &size, TextureFormat format) : Texture(id, format, TextureType::Tex2D) {
     mSize = size;
@@ -42,7 +22,7 @@ Texture2DPtr Texture2D::create(const void *data, const glm::ivec2 &size, Texture
 
 Texture2DPtr Texture2D::createFromFile(const std::string &path) {
     auto image = hd::Image(path, hd::ImageFormat::None, true);
-    return create(image.getData(), image.getSize(), getTextureFormatFromImageFormat(image.getFormat()));
+    return create(image.getData(), image.getSize(), mGetTextureFormatFromImageFormat(image.getFormat()));
 }
 
 }

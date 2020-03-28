@@ -1,5 +1,6 @@
 #pragma once
 #include "GraphicsDefs.hpp"
+#include "hd/IO/Image.hpp"
 #include "glm/glm.hpp"
 #include <memory>
 
@@ -78,6 +79,7 @@ protected:
     static int mGetTextureInternalFormat(TextureFormat fmt);
     static GLenum mGetTextureExternalFormat(TextureFormat fmt);
     static GLenum mGetTextureDataType(TextureFormat fmt);
+    static TextureFormat mGetTextureFormatFromImageFormat(hd::ImageFormat fmt);
 
 private:
     uint32_t mId;

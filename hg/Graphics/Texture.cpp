@@ -1,5 +1,7 @@
 #include "Texture.hpp"
+#include "hd/Core/Log.hpp"
 #include "glm/ext.hpp"
+#include "magic_enum/magic_enum.hpp"
 
 namespace hg {
 
@@ -204,6 +206,23 @@ GLenum Texture::mGetTextureExternalFormat(TextureFormat fmt) {
 
 GLenum Texture::mGetTextureDataType(TextureFormat fmt) {
     return gTextureDataTypes[static_cast<size_t>(fmt)];
+}
+
+TextureFormat Texture::mGetTextureFormatFromImageFormat(hd::ImageFormat fmt) {
+    switch (fmt) {
+        case hd::ImageFormat::Grey: {
+            return TextureFormat::R8;
+        }
+        case hd::ImageFormat::RGB: {
+            return TextureFormat::RGB8;
+        }
+        case hd::ImageFormat::RGBA: {
+            return TextureFormat::RGBA8;
+        }
+        default: {
+            HD_LOG_FATAL("Invalid image format: {}({})", magic_enum::enum_name(fmt), fmt);
+        }
+    }
 }
 
 }

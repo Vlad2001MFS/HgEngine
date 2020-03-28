@@ -1,6 +1,5 @@
 #pragma once
 #include "Texture.hpp"
-#include "glm/glm.hpp"
 #include <string>
 
 namespace hg {
