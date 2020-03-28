@@ -48,7 +48,8 @@ enum class TextureFormat {
 };
 
 enum class TextureType {
-    Tex2D = GL_TEXTURE_2D
+    Tex2D = GL_TEXTURE_2D,
+    Tex2DArray = GL_TEXTURE_2D_ARRAY
 };
 
 using TexturePtr = std::shared_ptr<class Texture>;

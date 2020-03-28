@@ -195,6 +195,7 @@
     <ClCompile Include="hg\Graphics\Shader.cpp" />
     <ClCompile Include="hg\Graphics\Texture.cpp" />
     <ClCompile Include="hg\Graphics\Texture2D.cpp" />
+    <ClCompile Include="hg\Graphics\Texture2DArray.cpp" />
     <ClCompile Include="hg\Graphics\VertexFormat.cpp" />
     <ClCompile Include="hg\Graphics\VertexShader.cpp" />
     <ClCompile Include="hg\GUI\GUISystem.cpp" />
@@ -225,6 +226,7 @@
     <ClInclude Include="hg\Graphics\Shader.hpp" />
     <ClInclude Include="hg\Graphics\Texture.hpp" />
     <ClInclude Include="hg\Graphics\Texture2D.hpp" />
+    <ClInclude Include="hg\Graphics\Texture2DArray.hpp" />
     <ClInclude Include="hg\Graphics\VertexFormat.hpp" />
     <ClInclude Include="hg\Graphics\VertexShader.hpp" />
     <ClInclude Include="hg\GUI\GUISystem.hpp" />

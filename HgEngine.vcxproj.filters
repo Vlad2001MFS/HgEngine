@@ -111,6 +111,9 @@
     <ClCompile Include="hg\Graphics\Shader.cpp">
       <Filter>hg\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="hg\Graphics\Texture2DArray.cpp">
+      <Filter>hg\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="hg\Core\Engine.hpp">
@@ -201,6 +204,9 @@
       <Filter>hg\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="hg\Graphics\Shader.hpp">
+      <Filter>hg\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="hg\Graphics\Texture2DArray.hpp">
       <Filter>hg\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
