@@ -51,7 +51,7 @@ public:
     glm::ivec2 getWindowCenter() const;
     float getWindowAspectRatio() const;
     float getDeltaTime() const;
-    float getTime() const;
+    const hd::Time &getTime() const;
     glm::ivec2 getCursorPos() const;
     const glm::ivec2 &getCursorDelta() const;
     bool isCenteredCursorMode() const;
@@ -62,7 +62,6 @@ private:
     SDL_GLContext mContext;
     hd::FPSCounter mFPSCounter;
     std::unique_ptr<Node> mRoot;
-    float mDeltaTime;
     hd::Time mTimer;
     glm::ivec2 mCursorDelta;
     bool mIsCenteredCursorMode;

@@ -10,7 +10,6 @@ namespace hg {
 Engine::Engine() : mCursorDelta(0, 0) {
     mWindow = nullptr;
     mContext = nullptr;
-    mDeltaTime = 0.0f;
     mIsCenteredCursorMode = false;
 }
 
@@ -81,9 +80,6 @@ void Engine::run() {
     hd::Time updateTimer, deltaTimer;
     bool isExit = false;
     while (!isExit) {
-        mDeltaTime = hd::Time::getElapsedTime(deltaTimer).getSeconds();
-        deltaTimer = hd::Time::getCurrentTime();
-
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
@@ -104,8 +100,8 @@ void Engine::run() {
             updateTimer = hd::Time::getCurrentTime();
         }
 
-        mRoot->onUpdate(mDeltaTime);
-        getGUISystem().onUpdate(mDeltaTime);
+        mRoot->onUpdate(mFPSCounter.getFrameTime()*0.001f);
+        getGUISystem().onUpdate(mFPSCounter.getFrameTime()*0.001f);
 
         SDL_GL_SwapWindow(mWindow);
 
@@ -178,11 +174,11 @@ float Engine::getWindowAspectRatio() const {
 }
 
 float Engine::getDeltaTime() const {
-    return mDeltaTime;
+    return mFPSCounter.getFrameTime();
 }
 
-float Engine::getTime() const {
-    return hd::Time::getElapsedTime(mTimer).getSeconds();
+const hd::Time &Engine::getTime() const {
+    return mTimer;
 }
 
 glm::ivec2 Engine::getCursorPos() const {
