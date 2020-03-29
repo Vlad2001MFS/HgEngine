@@ -16,6 +16,18 @@ enum class BufferUsage {
 };
 HD_DECL_ENUM_OPS(BufferUsage);
 
+enum class BufferAccess {
+    Read = GL_MAP_READ_BIT,
+    Write = GL_MAP_WRITE_BIT,
+    Persistent = GL_MAP_PERSISTENT_BIT,
+    Coherent = GL_MAP_COHERENT_BIT,
+    InvalidateRange = GL_MAP_INVALIDATE_RANGE_BIT,
+    InvalidateBuffer = GL_MAP_INVALIDATE_BUFFER_BIT,
+    FlushExplicit = GL_MAP_FLUSH_EXPLICIT_BIT,
+    Unsynchronized = GL_MAP_UNSYNCHRONIZED_BIT
+};
+HD_DECL_ENUM_OPS(BufferAccess);
+
 using BufferPtr = std::shared_ptr<class Buffer>;
 
 class Buffer {
@@ -24,6 +36,8 @@ public:
     ~Buffer();
 
     void update(const void *data, size_t size = 0, size_t offset = 0);
+    void *map(BufferAccess access, size_t size = 0, size_t offset = 0);
+    void unmap();
 
     uint32_t getId() const;
     size_t getSize() const;

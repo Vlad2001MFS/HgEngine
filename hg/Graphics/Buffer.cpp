@@ -21,6 +21,21 @@ void Buffer::update(const void *data, size_t size, size_t offset) {
     glNamedBufferSubData(mId, offset, size != 0 ? size : mSize, data);
 }
 
+void *Buffer::map(BufferAccess access, size_t size, size_t offset) {
+    if (offset != 0 && size == 0) {
+        HD_LOG_ERROR("Invalid size({}) and offset({}) for call", size, offset);
+    }
+    void *ptr = glMapNamedBufferRange(mId, offset, size != 0 ? size : mSize, static_cast<GLbitfield>(access));
+    if (!ptr) {
+        HD_LOG_ERROR("Failed to map buffer {}. Returned pointer is null", mId);
+    }
+    return ptr;
+}
+
+void Buffer::unmap() {
+    glUnmapNamedBuffer(mId);
+}
+
 uint32_t Buffer::getId() const {
     return mId;
 }
