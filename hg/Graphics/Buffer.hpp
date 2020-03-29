@@ -1,4 +1,5 @@
 #pragma once
+#include "hd/Core/Common.hpp"
 #include "GLEW/glew.h"
 #include <memory>
 
@@ -13,25 +14,26 @@ enum class BufferUsage {
     MapPersistent = GL_MAP_PERSISTENT_BIT,
     MapCoherent = GL_MAP_COHERENT_BIT
 };
+HD_DECL_ENUM_OPS(BufferUsage);
 
 using BufferPtr = std::shared_ptr<class Buffer>;
 
 class Buffer {
 public:
-    Buffer(uint32_t id, uint32_t size, BufferUsage usage);
+    Buffer(uint32_t id, size_t size, BufferUsage usage);
     ~Buffer();
 
-    void update(const void *data, uint32_t offset = 0, uint32_t size = 0);
+    void update(const void *data, size_t size = 0, size_t offset = 0);
 
     uint32_t getId() const;
-    uint32_t getSize() const;
+    size_t getSize() const;
     BufferUsage getUsage() const;
 
-    static BufferPtr create(const void *data, uint32_t size, BufferUsage usage = BufferUsage::None);
+    static BufferPtr create(const void *data, size_t size, BufferUsage usage = BufferUsage::None);
 
 private:
     uint32_t mId;
-    uint32_t mSize;
+    size_t mSize;
     BufferUsage mUsage;
 };
 
