@@ -7,6 +7,8 @@ Node2D::Node2D() : mPos(0, 0), mSize(0, 0) {
 }
 
 void Node2D::onSaveLoad(hd::JSON &data, bool isLoad) {
+    BaseClassName::onSaveLoad(data, isLoad);
+
     if (isLoad) {
         setPosition(data["position"]);
         setSize(data["size"]);
@@ -17,8 +19,6 @@ void Node2D::onSaveLoad(hd::JSON &data, bool isLoad) {
         data["size"] = getSize();
         data["angle"] = getAngle();
     }
-
-    BaseClassName::onSaveLoad(data, isLoad);
 }
 
 void Node2D::translate(float x, float y) {

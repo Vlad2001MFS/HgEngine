@@ -20,18 +20,6 @@ void Node::onSaveLoad(hd::JSON &data, bool isLoad) {
     if (isLoad) {
         mName = data["name"];
         setActive(data["isActive"]);
-
-        hd::JSON &components = data["components"];
-        for (auto &it : components) {
-            Component *comp = createComponent(it["typeInfo"]["hash"].get<hd::StringHash>());
-            comp->onSaveLoad(it, isLoad);
-        }
-
-        hd::JSON &children = data["children"];
-        for (auto &it : children) {
-            Node *child = createChild(it["name"].get<std::string>(), it["typeInfo"]["hash"].get<hd::StringHash>());
-            child->onSaveLoad(it, isLoad);
-        }
     }
     else {
         data["name"] = getName();
@@ -40,57 +28,16 @@ void Node::onSaveLoad(hd::JSON &data, bool isLoad) {
             { "name", getTypeName() },
             { "hash", getTypeHash() }
         };
-
-        hd::JSON &components = data["components"];
-        for (const auto &it : mComponents) {
-            hd::JSON comp;
-            it->onSaveLoad(comp, isLoad);
-            components.push_back(comp);
-        }
-
-        hd::JSON &children = data["children"];
-        for (const auto &it : mChildren) {
-            hd::JSON child;
-            it->onSaveLoad(child, isLoad);
-            children.push_back(child);
-        }
     }
 }
 
 void Node::onEvent(const WindowEvent &event) {
-    for (auto &it : mComponents) {
-        it->onEvent(event);
-    }
-
-    for (const auto &it : mChildren) {
-        if (it->isActive()) {
-            it->onEvent(event);
-        }
-    }
 }
 
 void Node::onFixedUpdate() {
-    for (auto &it : mComponents) {
-        it->onFixedUpdate();
-    }
-
-    for (const auto &it : mChildren) {
-        if (it->isActive()) {
-            it->onFixedUpdate();
-        }
-    }
 }
 
 void Node::onUpdate(float dt) {
-    for (auto &it : mComponents) {
-        it->onUpdate(dt);
-    }
-
-    for (const auto &it : mChildren) {
-        if (it->isActive()) {
-            it->onUpdate(dt);
-        }
-    }
 }
 
 Node *Node::findByName(const std::string &name) {
@@ -136,6 +83,80 @@ const std::string &Node::getName() const {
 
 bool Node::isActive() const {
     return mIsActive;
+}
+
+void Node::mOnSaveLoad(hd::JSON &data, bool isLoad) {
+    onSaveLoad(data, isLoad);
+
+    hd::JSON &components = data["components"];
+    hd::JSON &children = data["children"];
+
+    if (isLoad) {
+        for (auto &it : components) {
+            Component *comp = createComponent(it["typeInfo"]["hash"].get<hd::StringHash>());
+            comp->onSaveLoad(it, isLoad);
+        }
+
+        for (auto &it : children) {
+            Node *child = createChild(it["name"].get<std::string>(), it["typeInfo"]["hash"].get<hd::StringHash>());
+            child->mOnSaveLoad(it, isLoad);
+        }
+    }
+    else {
+        for (const auto &it : mComponents) {
+            hd::JSON comp;
+            it->onSaveLoad(comp, isLoad);
+            components.push_back(comp);
+        }
+
+        for (const auto &it : mChildren) {
+            hd::JSON child;
+            it->mOnSaveLoad(child, isLoad);
+            children.push_back(child);
+        }
+    }
+}
+
+void Node::mOnEvent(const WindowEvent &event) {
+    if (isActive()) {
+        onEvent(event);
+
+        for (auto &it : mComponents) {
+            it->onEvent(event);
+        }
+
+        for (const auto &it : mChildren) {
+            it->mOnEvent(event);
+        }
+    }
+}
+
+void Node::mOnFixedUpdate() {
+    if (isActive()) {
+        onFixedUpdate();
+
+        for (auto &it : mComponents) {
+            it->onFixedUpdate();
+        }
+
+        for (const auto &it : mChildren) {
+            it->mOnFixedUpdate();
+        }
+    }
+}
+
+void Node::mOnUpdate(float dt) {
+    if (isActive()) {
+        onUpdate(dt);
+
+        for (auto &it : mComponents) {
+            it->onUpdate(dt);
+        }
+
+        for (const auto &it : mChildren) {
+            it->mOnUpdate(dt);
+        }
+    }
 }
 
 void Node::mAddChild(Node *node, const std::string &name) {

@@ -5,6 +5,8 @@
 namespace hg {
 
 void GUIWidget::onSaveLoad(hd::JSON &data, bool isLoad) {
+    BaseClassName::onSaveLoad(data, isLoad);
+
     if (isLoad) {
         auto hAlign = magic_enum::enum_cast<GUIHAlign>(data["hAlign"].get<std::string>());
         mHAlign = hAlign.value_or(GUIHAlign::None);
@@ -22,11 +24,11 @@ void GUIWidget::onSaveLoad(hd::JSON &data, bool isLoad) {
         data["hAlign"] = magic_enum::enum_name(mHAlign);
         data["vAlign"] = magic_enum::enum_name(mVAlign);
     }
-
-    BaseClassName::onSaveLoad(data, isLoad);
 }
 
 void GUIWidget::onEvent(const WindowEvent &event) {
+    BaseClassName::onEvent(event);
+
     glm::ivec2 leftUp = getAbsolutePosition();
     glm::ivec2 rightDown = leftUp + glm::ivec2(getSize());
     if (event.type == WindowEventType::MouseButton) {
@@ -55,15 +57,13 @@ void GUIWidget::onEvent(const WindowEvent &event) {
             }
         }
     }
-
-    BaseClassName::onEvent(event);
 }
 
 void GUIWidget::onFixedUpdate() {
+    BaseClassName::onFixedUpdate();
+
     mApplyHAlign();
     mApplyVAlign();
-
-    BaseClassName::onFixedUpdate();
 }
 
 void GUIWidget::setHAlign(GUIHAlign align) {

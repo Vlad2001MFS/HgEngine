@@ -423,7 +423,7 @@ void Engine::run() {
 
             WindowEvent e = sdlEventToWindowEvent(event);
             mGUISystem->onEvent(e);
-            mRootNode->onEvent(e);
+            mRootNode->mOnEvent(e);
         }
 
         if (mIsCenteredCursorMode) {
@@ -431,14 +431,14 @@ void Engine::run() {
         }
 
         if (hd::Time::getElapsedTime(updateTimer) > UPDATE_TIME) {
-            mRootNode->onFixedUpdate();
+            mRootNode->mOnFixedUpdate();
             updateTimer = hd::Time::getCurrentTime();
         }
 
         float dt = mFPSCounter.getFrameTime()*0.001f;
         mRenderSystem2D->onUpdate(dt);
         mGUISystem->onUpdate(dt);
-        mRootNode->onUpdate(dt);
+        mRootNode->mOnUpdate(dt);
 
         SDL_GL_SwapWindow(mWindow);
 

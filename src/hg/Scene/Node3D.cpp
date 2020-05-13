@@ -7,6 +7,8 @@ Node3D::Node3D() : mPos(0, 0, 0), mSize(0, 0, 0), mAngles(0, 0, 0) {
 }
 
 void Node3D::onSaveLoad(hd::JSON &data, bool isLoad) {
+    BaseClassName::onSaveLoad(data, isLoad);
+
     if (isLoad) {
         setPosition(data["position"]);
         setSize(data["size"]);
@@ -17,8 +19,6 @@ void Node3D::onSaveLoad(hd::JSON &data, bool isLoad) {
         data["size"] = getSize();
         data["angles"] = getAngles();
     }
-
-    BaseClassName::onSaveLoad(data, isLoad);
 }
 
 void Node3D::translate(float x, float y, float z) {

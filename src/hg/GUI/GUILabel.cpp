@@ -8,6 +8,8 @@ GUILabel::GUILabel() : mColor(getGUISystem().getSkin().fontColor) {
 }
 
 void GUILabel::onSaveLoad(hd::JSON &data, bool isLoad) {
+    BaseClassName::onSaveLoad(data, isLoad);
+
     if (isLoad) {
         mText = data["text"].get<std::string>();
         mColor = data["color"].get<glm::vec4>();
@@ -16,16 +18,14 @@ void GUILabel::onSaveLoad(hd::JSON &data, bool isLoad) {
         data["text"] = mText;
         data["color"] = mColor;
     }
-
-    BaseClassName::onSaveLoad(data, isLoad);
 }
 
 void GUILabel::onUpdate(float dt) {
+    BaseClassName::onUpdate(dt);
+
     if (!mText.empty() && mTexture) {
         getRenderSystem2D().drawTextureGUI(mTexture, getAbsolutePosition(), getSize());
     }
-
-    BaseClassName::onUpdate(dt);
 }
 
 void GUILabel::setText(const std::string &text, bool updateSize) {

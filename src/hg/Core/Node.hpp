@@ -7,6 +7,8 @@ namespace hg {
 
 class Node : public Object {
     HG_OBJECT(Node, Object);
+
+    friend class Engine;
 public:
     Node();
     ~Node();
@@ -106,6 +108,10 @@ public:
     bool isActive() const;
 
 private:
+    void mOnSaveLoad(hd::JSON &data, bool isLoad);
+    void mOnEvent(const WindowEvent &event);
+    void mOnFixedUpdate();
+    void mOnUpdate(float dt);
     void mAddChild(Node *node, const std::string &name);
     void mAddComponent(Component *component);
 
