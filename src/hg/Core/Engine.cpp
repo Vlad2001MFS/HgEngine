@@ -328,13 +328,23 @@ WindowEvent sdlEventToWindowEvent(const SDL_Event &sdlEvent) {
     return e;
 }
 
+void BaseApp::onEvent(const WindowEvent &event) {
+}
+
+void BaseApp::onFixedUpdate() {
+}
+
+void BaseApp::onUpdate(float dt) {
+}
+
 Engine::Engine() : mCursorDelta(0, 0) {
     mWindow = nullptr;
     mContext = nullptr;
+    mApp = nullptr;
     mIsCenteredCursorMode = false;
 }
 
-void Engine::initialize(const EngineCreateInfo &createInfo, const hd::StringHash &rootNodeHash) {
+void Engine::initialize(const EngineCreateInfo &createInfo, const hd::StringHash &appHash) {
     mTimer = hd::Time::getCurrentTime();
     mCreateInfo = createInfo;
 
@@ -394,11 +404,11 @@ void Engine::initialize(const EngineCreateInfo &createInfo, const hd::StringHash
     mRenderSystem2D = new RenderSystem2D();
     mGUISystem = new GUISystem();
     mSoundSystem = new SoundSystem();
-    mRootNode = HG_CREATE_OBJECT(rootNodeHash, Node);
+    mApp = HG_CREATE_OBJECT(appHash, BaseApp);
 }
 
 void Engine::shutdown() {
-    HD_DELETE(mRootNode);
+    HD_DELETE(mApp);
     HD_DELETE(mSoundSystem);
     HD_DELETE(mGUISystem);
     HD_DELETE(mRenderSystem2D);
@@ -423,7 +433,7 @@ void Engine::run() {
 
             WindowEvent e = sdlEventToWindowEvent(event);
             mGUISystem->onEvent(e);
-            mRootNode->mOnEvent(e);
+            mApp->onEvent(e);
         }
 
         if (mIsCenteredCursorMode) {
@@ -431,14 +441,14 @@ void Engine::run() {
         }
 
         if (hd::Time::getElapsedTime(updateTimer) > UPDATE_TIME) {
-            mRootNode->mOnFixedUpdate();
+            mApp->onFixedUpdate();
             updateTimer = hd::Time::getCurrentTime();
         }
 
         float dt = mFPSCounter.getFrameTime()*0.001f;
         mRenderSystem2D->onUpdate(dt);
         mGUISystem->onUpdate(dt);
-        mRootNode->mOnUpdate(dt);
+        mApp->onUpdate(dt);
 
         SDL_GL_SwapWindow(mWindow);
 
@@ -500,8 +510,8 @@ float Engine::getFrameTime() const {
     return mFPSCounter.getFrameTime();
 }
 
-Node *Engine::getRoot() {
-    return mRootNode;
+BaseApp *Engine::getApp() {
+    return mApp;
 }
 
 glm::ivec2 Engine::getWindowSize() const {

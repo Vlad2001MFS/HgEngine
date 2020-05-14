@@ -1,7 +1,8 @@
 #pragma once
+#include "Object.hpp"
 #include "WindowEvent.hpp"
-#include "Node.hpp"
 #include "hd/Core/FPSCounter.hpp"
+#include <glm/glm.hpp>
 #include <SDL2/SDL.h>
 
 namespace hg {
@@ -26,11 +27,19 @@ struct EngineCreateInfo {
     bool isStereo = true;
 };
 
+class BaseApp : public Object {
+    HG_OBJECT(BaseApp, Object);
+public:
+    virtual void onEvent(const WindowEvent &event);
+    virtual void onFixedUpdate();
+    virtual void onUpdate(float dt);
+};
+
 class Engine {
 public:
     Engine();
 
-    void initialize(const EngineCreateInfo &createInfo, const hd::StringHash &rootNodeHash);
+    void initialize(const EngineCreateInfo &createInfo, const hd::StringHash &appHash);
     void shutdown();
     void run();
     void close();
@@ -46,7 +55,7 @@ public:
     SDL_GLContext getGLContext() const;
     uint32_t getFps() const;
     float getFrameTime() const;
-    Node *getRoot();
+    BaseApp *getApp();
     glm::ivec2 getWindowSize() const;
     glm::ivec2 getWindowCenter() const;
     float getWindowAspectRatio() const;
@@ -66,7 +75,7 @@ private:
     SDL_Window *mWindow;
     SDL_GLContext mContext;
     hd::FPSCounter mFPSCounter;
-    Node *mRootNode;
+    BaseApp *mApp;
     hd::Time mTimer;
     glm::ivec2 mCursorDelta;
     bool mIsCenteredCursorMode;
