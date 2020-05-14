@@ -94,8 +94,8 @@ bool GUIWidget::isMouseHovered() const {
 void GUIWidget::mApplyHAlign() {
     const size_t childrenCount = getChildren().size();
     for (size_t i = 0; i < childrenCount; i++) {
-        GUIWidget *child = static_cast<GUIWidget*>(getChildren()[i]);
-        GUIWidget *invChild = static_cast<GUIWidget*>(getChildren()[childrenCount - i - 1]);
+        GUIWidget *child = getChildren()[i]->as<GUIWidget>();
+        GUIWidget *invChild = getChildren()[childrenCount - i - 1]->as<GUIWidget>();
         if (child->isActive() && child->getHAlign() == GUIHAlign::Left) {
             child->setPosition(glm::vec2(getGUISystem().getSkin().alignSpaceX, getGUISystem().getSkin().alignSpaceY));
         }
@@ -126,8 +126,8 @@ void GUIWidget::mApplyVAlign() {
     int centerHeight = 0;
     const size_t childrenCount = getChildren().size();
     for (size_t i = 0; i < childrenCount; i++) {
-        GUIWidget *child = static_cast<GUIWidget*>(getChildren()[i]);
-        GUIWidget *invChild = static_cast<GUIWidget*>(getChildren()[childrenCount - i - 1]);
+        GUIWidget *child = getChildren()[i]->as<GUIWidget>();
+        GUIWidget *invChild = getChildren()[childrenCount - i - 1]->as<GUIWidget>();
         if (child->isActive() && child->getVAlign() == GUIVAlign::Top) {
             child->setPosition(glm::vec2(child->getPosition().x, topY[static_cast<size_t>(child->getHAlign())]));
             topY[static_cast<size_t>(child->getHAlign())] += child->getSize().y + getGUISystem().getSkin().alignSpaceY;
@@ -144,7 +144,7 @@ void GUIWidget::mApplyVAlign() {
     centerHeight -= getGUISystem().getSkin().alignSpaceY;
     int centerY = getSize().y / 2 - centerHeight / 2;
     for (size_t i = 0; i < childrenCount; i++) {
-        GUIWidget *child = static_cast<GUIWidget*>(getChildren()[i]);
+        GUIWidget *child = getChildren()[i]->as<GUIWidget>();
         if (child->isActive() && child->getVAlign() == GUIVAlign::Center) {
             child->setPosition(glm::vec2(child->getPosition().x, centerY));
             centerY += child->getSize().y + getGUISystem().getSkin().alignSpaceY;
