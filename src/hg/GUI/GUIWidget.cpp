@@ -1,33 +1,102 @@
 #include "GUIWidget.hpp"
 #include "GUISystem.hpp"
-#include "../../magic_enum/magic_enum.hpp"
 
 namespace hg {
 
-void GUIWidget::onSaveLoad(hd::JSON &data, bool isLoad) {
-    BaseClassName::onSaveLoad(data, isLoad);
-
-    if (isLoad) {
-        auto hAlign = magic_enum::enum_cast<GUIHAlign>(data["hAlign"].get<std::string>());
-        mHAlign = hAlign.value_or(GUIHAlign::None);
-        if (!hAlign) {
-            HD_LOG_WARNING("Invalid value '{}' of GUIHAlign enum", data["hAlign"].get<std::string>());
-        }
-
-        auto vAlign = magic_enum::enum_cast<GUIVAlign>(data["vAlign"].get<std::string>());
-        mVAlign = vAlign.value_or(GUIVAlign::None);
-        if (!vAlign) {
-            HD_LOG_WARNING("Invalid value '{}' of GUIVAlign enum", data["vAlign"].get<std::string>());
-        }
-    }
-    else {
-        data["hAlign"] = magic_enum::enum_name(mHAlign);
-        data["vAlign"] = magic_enum::enum_name(mVAlign);
+GUIWidget::~GUIWidget() {
+    for (auto &child : mChildren) {
+        HD_DELETE(child);
     }
 }
 
 void GUIWidget::onEvent(const WindowEvent &event) {
-    BaseClassName::onEvent(event);
+}
+
+void GUIWidget::onFixedUpdate() {
+}
+
+void GUIWidget::onUpdate(float dt) {
+}
+
+bool GUIWidget::isActive() const {
+    return mIsActive;
+}
+
+void GUIWidget::setHAlign(GUIHAlign align) {
+    mHAlign = align;
+}
+
+void GUIWidget::setVAlign(GUIVAlign align) {
+    mVAlign = align;
+}
+
+void GUIWidget::setAlign(GUIHAlign hAlign, GUIVAlign vAlign) {
+    setHAlign(hAlign);
+    setVAlign(vAlign);
+}
+
+void GUIWidget::setPosition(int x, int y) {
+    mPos.x = x;
+    mPos.y = y;
+}
+
+void GUIWidget::setPosition(const glm::ivec2 &pos) {
+    setPosition(pos.x, pos.y);
+}
+
+void GUIWidget::setSize(int w, int h) {
+    mSize.x = w;
+    mSize.y = h;
+}
+
+void GUIWidget::setSize(const glm::ivec2 &size) {
+    setSize(size.x, size.y);
+}
+
+void GUIWidget::setExpand(bool expand) {
+    mIsExpand = expand;
+}
+
+GUIHAlign GUIWidget::getHAlign() const {
+    return mHAlign;
+}
+
+GUIVAlign GUIWidget::getVAlign() const {
+    return mVAlign;
+}
+
+bool GUIWidget::isMouseHovered() const {
+    return mIsMouseHovered;
+}
+
+glm::ivec2 GUIWidget::getAbsolutePosition() const {
+    glm::ivec2 pos = glm::ivec2(0, 0);
+
+    const GUIWidget *widget = this;
+    while (widget) {
+        pos += widget->getPosition();
+        widget = widget->mParent;
+    }
+
+    return pos;
+}
+
+const glm::ivec2 &GUIWidget::getPosition() const {
+    return mPos;
+}
+
+const glm::ivec2 &GUIWidget::getSize() const {
+    return mSize;
+}
+
+bool GUIWidget::isExpand() const {
+    return mIsExpand;
+}
+
+void GUIWidget::mOnEvent(const WindowEvent &event) {
+    if (!isActive()) {
+        return;
+    }
 
     glm::ivec2 leftUp = getAbsolutePosition();
     glm::ivec2 rightDown = leftUp + glm::ivec2(getSize());
@@ -57,45 +126,48 @@ void GUIWidget::onEvent(const WindowEvent &event) {
             }
         }
     }
+
+    onEvent(event);
+    for (auto &child : mChildren) {
+        child->mOnEvent(event);
+    }
 }
 
-void GUIWidget::onFixedUpdate() {
-    BaseClassName::onFixedUpdate();
+void GUIWidget::mOnFixedUpdate() {
+    if (!isActive()) {
+        return;
+    }
 
-    mApplyHAlign();
-    mApplyVAlign();
+    if (mIsExpand && mParent) {
+        setSize(mParent->getSize());
+    }
+    else {
+        mApplyHAlign();
+        mApplyVAlign();
+    }
+
+    onFixedUpdate();
+    for (auto &child : mChildren) {
+        child->mOnFixedUpdate();
+    }
 }
 
-void GUIWidget::setHAlign(GUIHAlign align) {
-    mHAlign = align;
-}
+void GUIWidget::mOnUpdate(float dt) {
+    if (!isActive()) {
+        return;
+    }
 
-void GUIWidget::setVAlign(GUIVAlign align) {
-    mVAlign = align;
-}
-
-void GUIWidget::setAlign(GUIHAlign hAlign, GUIVAlign vAlign) {
-    setHAlign(hAlign);
-    setVAlign(vAlign);
-}
-
-GUIHAlign GUIWidget::getHAlign() const {
-    return mHAlign;
-}
-
-GUIVAlign GUIWidget::getVAlign() const {
-    return mVAlign;
-}
-
-bool GUIWidget::isMouseHovered() const {
-    return mIsMouseHovered;
+    onUpdate(dt);
+    for (auto &child : mChildren) {
+        child->mOnUpdate(dt);
+    }
 }
 
 void GUIWidget::mApplyHAlign() {
-    const size_t childrenCount = getChildren().size();
+    const size_t childrenCount = mChildren.size();
     for (size_t i = 0; i < childrenCount; i++) {
-        GUIWidget *child = getChildren()[i]->as<GUIWidget>();
-        GUIWidget *invChild = getChildren()[childrenCount - i - 1]->as<GUIWidget>();
+        GUIWidget *child = mChildren[i];
+        GUIWidget *invChild = mChildren[childrenCount - i - 1];
         if (child->isActive() && child->getHAlign() == GUIHAlign::Left) {
             child->setPosition(glm::vec2(getGUISystem().getSkin().alignSpaceX, getGUISystem().getSkin().alignSpaceY));
         }
@@ -124,10 +196,10 @@ void GUIWidget::mApplyVAlign() {
         static_cast<int>(getSize().y) - getGUISystem().getSkin().alignSpaceY,
     };
     int centerHeight = 0;
-    const size_t childrenCount = getChildren().size();
+    const size_t childrenCount = mChildren.size();
     for (size_t i = 0; i < childrenCount; i++) {
-        GUIWidget *child = getChildren()[i]->as<GUIWidget>();
-        GUIWidget *invChild = getChildren()[childrenCount - i - 1]->as<GUIWidget>();
+        GUIWidget *child = mChildren[i];
+        GUIWidget *invChild = mChildren[childrenCount - i - 1];
         if (child->isActive() && child->getVAlign() == GUIVAlign::Top) {
             child->setPosition(glm::vec2(child->getPosition().x, topY[static_cast<size_t>(child->getHAlign())]));
             topY[static_cast<size_t>(child->getHAlign())] += child->getSize().y + getGUISystem().getSkin().alignSpaceY;
@@ -144,7 +216,7 @@ void GUIWidget::mApplyVAlign() {
     centerHeight -= getGUISystem().getSkin().alignSpaceY;
     int centerY = getSize().y / 2 - centerHeight / 2;
     for (size_t i = 0; i < childrenCount; i++) {
-        GUIWidget *child = getChildren()[i]->as<GUIWidget>();
+        GUIWidget *child = mChildren[i];
         if (child->isActive() && child->getVAlign() == GUIVAlign::Center) {
             child->setPosition(glm::vec2(child->getPosition().x, centerY));
             centerY += child->getSize().y + getGUISystem().getSkin().alignSpaceY;

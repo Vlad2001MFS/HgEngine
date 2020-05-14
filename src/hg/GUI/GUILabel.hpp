@@ -5,11 +5,9 @@
 namespace hg {
 
 class GUILabel : public GUIWidget {
-    HG_OBJECT(GUILabel, GUIWidget);
 public:
     GUILabel();
 
-    void onSaveLoad(hd::JSON &data, bool isLoad) override;
     void onUpdate(float dt) override;
 
     void setText(const std::string &text, bool updateSize);

@@ -441,6 +441,7 @@ void Engine::run() {
         }
 
         if (hd::Time::getElapsedTime(updateTimer) > UPDATE_TIME) {
+            mGUISystem->onFixedUpdate();
             mApp->onFixedUpdate();
             updateTimer = hd::Time::getCurrentTime();
         }

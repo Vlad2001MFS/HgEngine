@@ -5,9 +5,7 @@
 namespace hg {
 
 class GUIImage : public GUIWidget {
-    HG_OBJECT(GUIImage, GUIWidget);
 public:
-    void onSaveLoad(hd::JSON &data, bool isLoad) override;
     void onUpdate(float dt) override;
 
     void setTexture(const Texture2DPtr &texture);

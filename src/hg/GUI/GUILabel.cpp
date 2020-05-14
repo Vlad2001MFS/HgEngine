@@ -7,22 +7,7 @@ namespace hg {
 GUILabel::GUILabel() : mColor(getGUISystem().getSkin().fontColor) {
 }
 
-void GUILabel::onSaveLoad(hd::JSON &data, bool isLoad) {
-    BaseClassName::onSaveLoad(data, isLoad);
-
-    if (isLoad) {
-        mText = data["text"].get<std::string>();
-        mColor = data["color"].get<glm::vec4>();
-    }
-    else {
-        data["text"] = mText;
-        data["color"] = mColor;
-    }
-}
-
 void GUILabel::onUpdate(float dt) {
-    BaseClassName::onUpdate(dt);
-
     if (!mText.empty() && mTexture) {
         getRenderSystem2D().drawTextureGUI(mTexture, getAbsolutePosition(), getSize());
     }

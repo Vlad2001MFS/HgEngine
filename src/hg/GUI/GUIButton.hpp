@@ -1,11 +1,12 @@
 #pragma once
-#include "GUIImage.hpp"
-#include "GUILabel.hpp"
+#include "GUIWidget.hpp"
 
 namespace hg {
 
-class GUIButton : public GUIImage {
-    HG_OBJECT(GUIButton, GUIImage);
+class GUIImage;
+class GUILabel;
+
+class GUIButton : public GUIWidget {
 public:
     GUIButton();
 
@@ -18,6 +19,7 @@ private:
     void mOnMouseEnter();
     void mOnMouseLeave();
 
+    GUIImage *mBgImage;
     GUILabel *mTextLabel;
 };
 

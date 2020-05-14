@@ -29,6 +29,9 @@ GUISystem::GUISystem() {
 }
 
 GUISystem::~GUISystem() {
+    for (auto &it : mFramesDB) {
+        HD_DELETE(it.second);
+    }
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplSDL2_Shutdown();
     ImGui::DestroyContext();
@@ -36,6 +39,25 @@ GUISystem::~GUISystem() {
 
 void GUISystem::onEvent(const WindowEvent &event) {
     ImGui_ImplSDL2_ProcessEvent(&event.sdlEvent);
+
+    if (event.type == WindowEventType::Resize) {
+        for (auto &it : mFramesDB) {
+            it.second->setSize(event.resize.w, event.resize.h);
+        }
+    }
+
+    if (mActiveFrame) {
+        mActiveFrame->mOnEvent(event);
+    }
+}
+
+void GUISystem::onFixedUpdate() {
+    if (mActiveFrame) {
+        mActiveFrame->mOnFixedUpdate();
+    }
+    else {
+        HD_LOG_WARNING("mActiveFrame is nullptr. GUI does not work");
+    }
 }
 
 void GUISystem::onUpdate(float dt) {
@@ -49,6 +71,21 @@ void GUISystem::onUpdate(float dt) {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplSDL2_NewFrame(getEngine().getWindow());
     ImGui::NewFrame();
+
+    if (mActiveFrame) {
+        mActiveFrame->mOnUpdate(dt);
+    }
+}
+
+void GUISystem::setActiveFrame(const std::string &name) {
+    hd::StringHash nameHash = hd::StringHash(name);
+    auto it = mFramesDB.find(nameHash);
+    if (it != mFramesDB.end()) {
+        mActiveFrame = it->second;
+    }
+    else {
+        HD_LOG_ERROR("GUI frame '{}' not found", name);
+    }
 }
 
 FontPtr GUISystem::loadFont(const std::string &path, uint32_t size) {
