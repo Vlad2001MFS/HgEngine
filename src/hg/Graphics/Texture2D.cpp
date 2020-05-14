@@ -24,6 +24,10 @@ Texture2DPtr Texture2D::create(const void *data, const glm::ivec2 &size, Texture
     return std::make_shared<Texture2D>(id, size, format);
 }
 
+Texture2DPtr Texture2D::createFromColor(const glm::vec4 &color) {
+    return create(&color, glm::ivec2(1, 1), TextureFormat::RGBA8);
+}
+
 Texture2DPtr Texture2D::createFromImage(const hd::Image &image) {
     return create(image.getData(), image.getSize(), mGetTextureFormatFromImageFormat(image.getFormat()));
 }

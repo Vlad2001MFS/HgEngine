@@ -15,6 +15,7 @@ public:
     const std::string &getPath() const;
 
     static Texture2DPtr create(const void *data, const glm::ivec2 &size, TextureFormat format);
+    static Texture2DPtr createFromColor(const glm::vec4 &color);
     static Texture2DPtr createFromImage(const hd::Image &image);
     static Texture2DPtr createFromFile(const std::string &path);
 
