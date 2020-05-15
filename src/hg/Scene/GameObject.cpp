@@ -1,4 +1,5 @@
 #include "GameObject.hpp"
+#include "hd/Math/MathUtils.hpp"
 
 namespace hg {
 
@@ -67,6 +68,15 @@ void GameObject::destroyAllComponents() {
         HD_DELETE(it);
     }
     mComponents.clear();
+}
+
+void GameObject::move(float x, float y) {
+    glm::vec2 rotated = hd::MathUtils::rotate2D(x, y, getAbsoluteAngle());
+    translate(rotated.x, rotated.y, 0);
+}
+
+void GameObject::move(const glm::vec2 &offset) {
+    move(offset.x, offset.y);
 }
 
 void GameObject::translate(float x, float y, float z) {
@@ -172,27 +182,32 @@ float GameObject::getAngle() const {
 }
 
 glm::vec3 GameObject::getAbsolutePosition() const {
-    auto rotatedPos = [](const glm::vec3 &p, float a) {
-        return glm::vec3(
-            p.x*cosf(a) - p.y*sin(a),
-            p.y*cosf(a) + p.x*sin(a),
-            p.z
-        );
-    };
-
     glm::vec3 pos = glm::vec3(0, 0, 0);
-    const GameObject *node = this;
-    while (node) {
-        const GameObject *parent = node->getParent();
+    const GameObject *go = this;
+    while (go) {
+        const GameObject *parent = go->getParent();
         if (parent) {
-            pos += rotatedPos(node->getPosition(), parent->getAngle());
+            glm::vec2 p = hd::MathUtils::rotate2D(go->getPosition(), parent->getAbsoluteAngle());
+            pos += glm::vec3(p, go->getPosition().z);
         }
         else {
-            pos += node->getPosition();
+            pos += go->getPosition();
         }
-        node = parent;
+        go = parent;
     }
     return pos;
+}
+
+float GameObject::getAbsoluteAngle() const {
+    float angle = 0.0f;
+
+    const GameObject *go = this;
+    while (go) {
+        angle += go->getAngle();
+        go = go->mParent;
+    }
+
+    return angle;
 }
 
 void GameObject::mOnSaveLoad(hd::JSON &data, bool isLoad) {
@@ -276,7 +291,7 @@ void GameObject::mOnUpdate(float dt) {
 bool GameObject::mAddComponent(Component *component) {
     component->mOwner = this;
     if (!component->onInitialize()) {
-        HD_LOG_ERROR("Failed to add component '{}' which was not successfully initialized", component->getTypeName());
+        HD_LOG_ERROR("Failed to add component '{}' because of it was not successfully initialized", component->getTypeName());
         HD_DELETE(component);
         return false;
     }

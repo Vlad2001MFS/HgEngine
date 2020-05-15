@@ -23,6 +23,8 @@ public:
     void destroyAllChildren();
     void destroyAllComponents();
 
+    void move(float x, float y);
+    void move(const glm::vec2 &offset);
     void translate(float x, float y, float z);
     void translate(const glm::vec3 &offset);
     void scale(float x, float y);
@@ -48,6 +50,7 @@ public:
     const glm::vec2 &getSize() const;
     float getAngle() const;
     glm::vec3 getAbsolutePosition() const;
+    float getAbsoluteAngle() const;
 
 protected:
     void mOnSaveLoad(hd::JSON &data, bool isLoad);
