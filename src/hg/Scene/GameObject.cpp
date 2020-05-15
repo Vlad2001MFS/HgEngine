@@ -1,5 +1,6 @@
 #include "GameObject.hpp"
 #include "hd/Math/MathUtils.hpp"
+#include "hd/IO/FileStream.hpp"
 
 namespace hg {
 
@@ -23,6 +24,26 @@ GameObject *GameObject::createChild(const std::string &name) {
     }
 
     return go;
+}
+
+GameObject *GameObject::createChildFromFile(const std::string &name, const std::string &path) {
+    hd::FileStream file = hd::FileStream(mGetFullPath(path), hd::FileMode::Read);
+    std::string text = file.readAllText();
+
+    hd::JSON data = hd::JSON::parse(text);
+    GameObject *child = createChild(name);
+    child->mOnSaveLoad(data, true);
+    child->mName = name;
+    return child;
+}
+
+void GameObject::saveToFile(const std::string &path) {
+    hd::JSON data;
+    mOnSaveLoad(data, false);
+    std::string text = data.dump(2);
+
+    hd::FileStream file = hd::FileStream(mGetFullPath(path), hd::FileMode::Write);
+    file.writeLine(text);
 }
 
 void GameObject::destroyChild(const std::string &name) {
@@ -286,6 +307,10 @@ void GameObject::mOnUpdate(float dt) {
             it->mOnUpdate(dt);
         }
     }
+}
+
+std::string GameObject::mGetFullPath(const std::string &path) {
+    return "./data/configs/" + path;
 }
 
 bool GameObject::mAddComponent(Component *component) {

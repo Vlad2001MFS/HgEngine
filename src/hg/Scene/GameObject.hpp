@@ -15,6 +15,8 @@ public:
     template<typename T> T *getComponent();
 
     GameObject *createChild(const std::string &name);
+    GameObject *createChildFromFile(const std::string &name, const std::string &path);
+    void saveToFile(const std::string &path);
     void destroyChild(const std::string &name);
 
     Component *createComponent(const hd::StringHash &typeHash);
@@ -59,6 +61,8 @@ protected:
     void mOnUpdate(float dt);
 
 private:
+    static std::string mGetFullPath(const std::string &path);
+
     bool mAddComponent(Component *component);
 
     GameObject *mParent = nullptr;
