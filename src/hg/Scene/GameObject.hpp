@@ -36,7 +36,7 @@ public:
     void setSize(const glm::vec2 &size);
     void setAngle(float angle);
 
-    GameObject *findByName(const std::string &name) const;
+    GameObject *findChildByName(const std::string &name) const;
 
     Component *getComponent(const hd::StringHash &typeHash) const;
     GameObject *getParent() const;

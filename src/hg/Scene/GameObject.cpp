@@ -25,7 +25,7 @@ GameObject *GameObject::createChild(const std::string &name) {
 }
 
 void GameObject::destroyChild(const std::string &name) {
-    GameObject *ptr = findByName(name);
+    GameObject *ptr = findChildByName(name);
     if (ptr) {
         mChildren.erase(std::remove(mChildren.begin(), mChildren.end(), ptr));
         mChildrenByNames.erase(hd::StringHash(name));
@@ -116,7 +116,7 @@ void GameObject::setAngle(float angle) {
     mAngle = angle;
 }
 
-GameObject *GameObject::findByName(const std::string &name) const {
+GameObject *GameObject::findChildByName(const std::string &name) const {
     if (name.empty()) {
         HD_LOG_FATAL("Invalid name '{}'", name);
     }
