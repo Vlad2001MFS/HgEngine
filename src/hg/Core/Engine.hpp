@@ -11,6 +11,7 @@ class RenderDevice;
 class RenderSystem2D;
 class GUISystem;
 class SoundSystem;
+class Scene;
 
 struct EngineCreateInfo {
     std::string title = "HgEngine Application";
@@ -69,6 +70,7 @@ public:
     RenderSystem2D &getRenderSystem2D();
     GUISystem &getGUISystem();
     SoundSystem &getSoundSystem();
+    Scene &getScene();
 
 private:
     EngineCreateInfo mCreateInfo;
@@ -84,6 +86,7 @@ private:
     RenderSystem2D *mRenderSystem2D;
     GUISystem *mGUISystem;
     SoundSystem *mSoundSystem;
+    Scene *mScene;
 };
 
 Engine &getEngine();

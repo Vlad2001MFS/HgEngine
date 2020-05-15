@@ -2,11 +2,11 @@
 
 namespace hg {
 
-Component::Component() {
-    mOwner = nullptr;
+void Component::onSaveLoad(hd::JSON &data, bool isLoad) {
 }
 
-void Component::onSaveLoad(hd::JSON &data, bool isLoad) {
+bool Component::onInitialize() {
+    return true;
 }
 
 void Component::onEvent(const WindowEvent &event) {
@@ -18,7 +18,7 @@ void Component::onFixedUpdate() {
 void Component::onUpdate(float dt) {
 }
 
-Node *Component::getOwner() const {
+GameObject *Component::getOwner() const {
     return mOwner;
 }
 

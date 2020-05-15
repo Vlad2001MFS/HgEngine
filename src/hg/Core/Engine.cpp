@@ -3,6 +3,7 @@
 #include "../Renderer2D/RenderSystem2D.hpp"
 #include "../GUI/GUISystem.hpp"
 #include "../Sound/SoundSystem.hpp"
+#include "../Scene/Scene.hpp"
 #include "hd/Core/Time.hpp"
 
 namespace hg {
@@ -404,11 +405,13 @@ void Engine::initialize(const EngineCreateInfo &createInfo, const hd::StringHash
     mRenderSystem2D = new RenderSystem2D();
     mGUISystem = new GUISystem();
     mSoundSystem = new SoundSystem();
+    mScene = new Scene();
     mApp = HG_CREATE_OBJECT(appHash, BaseApp);
 }
 
 void Engine::shutdown() {
     HD_DELETE(mApp);
+    HD_DELETE(mScene);
     HD_DELETE(mSoundSystem);
     HD_DELETE(mGUISystem);
     HD_DELETE(mRenderSystem2D);
@@ -433,6 +436,7 @@ void Engine::run() {
 
             WindowEvent e = sdlEventToWindowEvent(event);
             mGUISystem->onEvent(e);
+            mScene->onEvent(e);
             mApp->onEvent(e);
         }
 
@@ -442,6 +446,7 @@ void Engine::run() {
 
         if (hd::Time::getElapsedTime(updateTimer) > UPDATE_TIME) {
             mGUISystem->onFixedUpdate();
+            mScene->onFixedUpdate();
             mApp->onFixedUpdate();
             updateTimer = hd::Time::getCurrentTime();
         }
@@ -449,6 +454,7 @@ void Engine::run() {
         float dt = mFPSCounter.getFrameTime()*0.001f;
         mRenderSystem2D->onUpdate(dt);
         mGUISystem->onUpdate(dt);
+        mScene->onUpdate(dt);
         mApp->onUpdate(dt);
 
         SDL_GL_SwapWindow(mWindow);
@@ -565,6 +571,10 @@ GUISystem &Engine::getGUISystem() {
 
 SoundSystem &Engine::getSoundSystem() {
     return *mSoundSystem;
+}
+
+Scene &Engine::getScene() {
+    return *mScene;
 }
 
 Engine &getEngine() {

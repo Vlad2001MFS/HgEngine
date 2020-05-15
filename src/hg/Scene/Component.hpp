@@ -1,28 +1,27 @@
 #pragma once
-#include "Object.hpp"
-#include "hd/Core/JSON.hpp"
+#include "../Core/Object.hpp"
 #include "../Core/WindowEvent.hpp"
+#include "hd/Core/JSON.hpp"
 
 namespace hg {
 
-class Node;
+class GameObject;
 
 class Component : public Object {
     HG_OBJECT(Component, Object);
 
-    friend class Node;
+    friend class GameObject;
 public:
-    Component();
-
     virtual void onSaveLoad(hd::JSON &data, bool isLoad);
+    virtual bool onInitialize();
     virtual void onEvent(const WindowEvent &event);
     virtual void onFixedUpdate();
     virtual void onUpdate(float dt);
 
-    Node *getOwner() const;
+    GameObject *getOwner() const;
 
 private:
-    Node *mOwner;
+    GameObject *mOwner = nullptr;
 };
 
 }
