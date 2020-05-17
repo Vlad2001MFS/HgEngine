@@ -92,7 +92,7 @@ void GameObject::destroyAllComponents() {
 }
 
 void GameObject::move(float x, float y) {
-    translate(hd::MathUtils::rotate2D(x, y, getAbsoluteAngle()));
+    translate(hd::MathUtils::rotate2D(x, y, getWorldAngle()));
 }
 
 void GameObject::move(const glm::vec2 &offset) {
@@ -132,6 +132,15 @@ void GameObject::setPosition(const glm::vec2 &pos) {
     setPosition(pos.x, pos.y);
 }
 
+void GameObject::setWorldPosition(const glm::vec2 &pos) {
+    if (mParent) {
+        setPosition(pos - mParent->getWorldPosition());
+    }
+    else {
+        setPosition(pos);
+    }
+}
+
 void GameObject::setSize(float x, float y) {
     mSize.x = x;
     mSize.y = y;
@@ -143,6 +152,15 @@ void GameObject::setSize(const glm::vec2 &size) {
 
 void GameObject::setAngle(float angle) {
     mAngle = angle;
+}
+
+void GameObject::setWorldAngle(float angle) {
+    if (mParent) {
+        setAngle(angle - mParent->getWorldAngle());
+    }
+    else {
+        setAngle(angle);
+    }
 }
 
 GameObject *GameObject::findChildByName(const std::string &name) const {
@@ -200,13 +218,13 @@ float GameObject::getAngle() const {
     return mAngle;
 }
 
-glm::vec2 GameObject::getAbsolutePosition() const {
+glm::vec2 GameObject::getWorldPosition() const {
     glm::vec2 pos = glm::vec2(0, 0);
     const GameObject *go = this;
     while (go) {
         const GameObject *parent = go->getParent();
         if (parent) {
-            pos += hd::MathUtils::rotate2D(go->getPosition(), parent->getAbsoluteAngle());
+            pos += hd::MathUtils::rotate2D(go->getPosition(), parent->getWorldAngle());
         }
         else {
             pos += go->getPosition();
@@ -216,7 +234,7 @@ glm::vec2 GameObject::getAbsolutePosition() const {
     return pos;
 }
 
-float GameObject::getAbsoluteAngle() const {
+float GameObject::getWorldAngle() const {
     float angle = 0.0f;
 
     const GameObject *go = this;

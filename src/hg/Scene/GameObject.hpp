@@ -36,9 +36,11 @@ public:
     void setActive(bool active);
     void setPosition(float x, float y);
     void setPosition(const glm::vec2 &pos);
+    void setWorldPosition(const glm::vec2 &pos);
     void setSize(float x, float y);
     void setSize(const glm::vec2 &size);
     void setAngle(float angle);
+    void setWorldAngle(float angle);
 
     GameObject *findChildByName(const std::string &name) const;
     Component *findComponent(const hd::StringHash &typeHash) const;
@@ -51,8 +53,8 @@ public:
     const glm::vec2 &getPosition() const;
     const glm::vec2 &getSize() const;
     float getAngle() const;
-    glm::vec2 getAbsolutePosition() const;
-    float getAbsoluteAngle() const;
+    glm::vec2 getWorldPosition() const;
+    float getWorldAngle() const;
 
 protected:
     void mOnSaveLoad(hd::JSON &data, bool isLoad);
