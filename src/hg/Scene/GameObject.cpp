@@ -159,7 +159,7 @@ GameObject *GameObject::findChildByName(const std::string &name) const {
     return it->second;
 }
 
-Component *GameObject::getComponent(const hd::StringHash &typeHash) const {
+Component *GameObject::findComponent(const hd::StringHash &typeHash) const {
     auto it = std::find_if(mComponents.begin(), mComponents.end(), [&](Component *comp) { return comp->getTypeHash() == typeHash; });
     if (it != mComponents.end()) {
         return *it;

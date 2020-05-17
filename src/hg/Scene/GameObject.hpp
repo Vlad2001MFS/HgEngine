@@ -12,7 +12,7 @@ public:
 
     template<typename T> T *createComponent();
     template<typename T> void destroyComponent();
-    template<typename T> T *getComponent();
+    template<typename T> T *findComponent();
 
     GameObject *createChild(const std::string &name);
     GameObject *createChildFromFile(const std::string &name, const std::string &path);
@@ -41,8 +41,8 @@ public:
     void setAngle(float angle);
 
     GameObject *findChildByName(const std::string &name) const;
+    Component *findComponent(const hd::StringHash &typeHash) const;
 
-    Component *getComponent(const hd::StringHash &typeHash) const;
     GameObject *getParent() const;
     const std::vector<GameObject*> &getChildren() const;
     const std::unordered_map<hd::StringHash, GameObject*> &getChildrenByNames() const;
@@ -93,8 +93,8 @@ void GameObject::destroyComponent() {
 }
 
 template<typename T>
-T *GameObject::getComponent() {
-    Component *c = getComponent(T::getStaticTypeHash());
+T *GameObject::findComponent() {
+    Component *c = findComponent(T::getStaticTypeHash());
     return c->as<T>();
 }
 
