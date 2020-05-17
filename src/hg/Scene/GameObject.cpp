@@ -1,4 +1,5 @@
 #include "GameObject.hpp"
+#include "Scene.hpp"
 #include "hd/Math/MathUtils.hpp"
 #include "hd/IO/FileStream.hpp"
 
@@ -257,15 +258,15 @@ void GameObject::mOnSaveLoad(hd::JSON &data, bool isLoad) {
         setSize(data["size"]);
         setAngle(data["angle"]);
 
-        for (auto &it : children) {
-            GameObject *child = createChild(it["name"].get<std::string>());
-            child->mOnSaveLoad(it, isLoad);
-        }
-
         for (auto &it : components.items()) {
             std::string compName = it.key();
             Component *comp = createComponent(hd::StringHash(compName));
             comp->onSaveLoad(it.value(), isLoad);
+        }
+
+        for (auto &it : children) {
+            GameObject *child = createChild(it["name"].get<std::string>());
+            child->mOnSaveLoad(it, isLoad);
         }
     }
     else {
@@ -275,15 +276,15 @@ void GameObject::mOnSaveLoad(hd::JSON &data, bool isLoad) {
         data["size"] = getSize();
         data["angle"] = getAngle();
 
+        for (const auto &it : mComponents) {
+            hd::JSON &comp = components[it->getTypeName()];
+            it->onSaveLoad(comp, isLoad);
+        }
+
         for (const auto &it : mChildren) {
             hd::JSON child;
             it->mOnSaveLoad(child, isLoad);
             children.push_back(child);
-        }
-
-        for (const auto &it : mComponents) {
-            hd::JSON &comp = components[it->getTypeName()];
-            it->onSaveLoad(comp, isLoad);
         }
     }
 }
@@ -329,18 +330,13 @@ std::string GameObject::mGetFullPath(const std::string &path) {
 }
 
 bool GameObject::mAddComponent(Component *component) {
-    component->mOwner = this;
-    if (!component->onInitialize()) {
-        HD_LOG_ERROR("Failed to add component '{}' because of it was not successfully initialized", component->getTypeName());
-        HD_DELETE(component);
-        return false;
-    }
-
     auto it = std::find_if(mComponents.begin(), mComponents.end(), [&](Component *comp) {
         return comp->getTypeHash() == component->getTypeHash();
     });
     if (it == mComponents.end()) {
+        component->mOwner = this;
         mComponents.push_back(component);
+        getScene().mOnAddComponent(component);
         return true;
     }
     else {

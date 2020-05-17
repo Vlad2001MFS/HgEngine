@@ -13,6 +13,11 @@ void Scene::onFixedUpdate() {
 }
 
 void Scene::onUpdate(float dt) {
+    for (auto &component : mComponentsForFirstUpdate) {
+        component->onFirstUpdate();
+    }
+    mComponentsForFirstUpdate.clear();
+
     mOnUpdate(dt);
 }
 
@@ -42,6 +47,10 @@ void Scene::load(const std::string &path) {
 
 std::string Scene::mGetFullPath(const std::string &path) {
     return "./data/levels/" + path;
+}
+
+void Scene::mOnAddComponent(Component *component) {
+    mComponentsForFirstUpdate.push_back(component);
 }
 
 Scene &getScene() {

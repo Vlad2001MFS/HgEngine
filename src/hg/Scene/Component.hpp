@@ -13,7 +13,7 @@ class Component : public Object {
     friend class GameObject;
 public:
     virtual void onSaveLoad(hd::JSON &data, bool isLoad);
-    virtual bool onInitialize();
+    virtual void onFirstUpdate();
     virtual void onEvent(const WindowEvent &event);
     virtual void onFixedUpdate();
     virtual void onUpdate(float dt);

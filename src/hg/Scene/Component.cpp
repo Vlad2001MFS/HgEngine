@@ -5,8 +5,7 @@ namespace hg {
 void Component::onSaveLoad(hd::JSON &data, bool isLoad) {
 }
 
-bool Component::onInitialize() {
-    return true;
+void Component::onFirstUpdate() {
 }
 
 void Component::onEvent(const WindowEvent &event) {

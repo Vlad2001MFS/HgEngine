@@ -4,6 +4,7 @@
 namespace hg {
 
 class Scene : public GameObject {
+    friend class GameObject;
 public:
     void onEvent(const WindowEvent &event);
     void onFixedUpdate();
@@ -15,6 +16,10 @@ public:
 
 private:
     static std::string mGetFullPath(const std::string &path);
+
+    void mOnAddComponent(Component *component);
+
+    std::vector<Component*> mComponentsForFirstUpdate;
 };
 
 Scene &getScene();
