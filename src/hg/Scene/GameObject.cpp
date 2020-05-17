@@ -92,20 +92,19 @@ void GameObject::destroyAllComponents() {
 }
 
 void GameObject::move(float x, float y) {
-    glm::vec2 rotated = hd::MathUtils::rotate2D(x, y, getAbsoluteAngle());
-    translate(rotated.x, rotated.y, 0);
+    translate(hd::MathUtils::rotate2D(x, y, getAbsoluteAngle()));
 }
 
 void GameObject::move(const glm::vec2 &offset) {
     move(offset.x, offset.y);
 }
 
-void GameObject::translate(float x, float y, float z) {
-    setPosition(mPos.x + x, mPos.y + y, mPos.z + z);
+void GameObject::translate(float x, float y) {
+    setPosition(mPos.x + x, mPos.y + y);
 }
 
-void GameObject::translate(const glm::vec3 &offset) {
-    translate(offset.x, offset.y, offset.z);
+void GameObject::translate(const glm::vec2 &offset) {
+    translate(offset.x, offset.y);
 }
 
 void GameObject::scale(float x, float y) {
@@ -124,14 +123,13 @@ void GameObject::setActive(bool active) {
     mIsActive = active;
 }
 
-void GameObject::setPosition(float x, float y, float z) {
+void GameObject::setPosition(float x, float y) {
     mPos.x = x;
     mPos.y = y;
-    mPos.z = z;
 }
 
-void GameObject::setPosition(const glm::vec3 &pos) {
-    setPosition(pos.x, pos.y, pos.z);
+void GameObject::setPosition(const glm::vec2 &pos) {
+    setPosition(pos.x, pos.y);
 }
 
 void GameObject::setSize(float x, float y) {
@@ -190,7 +188,7 @@ bool GameObject::isActive() const {
     return mIsActive;
 }
 
-const glm::vec3 &GameObject::getPosition() const {
+const glm::vec2 &GameObject::getPosition() const {
     return mPos;
 }
 
@@ -202,14 +200,13 @@ float GameObject::getAngle() const {
     return mAngle;
 }
 
-glm::vec3 GameObject::getAbsolutePosition() const {
-    glm::vec3 pos = glm::vec3(0, 0, 0);
+glm::vec2 GameObject::getAbsolutePosition() const {
+    glm::vec2 pos = glm::vec2(0, 0);
     const GameObject *go = this;
     while (go) {
         const GameObject *parent = go->getParent();
         if (parent) {
-            glm::vec2 p = hd::MathUtils::rotate2D(go->getPosition(), parent->getAbsoluteAngle());
-            pos += glm::vec3(p, go->getPosition().z);
+            pos += hd::MathUtils::rotate2D(go->getPosition(), parent->getAbsoluteAngle());
         }
         else {
             pos += go->getPosition();

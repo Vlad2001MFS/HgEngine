@@ -27,15 +27,15 @@ public:
 
     void move(float x, float y);
     void move(const glm::vec2 &offset);
-    void translate(float x, float y, float z);
-    void translate(const glm::vec3 &offset);
+    void translate(float x, float y);
+    void translate(const glm::vec2 &offset);
     void scale(float x, float y);
     void scale(const glm::vec2 &size);
     void rotate(float angle);
 
     void setActive(bool active);
-    void setPosition(float x, float y, float z);
-    void setPosition(const glm::vec3 &pos);
+    void setPosition(float x, float y);
+    void setPosition(const glm::vec2 &pos);
     void setSize(float x, float y);
     void setSize(const glm::vec2 &size);
     void setAngle(float angle);
@@ -48,10 +48,10 @@ public:
     const std::unordered_map<hd::StringHash, GameObject*> &getChildrenByNames() const;
     const std::string &getName() const;
     bool isActive() const;
-    const glm::vec3 &getPosition() const;
+    const glm::vec2 &getPosition() const;
     const glm::vec2 &getSize() const;
     float getAngle() const;
-    glm::vec3 getAbsolutePosition() const;
+    glm::vec2 getAbsolutePosition() const;
     float getAbsoluteAngle() const;
 
 protected:
@@ -71,7 +71,7 @@ private:
     std::vector<Component*> mComponents;
     std::string mName = "";
     bool mIsActive = true;
-    glm::vec3 mPos = glm::vec3(0, 0, 0);
+    glm::vec2 mPos = glm::vec3(0, 0, 0);
     glm::vec2 mSize = glm::vec2(0, 0);
     float mAngle = 0.0f;
 };
