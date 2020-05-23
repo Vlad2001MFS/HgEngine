@@ -94,12 +94,12 @@ T *GameObject::createComponent() {
 
 template<typename T>
 void GameObject::destroyComponent() {
-    destroyComponent(T::getStaticTypeHash());
+    destroyComponent(T::getTypeHashStatic());
 }
 
 template<typename T>
 T *GameObject::findComponent() {
-    Component *c = findComponent(T::getStaticTypeHash());
+    Component *c = findComponent(T::getTypeHashStatic());
     return c->as<T>();
 }
 
