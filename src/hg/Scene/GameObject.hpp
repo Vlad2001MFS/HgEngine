@@ -99,8 +99,8 @@ void GameObject::destroyComponent() {
 
 template<typename T>
 T *GameObject::findComponent() {
-    Component *c = findComponent(T::getTypeHashStatic());
-    return c->as<T>();
+    Component *component = findComponent(T::getTypeHashStatic());
+    return component ? component->as<T>() : nullptr;
 }
 
 }
