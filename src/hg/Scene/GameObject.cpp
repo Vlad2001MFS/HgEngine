@@ -92,14 +92,6 @@ void GameObject::destroyAllComponents() {
     mComponents.clear();
 }
 
-void GameObject::move(float x, float y) {
-    translate(hd::MathUtils::rotate2D(x, y, getWorldAngle()));
-}
-
-void GameObject::move(const glm::vec2 &offset) {
-    move(offset.x, offset.y);
-}
-
 void GameObject::translate(float x, float y) {
     setPosition(mPos.x + x, mPos.y + y);
 }

@@ -25,8 +25,6 @@ public:
     void destroyAllChildren();
     void destroyAllComponents();
 
-    void move(float x, float y);
-    void move(const glm::vec2 &offset);
     void translate(float x, float y);
     void translate(const glm::vec2 &offset);
     void scale(float x, float y);
