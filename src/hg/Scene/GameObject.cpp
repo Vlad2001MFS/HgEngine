@@ -127,6 +127,7 @@ void GameObject::setActive(bool active) {
 void GameObject::setPosition(float x, float y) {
     mPos.x = x;
     mPos.y = y;
+    mUpdateTransform(true, false);
 }
 
 void GameObject::setPosition(const glm::vec2 &pos) {
@@ -153,6 +154,7 @@ void GameObject::setSize(const glm::vec2 &size) {
 
 void GameObject::setAngle(float angle) {
     mAngle = angle;
+    mUpdateTransform(false, true);
 }
 
 void GameObject::setWorldAngle(float angle) {
@@ -211,6 +213,10 @@ const glm::vec2 &GameObject::getPosition() const {
     return mPos;
 }
 
+const glm::vec2 &GameObject::getWorldPosition() const {
+    return mWorldPos;
+}
+
 const glm::vec2 &GameObject::getSize() const {
     return mSize;
 }
@@ -219,33 +225,9 @@ float GameObject::getAngle() const {
     return mAngle;
 }
 
-glm::vec2 GameObject::getWorldPosition() const {
-    glm::vec2 pos = glm::vec2(0, 0);
-    const GameObject *go = this;
-    while (go) {
-        const GameObject *parent = go->getParent();
-        if (parent) {
-            pos += hd::MathUtils::rotate2D(go->getPosition(), parent->getWorldAngle());
-        }
-        else {
-            pos += go->getPosition();
-        }
-        go = parent;
-    }
-    return pos;
-}
-
 float GameObject::getWorldAngle() const {
-    float angle = 0.0f;
-
-    const GameObject *go = this;
-    while (go) {
-        angle += go->getAngle();
-        go = go->mParent;
+    return mWorldAngle;
     }
-
-    return angle;
-}
 
 void GameObject::mOnSaveLoad(hd::JSON &data, bool isLoad) {
     hd::JSON &components = data["components"];
@@ -346,4 +328,29 @@ bool GameObject::mAddComponent(Component *component) {
     }
 }
 
+void GameObject::mUpdateTransform(bool isPosUpdate, bool isAngleUpdate) {
+    if (isPosUpdate) {
+        mWorldPos = glm::vec2(0, 0);
+        const GameObject *go = this;
+        while (go) {
+            const GameObject *parent = go->getParent();
+            if (parent) {
+                mWorldPos += hd::MathUtils::rotate2D(go->getPosition(), parent->getWorldAngle());
+            }
+            else {
+                mWorldPos += go->getPosition();
+            }
+            go = parent;
+        }
+    }
+
+    if (isAngleUpdate) {
+        mWorldAngle = 0.0f;
+        const GameObject *go = this;
+        while (go) {
+            mWorldAngle += go->getAngle();
+            go = go->mParent;
+        }
+    }
+}
 }

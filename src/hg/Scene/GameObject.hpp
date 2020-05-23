@@ -51,9 +51,9 @@ public:
     const std::string &getName() const;
     bool isActive() const;
     const glm::vec2 &getPosition() const;
+    const glm::vec2 &getWorldPosition() const;
     const glm::vec2 &getSize() const;
     float getAngle() const;
-    glm::vec2 getWorldPosition() const;
     float getWorldAngle() const;
 
 protected:
@@ -66,6 +66,7 @@ private:
     static std::string mGetFullPath(const std::string &path);
 
     bool mAddComponent(Component *component);
+    void mUpdateTransform(bool isPosUpdate, bool isAngleUpdate);
 
     GameObject *mParent = nullptr;
     std::vector<GameObject*> mChildren;
@@ -73,9 +74,11 @@ private:
     std::vector<Component*> mComponents;
     std::string mName = "";
     bool mIsActive = true;
-    glm::vec2 mPos = glm::vec3(0, 0, 0);
+    glm::vec2 mPos = glm::vec2(0, 0);
     glm::vec2 mSize = glm::vec2(0, 0);
     float mAngle = 0.0f;
+    glm::vec2 mWorldPos = glm::vec2(0, 0);
+    float mWorldAngle = 0.0f;
 };
 
 template<typename T>
