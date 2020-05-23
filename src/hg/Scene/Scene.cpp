@@ -22,8 +22,8 @@ void Scene::onUpdate(float dt) {
 }
 
 void Scene::clear() {
-    destroyAllComponents();
     destroyAllChildren();
+    destroyAllComponents();
 }
 
 void Scene::save(const std::string &path) {
