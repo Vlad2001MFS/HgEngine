@@ -11,7 +11,7 @@ void Component::onCreate() {
 void Component::onFirstUpdate() {
 }
 
-void Component::onTransformUpdate(bool isPosUpdate, bool isAngleUpdate) {
+void Component::onTransformUpdate(bool isPosUpdate, bool isSizeUpdate, bool isAngleUpdate) {
 }
 
 void Component::onEvent(const WindowEvent &event) {

@@ -127,7 +127,7 @@ void GameObject::setActive(bool active) {
 void GameObject::setPosition(float x, float y) {
     mPos.x = x;
     mPos.y = y;
-    mUpdateTransform(true, false);
+    mUpdateTransform(true, false, false);
 }
 
 void GameObject::setPosition(const glm::vec2 &pos) {
@@ -146,6 +146,7 @@ void GameObject::setWorldPosition(const glm::vec2 &pos) {
 void GameObject::setSize(float x, float y) {
     mSize.x = x;
     mSize.y = y;
+    mUpdateTransform(false, true, false);
 }
 
 void GameObject::setSize(const glm::vec2 &size) {
@@ -154,7 +155,7 @@ void GameObject::setSize(const glm::vec2 &size) {
 
 void GameObject::setAngle(float angle) {
     mAngle = angle;
-    mUpdateTransform(false, true);
+    mUpdateTransform(false, false, true);
 }
 
 void GameObject::setWorldAngle(float angle) {
@@ -329,7 +330,7 @@ bool GameObject::mAddComponent(Component *component) {
     }
 }
 
-void GameObject::mUpdateTransform(bool isPosUpdate, bool isAngleUpdate) {
+void GameObject::mUpdateTransform(bool isPosUpdate, bool isSizeUpdate, bool isAngleUpdate) {
     if (isPosUpdate) {
         mWorldPos = glm::vec2(0, 0);
         const GameObject *go = this;
@@ -355,7 +356,7 @@ void GameObject::mUpdateTransform(bool isPosUpdate, bool isAngleUpdate) {
     }
 
     for (auto &component : mComponents) {
-        component->onTransformUpdate(isPosUpdate, isAngleUpdate);
+        component->onTransformUpdate(isPosUpdate, isSizeUpdate, isAngleUpdate);
     }
 }
 
