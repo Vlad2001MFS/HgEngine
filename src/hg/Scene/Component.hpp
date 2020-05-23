@@ -14,7 +14,7 @@ public:
     virtual void onSaveLoad(hd::JSON &data, bool isLoad);
     virtual void onCreate();
     virtual void onFirstUpdate();
-    virtual void onTransformUpdate(bool isPosUpdate, bool isSizeUpdate, bool isAngleUpdate);
+    virtual void onTransformUpdate();
     virtual void onEvent(const WindowEvent &event);
     virtual void onFixedUpdate();
     virtual void onUpdate(float dt);

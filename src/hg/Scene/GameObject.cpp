@@ -119,7 +119,7 @@ void GameObject::setActive(bool active) {
 void GameObject::setPosition(float x, float y) {
     mPos.x = x;
     mPos.y = y;
-    mUpdateTransform(true, false, false);
+    mUpdateTransform();
 }
 
 void GameObject::setPosition(const glm::vec2 &pos) {
@@ -128,7 +128,7 @@ void GameObject::setPosition(const glm::vec2 &pos) {
 
 void GameObject::setWorldPosition(const glm::vec2 &pos) {
     if (mParent) {
-        setPosition(pos - mParent->getWorldPosition());
+        setPosition(hd::MathUtils::rotate2D(pos - mParent->getWorldPosition(), -mParent->getWorldAngle()));
     }
     else {
         setPosition(pos);
@@ -138,7 +138,7 @@ void GameObject::setWorldPosition(const glm::vec2 &pos) {
 void GameObject::setSize(float x, float y) {
     mSize.x = x;
     mSize.y = y;
-    mUpdateTransform(false, true, false);
+    mUpdateTransform();
 }
 
 void GameObject::setSize(const glm::vec2 &size) {
@@ -147,7 +147,7 @@ void GameObject::setSize(const glm::vec2 &size) {
 
 void GameObject::setAngle(float angle) {
     mAngle = angle;
-    mUpdateTransform(false, false, true);
+    mUpdateTransform();
 }
 
 void GameObject::setWorldAngle(float angle) {
@@ -322,33 +322,28 @@ bool GameObject::mAddComponent(Component *component) {
     }
 }
 
-void GameObject::mUpdateTransform(bool isPosUpdate, bool isSizeUpdate, bool isAngleUpdate) {
-    if (isPosUpdate) {
-        mWorldPos = glm::vec2(0, 0);
-        const GameObject *go = this;
-        while (go) {
-            const GameObject *parent = go->getParent();
-            if (parent) {
-                mWorldPos += hd::MathUtils::rotate2D(go->getPosition(), parent->getWorldAngle());
-            }
-            else {
-                mWorldPos += go->getPosition();
-            }
-            go = parent;
+void GameObject::mUpdateTransform() {
+    mWorldPos = glm::vec2(0, 0);
+    mWorldAngle = 0.0f;
+    const GameObject *go = this;
+    while (go) {
+        const GameObject *parent = go->getParent();
+        if (parent) {
+            mWorldPos += hd::MathUtils::rotate2D(go->getPosition(), parent->getWorldAngle());
         }
-    }
-
-    if (isAngleUpdate) {
-        mWorldAngle = 0.0f;
-        const GameObject *go = this;
-        while (go) {
-            mWorldAngle += go->getAngle();
-            go = go->mParent;
+        else {
+            mWorldPos += go->getPosition();
         }
+        mWorldAngle += go->getAngle();
+        go = parent;
     }
 
     for (auto &component : mComponents) {
-        component->onTransformUpdate(isPosUpdate, isSizeUpdate, isAngleUpdate);
+        component->onTransformUpdate();
+    }
+
+    for (auto &child : mChildren) {
+        child->mUpdateTransform();
     }
 }
 

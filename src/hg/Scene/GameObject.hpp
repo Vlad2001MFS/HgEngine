@@ -64,7 +64,7 @@ private:
     static std::string mGetFullPath(const std::string &path);
 
     bool mAddComponent(Component *component);
-    void mUpdateTransform(bool isPosUpdate, bool isSizeUpdate, bool isAngleUpdate);
+    void mUpdateTransform();
 
     GameObject *mParent = nullptr;
     std::vector<GameObject*> mChildren;
