@@ -6,8 +6,8 @@
 namespace hg {
 
 GameObject::~GameObject() {
-    destroyAllComponents();
     destroyAllChildren();
+    destroyAllComponents();
 }
 
 GameObject *GameObject::createChild(const std::string &name) {
