@@ -5,6 +5,9 @@ namespace hg {
 void Component::onSaveLoad(hd::JSON &data, bool isLoad) {
 }
 
+void Component::onCreate() {
+}
+
 void Component::onFirstUpdate() {
 }
 

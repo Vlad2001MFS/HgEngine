@@ -319,6 +319,7 @@ bool GameObject::mAddComponent(Component *component) {
         component->mOwner = this;
         mComponents.push_back(component);
         getScene().mOnAddComponent(component);
+        component->onCreate();
         return true;
     }
     else {
