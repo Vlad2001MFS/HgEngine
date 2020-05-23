@@ -21,4 +21,5 @@ target_link_libraries(HgEngine PUBLIC
     "SDL2_ttf"
     "GL"
     "GLEW"
+    "Box2D"
 )
