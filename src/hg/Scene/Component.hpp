@@ -14,6 +14,7 @@ class Component : public Object {
 public:
     virtual void onSaveLoad(hd::JSON &data, bool isLoad);
     virtual void onFirstUpdate();
+    virtual void onTransformUpdate(bool isPosUpdate, bool isAngleUpdate);
     virtual void onEvent(const WindowEvent &event);
     virtual void onFixedUpdate();
     virtual void onUpdate(float dt);

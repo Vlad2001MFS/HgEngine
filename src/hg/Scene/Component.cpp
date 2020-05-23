@@ -8,6 +8,9 @@ void Component::onSaveLoad(hd::JSON &data, bool isLoad) {
 void Component::onFirstUpdate() {
 }
 
+void Component::onTransformUpdate(bool isPosUpdate, bool isAngleUpdate) {
+}
+
 void Component::onEvent(const WindowEvent &event) {
 }
 

@@ -227,7 +227,7 @@ float GameObject::getAngle() const {
 
 float GameObject::getWorldAngle() const {
     return mWorldAngle;
-    }
+}
 
 void GameObject::mOnSaveLoad(hd::JSON &data, bool isLoad) {
     hd::JSON &components = data["components"];
@@ -352,5 +352,10 @@ void GameObject::mUpdateTransform(bool isPosUpdate, bool isAngleUpdate) {
             go = go->mParent;
         }
     }
+
+    for (auto &component : mComponents) {
+        component->onTransformUpdate(isPosUpdate, isAngleUpdate);
+    }
 }
+
 }
