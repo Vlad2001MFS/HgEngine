@@ -14,10 +14,10 @@ public:
     template<typename T> void destroyComponent();
     template<typename T> T *findComponent();
 
-    GameObject *createChild(const std::string &name);
-    GameObject *createChildFromFile(const std::string &name, const std::string &path);
+    GameObject *createChild();
+    GameObject *createChildFromFile(const std::string &path);
     void saveToFile(const std::string &path);
-    void destroyChild(const std::string &name);
+    void destroyChild(GameObject *go);
 
     Component *createComponent(const hd::StringHash &typeHash);
     void destroyComponent(const hd::StringHash &typeHash);
@@ -31,6 +31,7 @@ public:
     void scale(const glm::vec2 &size);
     void rotate(float angle);
 
+    void setName(const std::string &name);
     void setActive(bool active);
     void setPosition(float x, float y);
     void setPosition(const glm::vec2 &pos);
@@ -45,8 +46,8 @@ public:
 
     GameObject *getParent() const;
     const std::vector<GameObject*> &getChildren() const;
-    const std::unordered_map<hd::StringHash, GameObject*> &getChildrenByNames() const;
     const std::string &getName() const;
+    const hd::StringHash &getNameHash() const;
     bool isActive() const;
     const glm::vec2 &getPosition() const;
     const glm::vec2 &getWorldPosition() const;
@@ -68,9 +69,9 @@ private:
 
     GameObject *mParent = nullptr;
     std::vector<GameObject*> mChildren;
-    std::unordered_map<hd::StringHash, GameObject*> mChildrenByNames;
     std::vector<Component*> mComponents;
     std::string mName = "";
+    hd::StringHash mNameHash;
     bool mIsActive = true;
     glm::vec2 mPos = glm::vec2(0, 0);
     glm::vec2 mSize = glm::vec2(0, 0);

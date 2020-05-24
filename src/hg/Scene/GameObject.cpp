@@ -10,31 +10,20 @@ GameObject::~GameObject() {
     destroyAllComponents();
 }
 
-GameObject *GameObject::createChild(const std::string &name) {
-    hd::StringHash nameHash = hd::StringHash(name);
-    if (!name.empty() && mChildrenByNames.count(nameHash) != 0) {
-        HD_LOG_FATAL("Failed to create child '{}'", name);
-    }
-
+GameObject *GameObject::createChild() {
     GameObject *go = new GameObject();
     mChildren.push_back(go);
     go->mParent = this;
-    go->mName = name;
-    if (!name.empty()) {
-        mChildrenByNames.insert(std::make_pair(nameHash, go));
-    }
-
     return go;
 }
 
-GameObject *GameObject::createChildFromFile(const std::string &name, const std::string &path) {
+GameObject *GameObject::createChildFromFile(const std::string &path) {
     hd::FileStream file = hd::FileStream(mGetFullPath(path), hd::FileMode::Read);
     std::string text = file.readAllText();
 
     hd::JSON data = hd::JSON::parse(text);
-    GameObject *child = createChild(name);
+    GameObject *child = createChild();
     child->mOnSaveLoad(data, true);
-    child->mName = name;
     return child;
 }
 
@@ -47,12 +36,10 @@ void GameObject::saveToFile(const std::string &path) {
     file.writeLine(text);
 }
 
-void GameObject::destroyChild(const std::string &name) {
-    GameObject *ptr = findChildByName(name);
-    if (ptr) {
-        mChildren.erase(std::remove(mChildren.begin(), mChildren.end(), ptr));
-        mChildrenByNames.erase(hd::StringHash(name));
-        delete ptr;
+void GameObject::destroyChild(GameObject *go) {
+    if (go) {
+        mChildren.erase(std::remove(mChildren.begin(), mChildren.end(), go), mChildren.end());
+        HD_DELETE(go);
     }
 }
 
@@ -82,7 +69,6 @@ void GameObject::destroyAllChildren() {
         HD_DELETE(it);
     }
     mChildren.clear();
-    mChildrenByNames.clear();
 }
 
 void GameObject::destroyAllComponents() {
@@ -110,6 +96,11 @@ void GameObject::scale(const glm::vec2 &size) {
 
 void GameObject::rotate(float angle) {
     setAngle(mAngle + angle);
+}
+
+void GameObject::setName(const std::string &name) {
+    mName = name;
+    mNameHash = hd::StringHash(name);
 }
 
 void GameObject::setActive(bool active) {
@@ -164,11 +155,14 @@ GameObject *GameObject::findChildByName(const std::string &name) const {
         HD_LOG_FATAL("Invalid name '{}'", name);
     }
 
-    auto it = mChildrenByNames.find(hd::StringHash(name));
-    if (it == mChildrenByNames.end()) {
+    hd::StringHash nameHash = hd::StringHash(name);
+    auto it = std::find_if(mChildren.begin(), mChildren.end(), [&](const GameObject *go) {
+        return go->getNameHash() == nameHash;
+    });
+    if (it == mChildren.end()) {
         HD_LOG_FATAL("GameObject '{}' not found", name);
     }
-    return it->second;
+    return *it;
 }
 
 Component *GameObject::findComponent(const hd::StringHash &typeHash) const {
@@ -190,12 +184,12 @@ const std::vector<GameObject*> &GameObject::getChildren() const {
     return mChildren;
 }
 
-const std::unordered_map<hd::StringHash, GameObject*> &GameObject::getChildrenByNames() const {
-    return mChildrenByNames;
-}
-
 const std::string &GameObject::getName() const {
     return mName;
+}
+
+const hd::StringHash &GameObject::getNameHash() const {
+    return mNameHash;
 }
 
 bool GameObject::isActive() const {
@@ -227,7 +221,7 @@ void GameObject::mOnSaveLoad(hd::JSON &data, bool isLoad) {
     hd::JSON &children = data["children"];
 
     if (isLoad) {
-        mName = data["name"];
+        setName(data["name"]);
         setActive(data["isActive"]);
         setPosition(data["position"]);
         setSize(data["size"]);
@@ -240,7 +234,7 @@ void GameObject::mOnSaveLoad(hd::JSON &data, bool isLoad) {
         }
 
         for (auto &it : children) {
-            GameObject *child = createChild(it["name"].get<std::string>());
+            GameObject *child = createChild();
             child->mOnSaveLoad(it, isLoad);
         }
     }
