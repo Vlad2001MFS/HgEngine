@@ -60,15 +60,16 @@ void RenderSystem2D::onUpdate(float dt) {
     glm::vec2 windowSize = getEngine().getWindowSize();
 
     float aspect = windowSize.y / windowSize.x;
-    glm::mat4 proj = glm::ortho(-1.0f*mCamDistance, 1.0f*mCamDistance, -1.0f*aspect*mCamDistance, 1.0f*aspect*mCamDistance, -100.0f, 100.0f);
-    glm::mat4 view = glm::rotate(glm::mat4(1.0f), -mCamAngle, glm::vec3(0, 0, 1));
-    view = glm::translate(view, glm::vec3(-mCamPos, 0.0f));
+    mProjMat = glm::ortho(-1.0f*mCamDistance, 1.0f*mCamDistance, -1.0f*aspect*mCamDistance, 1.0f*aspect*mCamDistance, -100.0f, 100.0f);
+    mViewMat = glm::rotate(glm::mat4(1.0f), -mCamAngle, glm::vec3(0, 0, 1));
+    mViewMat = glm::translate(mViewMat, glm::vec3(-mCamPos, 0.0f));
+    mInvViewMat = glm::inverse(mViewMat);
 
-    mDraw(proj*view);
+    mDraw(mProjMat*mViewMat);
     mRenderOps.clear();
 
-    proj = hd::MathUtils::ortho2D(0, windowSize.x, windowSize.y, 0);
-    mDrawGUI(proj);
+    glm::mat4 projGUI = hd::MathUtils::ortho2D(0, windowSize.x, windowSize.y, 0);
+    mDrawGUI(projGUI);
     mGUIRenderOps.clear();
 }
 
@@ -94,6 +95,20 @@ void RenderSystem2D::setCamera(const glm::vec2 &pos, float angle, float distance
     mCamPos = pos;
     mCamAngle = angle;
     mCamDistance = glm::max(distance, 1.0f);
+}
+
+glm::vec2 RenderSystem2D::transformWindowToWorld(const glm::vec2 &pos) const {
+    glm::ivec2 wndSize = getEngine().getWindowSize();
+    glm::vec2 world = glm::unProject(glm::vec3(pos, 0.0), mInvViewMat, mProjMat, glm::vec4(0, 0, wndSize.x, wndSize.y));
+    world.y = -world.y;
+    return world;
+}
+
+glm::vec2 RenderSystem2D::transformWorldToWindow(const glm::vec2 &pos) const {
+    glm::ivec2 wndSize = getEngine().getWindowSize();
+    glm::vec2 world = glm::project(glm::vec3(pos, 0.0), mViewMat, mProjMat, glm::vec4(0, 0, wndSize.x, wndSize.y));
+    world.y = wndSize.y - world.y;
+    return world;
 }
 
 void RenderSystem2D::mDraw(const glm::mat4 &projView) {

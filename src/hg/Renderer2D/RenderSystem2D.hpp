@@ -23,12 +23,18 @@ public:
 
     void setCamera(const glm::vec2 &pos, float angle, float distance);
 
+    glm::vec2 transformWindowToWorld(const glm::vec2 &pos) const;
+    glm::vec2 transformWorldToWindow(const glm::vec2 &pos) const;
+
 private:
     void mDraw(const glm::mat4 &projView);
     void mDrawGUI(const glm::mat4 &projView);
 
     glm::vec2 mCamPos = glm::vec2(0, 0);
     float mCamAngle = 0.0f, mCamDistance = 1.0f;
+    glm::mat4 mProjMat = glm::mat4(1.0f);
+    glm::mat4 mViewMat = glm::mat4(1.0f);
+    glm::mat4 mInvViewMat = glm::mat4(1.0f);
     std::vector<RenderOp> mRenderOps;
     std::vector<RenderOp> mGUIRenderOps;
 
