@@ -60,9 +60,9 @@ void RenderSystem2D::onUpdate(float dt) {
     glm::vec2 windowSize = getEngine().getWindowSize();
 
     float aspect = windowSize.y / windowSize.x;
-    glm::mat4 proj = glm::ortho(-1.0f*mCamPos.z, 1.0f*mCamPos.z, -1.0f*aspect*mCamPos.z, 1.0f*aspect*mCamPos.z, -10.0f, 10.0f);
-    glm::mat4 viewTranslate = glm::translate(glm::mat4(1.0f), -glm::vec3(mCamPos.x, mCamPos.y, 0.0f));
-    glm::mat4 view = viewTranslate;
+    glm::mat4 proj = glm::ortho(-1.0f*mCamDistance, 1.0f*mCamDistance, -1.0f*aspect*mCamDistance, 1.0f*aspect*mCamDistance, -100.0f, 100.0f);
+    glm::mat4 view = glm::rotate(glm::mat4(1.0f), -mCamAngle, glm::vec3(0, 0, 1));
+    view = glm::translate(view, glm::vec3(-mCamPos, 0.0f));
 
     mDraw(proj*view);
     mRenderOps.clear();
@@ -90,9 +90,10 @@ void RenderSystem2D::drawTextureGUI(const Texture2DPtr &texture, const glm::ivec
     mGUIRenderOps.push_back(rop);
 }
 
-void RenderSystem2D::setCamPos(const glm::vec3 &pos) {
+void RenderSystem2D::setCamera(const glm::vec2 &pos, float angle, float distance) {
     mCamPos = pos;
-    mCamPos.z = glm::max(mCamPos.z, 1.0f);
+    mCamAngle = angle;
+    mCamDistance = glm::max(distance, 1.0f);
 }
 
 void RenderSystem2D::mDraw(const glm::mat4 &projView) {

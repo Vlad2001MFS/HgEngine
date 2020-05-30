@@ -21,13 +21,14 @@ public:
     void drawTexture(const Texture2DPtr &texture, const glm::vec3 &pos, const glm::vec2 &size, float angle);
     void drawTextureGUI(const Texture2DPtr &texture, const glm::ivec2 &pos, const glm::ivec2 &size);
 
-    void setCamPos(const glm::vec3 &pos);
+    void setCamera(const glm::vec2 &pos, float angle, float distance);
 
 private:
     void mDraw(const glm::mat4 &projView);
     void mDrawGUI(const glm::mat4 &projView);
 
-    glm::vec3 mCamPos = glm::vec3(0, 0, 1);
+    glm::vec2 mCamPos = glm::vec2(0, 0);
+    float mCamAngle = 0.0f, mCamDistance = 1.0f;
     std::vector<RenderOp> mRenderOps;
     std::vector<RenderOp> mGUIRenderOps;
 
