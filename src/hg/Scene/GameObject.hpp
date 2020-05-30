@@ -64,7 +64,8 @@ protected:
 private:
     static std::string mGetFullPath(const std::string &path);
 
-    bool mAddComponent(Component *component);
+    Component *mCreateComponent(Component *component);
+    void mDestroyComponent(Component *component);
     void mUpdateTransform();
 
     GameObject *mParent = nullptr;
@@ -82,13 +83,8 @@ private:
 
 template<typename T>
 T *GameObject::createComponent() {
-    T *component = new T();
-    if (mAddComponent(component)) {
-        return component;
-    }
-    else {
-        return nullptr;
-    }
+    T *component = new T(); // it was deleted by mCreateComponent if something goes wrong
+    return static_cast<T*>(mCreateComponent(component));
 }
 
 template<typename T>

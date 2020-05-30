@@ -49,7 +49,7 @@ std::string Scene::mGetFullPath(const std::string &path) {
     return "./data/levels/" + path;
 }
 
-void Scene::mOnAddComponent(Component *component) {
+void Scene::mOnCreateComponent(Component *component) {
     mComponentsForFirstUpdate.push_back(component);
 }
 

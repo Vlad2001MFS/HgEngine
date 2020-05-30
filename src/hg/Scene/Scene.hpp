@@ -17,7 +17,7 @@ public:
 private:
     static std::string mGetFullPath(const std::string &path);
 
-    void mOnAddComponent(Component *component);
+    void mOnCreateComponent(Component *component);
 
     std::vector<Component*> mComponentsForFirstUpdate;
 };

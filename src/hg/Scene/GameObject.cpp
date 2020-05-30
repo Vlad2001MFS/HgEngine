@@ -44,19 +44,15 @@ void GameObject::destroyChild(GameObject *go) {
 }
 
 Component *GameObject::createComponent(const hd::StringHash &typeHash) {
+    // component was deleted by mCreateComponent if something goes wrong
     Component *component = Factory::get().createObject(typeHash)->as<Component>();
-    if (mAddComponent(component)) {
-        return component;
-    }
-    else {
-        return nullptr;
-    }
+    return mCreateComponent(component);
 }
 
 void GameObject::destroyComponent(const hd::StringHash &typeHash) {
     auto it = std::find_if(mComponents.begin(), mComponents.end(), [&](Component *comp) { return comp->getTypeHash() == typeHash; });
     if (it != mComponents.end()) {
-        HD_DELETE(*it);
+        mDestroyComponent(*it);
         mComponents.erase(it);
     }
     else {
@@ -73,7 +69,7 @@ void GameObject::destroyAllChildren() {
 
 void GameObject::destroyAllComponents() {
     for (auto &it : mComponents) {
-        HD_DELETE(it);
+        mDestroyComponent(it);
     }
     mComponents.clear();
 }
@@ -298,22 +294,26 @@ std::string GameObject::mGetFullPath(const std::string &path) {
     return "./data/configs/" + path;
 }
 
-bool GameObject::mAddComponent(Component *component) {
+Component *GameObject::mCreateComponent(Component *component) {
     auto it = std::find_if(mComponents.begin(), mComponents.end(), [&](Component *comp) {
         return comp->getTypeHash() == component->getTypeHash();
     });
     if (it == mComponents.end()) {
         component->mOwner = this;
         mComponents.push_back(component);
-        getScene().mOnAddComponent(component);
+        getScene().mOnCreateComponent(component);
         component->onCreate();
-        return true;
+        return component;
     }
     else {
         HD_LOG_ERROR("Failed to add component '{}' because of component such type already exist", component->getTypeName());
         HD_DELETE(component);
-        return false;
+        return nullptr;
     }
+}
+
+void GameObject::mDestroyComponent(Component *component) {
+    HD_DELETE(component);
 }
 
 void GameObject::mUpdateTransform() {
