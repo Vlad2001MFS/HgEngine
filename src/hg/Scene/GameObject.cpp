@@ -114,12 +114,7 @@ void GameObject::setPosition(const glm::vec2 &pos) {
 }
 
 void GameObject::setWorldPosition(const glm::vec2 &pos) {
-    if (mParent) {
-        setPosition(hd::MathUtils::rotate2D(pos - mParent->getWorldPosition(), -mParent->getWorldAngle()));
-    }
-    else {
-        setPosition(pos);
-    }
+    setPosition(transformPositionWorldToLocal(pos));
 }
 
 void GameObject::setSize(float x, float y) {
@@ -138,11 +133,51 @@ void GameObject::setAngle(float angle) {
 }
 
 void GameObject::setWorldAngle(float angle) {
+    setAngle(transformAngleWorldToLocal(angle));
+}
+
+glm::vec2 GameObject::transformPositionLocalToWorld(const glm::vec2 &pos) const {
+    glm::vec2 worldPos = glm::vec2(0, 0);
+    const GameObject *go = this;
+    while (go) {
+        const GameObject *parent = go->getParent();
+        if (parent) {
+            worldPos += hd::MathUtils::rotate2D(go->getPosition(), parent->getWorldAngle());
+        }
+        else {
+            worldPos += go->getPosition();
+        }
+        go = parent;
+    }
+    return worldPos;
+}
+
+glm::vec2 GameObject::transformPositionWorldToLocal(const glm::vec2 &pos) const {
     if (mParent) {
-        setAngle(angle - mParent->getWorldAngle());
+        return hd::MathUtils::rotate2D(pos - mParent->getWorldPosition(), -mParent->getWorldAngle());
     }
     else {
-        setAngle(angle);
+        return pos;
+    }
+}
+
+float GameObject::transformAngleLocalToWorld(float angle) const {
+    float worldAngle = 0.0f;
+    const GameObject *go = this;
+    while (go) {
+        const GameObject *parent = go->getParent();
+        worldAngle += go->getAngle();
+        go = parent;
+    }
+    return worldAngle;
+}
+
+float GameObject::transformAngleWorldToLocal(float angle) const {
+    if (mParent) {
+        return angle - mParent->getWorldAngle();
+    }
+    else {
+        return angle;
     }
 }
 
@@ -317,20 +352,8 @@ void GameObject::mDestroyComponent(Component *component) {
 }
 
 void GameObject::mUpdateTransform() {
-    mWorldPos = glm::vec2(0, 0);
-    mWorldAngle = 0.0f;
-    const GameObject *go = this;
-    while (go) {
-        const GameObject *parent = go->getParent();
-        if (parent) {
-            mWorldPos += hd::MathUtils::rotate2D(go->getPosition(), parent->getWorldAngle());
-        }
-        else {
-            mWorldPos += go->getPosition();
-        }
-        mWorldAngle += go->getAngle();
-        go = parent;
-    }
+    mWorldPos = transformPositionLocalToWorld(getPosition());
+    mWorldAngle = transformAngleLocalToWorld(getAngle());
 
     for (auto &component : mComponents) {
         component->onTransformUpdate();

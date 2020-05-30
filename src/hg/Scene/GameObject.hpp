@@ -41,6 +41,11 @@ public:
     void setAngle(float angle);
     void setWorldAngle(float angle);
 
+    glm::vec2 transformPositionLocalToWorld(const glm::vec2 &pos) const;
+    glm::vec2 transformPositionWorldToLocal(const glm::vec2 &pos) const;
+    float transformAngleLocalToWorld(float angle) const;
+    float transformAngleWorldToLocal(float angle) const;
+
     GameObject *findChildByName(const std::string &name) const;
     Component *findComponent(const hd::StringHash &typeHash) const;
 
